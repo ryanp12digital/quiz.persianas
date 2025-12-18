@@ -144,8 +144,22 @@ export const STEPS = [
         type: 'mixed',
         inputs: [
             { id: 'name', label: 'Nome', placeholder: 'Seu nome' },
-            { id: 'whatsapp', label: 'WhatsApp com DDD', placeholder: '(11) 99999-9999' },
-            { id: 'environments', label: 'Qual(is) ambiente(s) deseja?', placeholder: 'Ex: Sala e Quarto' }
+            { id: 'whatsapp', label: 'DDD+Whatsapp', placeholder: '(11) 99999-9999', mask: 'phone' },
+            {
+                id: 'environments',
+                label: 'Qual(is) ambiente(s) deseja?',
+                placeholder: 'Selecione os ambientes',
+                type: 'multi-select',
+                options: [
+                    'Varanda / Sacada / Área externa Envidraçada',
+                    'Quarto',
+                    'Sala de Estar / Jantar',
+                    'Cozinha / Área Gourmet',
+                    'Banheiro / Lavabo',
+                    'Escritório / Home Office',
+                    'Outro'
+                ]
+            }
         ],
         isFinal: true
     }
