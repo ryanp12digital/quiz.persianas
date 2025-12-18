@@ -1,0 +1,94 @@
+QUIZ - PERSIANAS (estrutura para criação da página)
+
+
+
+[FASE 1] INTENÇÃO DO USUÁRIO
+- Pergunta (título): Você já sabe exatamente o que precisa ou gostaria de ver as opções disponíveis?
+- Exemplo (ajuda): ex: Persiana Rolô blackout tamanho 1,50m x 1,50m
+- Tipo de resposta: seleção única (radio)
+- Opções:
+  1) Quero ver as opções disponíveis
+  2) Já sei o tipo de persiana/cortina e tenho as medidas e quero falar direto com um atendente
+
+[FASE 2] AMBIENTE DE INSTALAÇÃO (para a 1ª persiana/cortina)
+- Título: Perfeito, então vamos começar! Informe primeiro sobre a primeira persiana que deseja orçar
+- Pergunta: Em qual ambiente você quer instalar essa persiana ou cortina?
+- Tipo de resposta: seleção única (radio)
+- Opções:
+  1) Varanda / Sacada / Área externa Envidraçada
+  2) Quarto
+  3) Sala de Estar / Jantar
+  4) Cozinha / Área Gourmet
+  5) Banheiro / Lavabo
+  6) Escritório / Home Office
+  7) Outro
+
+[FASE 3] ACIONAMENTO (MANUAL OU AUTOMÁTICA)
+- Pergunta (título): Você gostaria dessa persiana manual ou automática?
+- Tipo de resposta: seleção única (radio)
+- Opções:
+  1) Manual (com corrente, haste ou bastão)
+  2) Motorizada
+  3) Ainda não sei
+
+[FASE 4] TIPO DE TECIDO
+- Pergunta (título): Tipo de Tecido
+- Tipo de resposta: seleção única (cards/radio)
+- Opções:
+  1) Blackout — Bloqueia 100% da entrada da luz. Perfeita para quartos, salas de TV, Home Theater, Consultórios, Estúdios.
+  2) Semi Blackout — Reduz de forma significativa a entrada de luz, sem escurecer totalmente o ambiente. Perfeita para salas e escritórios onde se deseja conforto e leve privacidade.
+  3) Translúcido — Filtra a luz suavemente, mantendo o ambiente claro e aconchegante.
+  4) Tela Solar 1% — Bloqueia cerca de 99% da luz e do calor, garantindo máxima privacidade e conforto térmico. Ideal para quem quer ambientes mais escuros e protegidos.
+  5) Tela Solar 3% — Permite entrada leve de luz natural, mantendo boa proteção solar. Um equilíbrio entre visibilidade e conforto.
+  6) Tela Solar 5% — Mais aberta, deixa o ambiente bem iluminado e com visão externa, bloqueando parte do calor.
+  7) Decorativo — Indicada para quem busca design e estilo. Ideal para ambientes internos com foco estético.
+  8) Outros — Antichama, antimicrobiano, Screen metalizado.
+  9) Ainda não sei — Para quem prefere receber uma recomendação personalizada de acordo com o ambiente.
+
+[FASE 5] ESTÁGIO DO CLIENTE
+- Pergunta (título): Em que fase você está agora?
+- Tipo de resposta: seleção única (radio)
+- Opções:
+  1) Já tenho as medidas e quero um pré-orçamento
+  2) Estou apenas pesquisando ideias e quero receber um catálogo
+- Observação de lógica (do XLSX): Se o usuário selecionar a opção 2, enviar para a última etapa (captura/catalogo).
+
+[FASE 6] MEDIDAS (se aplicável)
+- Título: Perfeito! Envie suas medidas abaixo (não precisam ser exatas) e o nível de urgência para instalação.
+- Instrução: Informe a largura e a altura de cada janela em centímetros.
+- Tipo de resposta:
+  - Campo: Largura (texto) [obrigatório] (placeholder: Ex: 120 cm (largura))
+  - Campo: Altura (texto) [obrigatório] (placeholder: Ex: 140 cm (altura))
+  - Campo: Nível de urgência (seleção única / radio) [obrigatório]
+    - Opções:
+      1) O quanto antes (Urgente)
+      2) Nos próximos 30 dias
+      3) Estou em obra/reforma (Sem pressa)
+      4) Apenas pesquisando preço
+- Observação/nota ao usuário:
+  *Não se preocupe, essas informações são apenas para você receber um pré orçamento. Antes de enviar para produção, um técnico da nossa equipe vai até o local para tirar as medidas exatas e confirmar tudo com você, sem custo adicional.
+
+[FASE 7] FOTO + MULTI-ORÇAMENTO
+- Título: Caso deseje, pode inserir uma foto do ambiente onde a persiana será instalada ou pode prosseguir para próxima etapa!
+- Tipo de resposta:
+  - Campo: Anexar (upload de arquivo / imagem) [opcional]
+  - Ações (seleção única / radio):
+    1) Informar sobre outra persiana/cortina que deseja (reiniciar o processo do zero para novo item)
+    2) Seguir somente com este orçamento (seguir para a captura final)
+- Observação de lógica (do XLSX): Caso anexe, depois pergunte as 2 opções acima (outra persiana ou seguir com orçamento).
+
+[FASE 8] CAPTURA FINAL (varia conforme caminhos)
+- Caminho A (pré-orçamento): Perfeito! Para te enviar este pré orçamento e sugestões, preciso dos seguintes dados
+  - Campos: Nome; WhatsApp com DDD; E-mail; Cidade (de onde será instalado); Bairro
+- Caminho B (catálogo): Perfeito! Para te enviarmos o nosso catálogo com todas as opções, preencha os dados abaixo.
+  - Campos (conforme XLSX): Nome; WhatsApp com DDD
+  - Campo adicional visto no XLSX: Qual(is) ambiente(s) deseja? (texto) (ex: varanda e quarto)
+
+[SEÇÃO 9] DADOS DO LEAD (CAPTURA)
+- Título: Perfeito! Para te enviar este pré orçamento e sugestões, preciso dos seguintes dados
+  - Campo: Nome (texto) [obrigatório]
+  - Campo: WhatsApp com DDD (texto) [obrigatório]
+  - Campo: E-mail (texto) [obrigatório]
+  - Campo: Cidade (de onde será instalado) (texto) [obrigatório]
+  - Campo: Bairro (texto) [obrigatório]
+  - Campo: Qual(is) ambiente(s) deseja? (seleção / dropdown) [obrigatório]
