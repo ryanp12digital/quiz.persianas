@@ -7,7 +7,6 @@ import { STEPS } from './steps';
 function App() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [formData, setFormData] = useState(() => {
-    // Capture UTM parameters from URL on initialization
     const params = new URLSearchParams(window.location.search);
     return {
       utm_source: params.get('utm_source') || '',
@@ -17,94 +16,90 @@ function App() {
       utm_term: params.get('utm_term') || '',
       page_url: window.location.href
     };
-  }); // Stores general data and UTMs
-  const [items, setItems] = useState([]); // Stores completed items (persianas)
-  const [currentItem, setCurrentItem] = useState({}); // Stores current item being configured
+  });
+  const [items, setItems] = useState([]);
+  const [currentItem, setCurrentItem] = useState({});
+  const [loopCount, setLoopCount] = useState(0);
 
   const activeStep = STEPS[currentStepIndex];
-
-  // Calculate Progress
-  // Base logic: (currentStepIndex / totalSteps) * 100
-  // But since we loop, it's tricky. Let's just map it to "Phases" for now.
-  // There are ~8 phases.
   const phase = activeStep.phase || 1;
   const totalPhases = 8;
   const progressValue = Math.max(5, (phase / totalPhases) * 100);
 
   const handleNext = (inputValueOrOption) => {
-    // 1. Data Collection
     let nextStepId = null;
-    let newData = {};
+    let stepResponse = {};
 
     if (inputValueOrOption.value) {
-      // Logic for Radio/Option click
-      newData = { ...inputValueOrOption };
+      // Radio option selected
+      stepResponse = {
+        pergunta_id: activeStep.id,
+        pergunta_texto: activeStep.question,
+        resposta_valor: inputValueOrOption.value,
+        resposta_label: inputValueOrOption.label
+      };
       nextStepId = inputValueOrOption.nextStep;
 
-      // Special Actions
       if (inputValueOrOption.action === 'loop') {
-        // LOOP LOGIC:
-        // 1. Save current item to items array
-        setItems(prev => [...prev, currentItem]);
-        // 2. Reset currentItem
-        setCurrentItem({});
-        // 3. Go back to Step 2 (Environment)
-        const step2Index = STEPS.findIndex(s => s.id === 'step_2_environment');
-        setCurrentStepIndex(step2Index);
-        return; // Exit early
+        if (loopCount < 1) { // Limit to 1 loop to avoid infinite
+          setItems(prev => [...prev, { ...currentItem, item_index: items.length + 1 }]);
+          setCurrentItem({});
+          setLoopCount(prev => prev + 1);
+          const step2Index = STEPS.findIndex(s => s.id === 'passo_2_ambiente');
+          setCurrentStepIndex(step2Index);
+          return;
+        } else {
+          // If already looped once, force next step instead of looping again
+          nextStepId = 'passo_8_captura';
+        }
       }
     } else {
-      // Logic for Input/Mixed form submission (Next Button)
-      newData = inputValueOrOption; // This is the inputValues object { width: '...', height: '...' }
+      // Input form submitted
+      stepResponse = {
+        pergunta_id: activeStep.id,
+        pergunta_texto: activeStep.question,
+        respostas: inputValueOrOption // Object with field IDs and values
+      };
       nextStepId = activeStep.nextStep;
     }
 
-    // Update State
-    // Store data in currentItem if it's item-specific (Phase 2-7) 
-    // or formData if global (Phase 1, 8).
-    // For simplicity, we dump everything into currentItem until the loop logic splits it, 
-    // but Phase 1/8 should be global.
-
+    // Store data
     if (activeStep.phase === 1 || activeStep.phase === 8) {
-      setFormData(prev => ({ ...prev, ...newData }));
+      setFormData(prev => ({ ...prev, [activeStep.id]: stepResponse }));
     } else {
-      setCurrentItem(prev => ({ ...prev, ...newData }));
+      setCurrentItem(prev => ({ ...prev, [activeStep.id]: stepResponse }));
     }
 
-    // 2. Navigation
+    // Navigation
     if (nextStepId) {
       const nextIndex = STEPS.findIndex(s => s.id === nextStepId);
       if (nextIndex !== -1) {
         setCurrentStepIndex(nextIndex);
       }
     } else if (activeStep.isFinal) {
-      // FINISH LOGIC
       const finalData = {
-        contact: { ...formData, ...newData },
-        items: [...items, currentItem], // Add the last item being worked on
+        contato: { ...formData, [activeStep.id]: stepResponse },
+        itens: [...items, { ...currentItem, item_index: items.length + 1 }],
         meta: { 
-          type: activeStep.id,
-          submitted_at: new Date().toISOString()
+          tipo_quiz: activeStep.id,
+          data_envio: new Date().toISOString(),
+          total_itens: items.length + 1
         }
       };
       
       console.log("FORM SUBMITTED:", finalData);
 
-      // Webhook submission
       const WEBHOOK_URL = 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/Quiz';
       
       fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalData),
       })
       .then(response => {
         if (response.ok) {
           alert("Obrigado! Suas informações foram enviadas com sucesso.");
         } else {
-          console.error("Webhook error:", response.statusText);
           alert("Obrigado! Suas informações foram registradas.");
         }
       })
@@ -115,6 +110,12 @@ function App() {
     }
   };
 
+  // Modify activeStep options if loop limit reached
+  const modifiedStep = { ...activeStep };
+  if (activeStep.id === 'passo_7_mais_itens' && loopCount >= 1) {
+    modifiedStep.options = activeStep.options.filter(opt => opt.action !== 'loop');
+  }
+
   return (
     <Layout>
       <div style={{ maxWidth: '605px', margin: '0 auto 40px auto' }}>
@@ -123,14 +124,14 @@ function App() {
 
       <div style={{ marginTop: '40px' }}>
         <StepQuestion
-          key={activeStep.id} // Re-render input state on step change
-          question={activeStep.question}
-          subtext={activeStep.subtext}
-          type={activeStep.type}
-          options={activeStep.options}
-          inputs={activeStep.inputs}
-          onOptionSelect={handleNext} // For radio
-          onNext={handleNext} // For inputs
+          key={`${activeStep.id}_${loopCount}`}
+          question={modifiedStep.question}
+          subtext={modifiedStep.subtext}
+          type={modifiedStep.type}
+          options={modifiedStep.options}
+          inputs={modifiedStep.inputs}
+          onOptionSelect={handleNext}
+          onNext={handleNext}
         />
       </div>
     </Layout>

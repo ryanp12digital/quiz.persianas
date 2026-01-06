@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Simple Phone Mask Function
 const formatPhoneNumber = (value) => {
     if (!value) return value;
     const phoneNumber = value.replace(/[^\d]/g, '');
@@ -17,7 +16,6 @@ const formatPhoneNumber = (value) => {
 
 export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext }) {
     const [inputValues, setInputValues] = useState({});
-
     const [errors, setErrors] = useState({});
 
     const handleInputChange = (e, fieldId, mask) => {
@@ -26,7 +24,6 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             value = formatPhoneNumber(value);
         }
         setInputValues(prev => ({ ...prev, [fieldId]: value }));
-        // Clear error when user types
         if (errors[fieldId]) {
             setErrors(prev => ({ ...prev, [fieldId]: null }));
         }
@@ -44,12 +41,9 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             return prev;
         });
 
-        // Clear error
         if (errors[fieldId]) {
             setErrors(prev => ({ ...prev, [fieldId]: null }));
         }
-
-        // Reset select to default
         e.target.value = "";
     };
 
@@ -66,8 +60,6 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
 
         inputs.forEach(input => {
             const value = inputValues[input.id];
-
-            // Check if required (assuming all validation required for now based on user request)
             const isMultiSelect = input.type === 'multi-select';
 
             if (isMultiSelect) {
@@ -90,24 +82,16 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
     const handleNext = () => {
         if (validate()) {
             if (onNext) {
-                onNext(inputValues); // Pass captured input values
+                onNext(inputValues);
             }
         }
     };
 
     return (
         <div className="step-container">
-            <h2 className="step-title">
-                {question}
-            </h2>
+            <h2 className="step-title">{question}</h2>
+            {subtext && <p className="step-subtext">{subtext}</p>}
 
-            {subtext && (
-                <p className="step-subtext">
-                    {subtext}
-                </p>
-            )}
-
-            {/* Inputs Section */}
             {inputs.length > 0 && (
                 <div className="w-full max-w-md mx-auto mb-8 flex flex-col gap-4">
                     {inputs.map((input) => (
@@ -116,68 +100,64 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                 {input.label} <span className="text-red-500">*</span>
                             </label>
 
-                            {input.type === 'select' ? (
-                                <select
-                                    className={`w-full p-4 border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-[0.9rem] bg-white ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
-                                    value={inputValues[input.id] || ''}
-                                    onChange={(e) => handleInputChange(e, input.id)}
-                                >
-                                    <option value="">Selecione...</option>
-                                    {input.options.map(opt => (
-                                        <option key={opt} value={opt}>{opt}</option>
-                                    ))}
-                                </select>
-                            ) : input.type === 'multi-select' ? (
-                                <div className={`w-full p-2 border rounded-2xl bg-white min-h-[56px] flex flex-wrap items-center gap-2 relative ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}>
-                                    {/* Selected Chips */}
-                                    {(inputValues[input.id] || []).map(item => (
-                                        <span key={item} className="bg-gray-200 text-gray-800 text-sm px-3 py-1 rounded-full flex items-center gap-2 animate-fadeIn">
-                                            {item}
-                                            <button
-                                                onClick={() => removeMultiSelectItem(input.id, item)}
-                                                className="text-gray-500 hover:text-red-500 font-bold leading-none focus:outline-none"
-                                            >
-                                                &times;
-                                            </button>
-                                        </span>
-                                    ))}
-
-                                    {/* Hidden Select or styled dropdown trigger */}
+                            <div className="relative flex items-center">
+                                {input.type === 'select' ? (
                                     <select
-                                        className="grow p-2 bg-transparent outline-none text-[0.9rem] min-w-[150px] cursor-pointer"
-                                        onChange={(e) => handleMultiSelectChange(e, input.id)}
-                                        value="" /* Always reset to allow selecting same item again if needed (though check prevents duplicate) */
+                                        className={`w-full p-4 border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-[0.9rem] bg-white ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                        value={inputValues[input.id] || ''}
+                                        onChange={(e) => handleInputChange(e, input.id)}
                                     >
-                                        <option value="" disabled selected={!inputValues[input.id] || inputValues[input.id].length === 0}>
-                                            {inputValues[input.id] && inputValues[input.id].length > 0 ? "Adicionar outro..." : input.placeholder}
-                                        </option>
-                                        {input.options.filter(opt => !(inputValues[input.id] || []).includes(opt)).map(opt => (
+                                        <option value="">Selecione...</option>
+                                        {input.options.map(opt => (
                                             <option key={opt} value={opt}>{opt}</option>
                                         ))}
                                     </select>
-                                </div>
-                            ) : (
-                                <input
-                                    type={input.type || 'text'}
-                                    placeholder={input.placeholder}
-                                    className={`w-full p-4 border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-[0.9rem] ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
-                                    value={inputValues[input.id] || ''}
-                                    onChange={(e) => handleInputChange(e, input.id, input.mask)}
-                                    maxLength={input.mask === 'phone' ? 15 : undefined}
-                                />
-                            )}
+                                ) : input.type === 'multi-select' ? (
+                                    <div className={`w-full p-2 border rounded-2xl bg-white min-h-[56px] flex flex-wrap items-center gap-2 relative ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}>
+                                        {(inputValues[input.id] || []).map(item => (
+                                            <span key={item} className="bg-gray-200 text-gray-800 text-sm px-3 py-1 rounded-full flex items-center gap-2 animate-fadeIn">
+                                                {item}
+                                                <button onClick={() => removeMultiSelectItem(input.id, item)} className="text-gray-500 hover:text-red-500 font-bold leading-none focus:outline-none">&times;</button>
+                                            </span>
+                                        ))}
+                                        <select
+                                            className="grow p-2 bg-transparent outline-none text-[0.9rem] min-w-[150px] cursor-pointer"
+                                            onChange={(e) => handleMultiSelectChange(e, input.id)}
+                                            value=""
+                                        >
+                                            <option value="" disabled>{inputValues[input.id] && inputValues[input.id].length > 0 ? "Adicionar outro..." : input.placeholder}</option>
+                                            {input.options.filter(opt => !(inputValues[input.id] || []).includes(opt)).map(opt => (
+                                                <option key={opt} value={opt}>{opt}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <input
+                                            type={input.type || 'text'}
+                                            placeholder={input.placeholder}
+                                            className={`w-full p-4 ${input.suffix ? 'pr-12' : ''} border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-[0.9rem] ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                            value={inputValues[input.id] || ''}
+                                            onChange={(e) => handleInputChange(e, input.id, input.mask)}
+                                            maxLength={input.mask === 'phone' ? 15 : undefined}
+                                        />
+                                        {input.suffix && (
+                                            <span className="absolute right-4 text-gray-400 font-medium pointer-events-none">
+                                                {input.suffix}
+                                            </span>
+                                        )}
+                                    </>
+                                )}
+                            </div>
 
                             {errors[input.id] && (
-                                <p className="text-red-500 text-xs ml-1 mt-1 animate-fadeIn">
-                                    {errors[input.id]}
-                                </p>
+                                <p className="text-red-500 text-xs ml-1 mt-1 animate-fadeIn">{errors[input.id]}</p>
                             )}
                         </div>
                     ))}
                 </div>
             )}
 
-            {/* Options Grid (Radio/Buttons) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl mx-auto">
                 {options.map((option, index) => (
                     <button
@@ -190,13 +170,9 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                 ))}
             </div>
 
-            {/* Explicit Next Button for Input Steps */}
             {(inputs.length > 0 || type === 'mixed') && (
                 <div className="mt-8">
-                    <button
-                        onClick={handleNext}
-                        className="bg-[#4CAF50] text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-green-600 transition-colors"
-                    >
+                    <button onClick={handleNext} className="bg-[#4CAF50] text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-green-600 transition-colors">
                         Continuar
                     </button>
                 </div>
