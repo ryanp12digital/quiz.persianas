@@ -72,7 +72,14 @@ function App() {
 
     // Navigation
     if (nextStepId) {
-      const nextIndex = STEPS.findIndex(s => s.id === nextStepId);
+      let finalNextStepId = nextStepId;
+      
+      // Auto-skip logic for the second time at passo_7_mais_itens
+      if (nextStepId === 'passo_7_mais_itens' && loopCount >= 1) {
+        finalNextStepId = 'passo_8_captura';
+      }
+
+      const nextIndex = STEPS.findIndex(s => s.id === finalNextStepId);
       if (nextIndex !== -1) {
         setCurrentStepIndex(nextIndex);
       }
