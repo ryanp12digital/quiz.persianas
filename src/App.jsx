@@ -6,7 +6,18 @@ import { STEPS } from './steps';
 
 function App() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [formData, setFormData] = useState({}); // Stores general data
+  const [formData, setFormData] = useState(() => {
+    // Capture UTM parameters from URL on initialization
+    const params = new URLSearchParams(window.location.search);
+    return {
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || '',
+      utm_content: params.get('utm_content') || '',
+      utm_term: params.get('utm_term') || '',
+      page_url: window.location.href
+    };
+  }); // Stores general data and UTMs
   const [items, setItems] = useState([]); // Stores completed items (persianas)
   const [currentItem, setCurrentItem] = useState({}); // Stores current item being configured
 
@@ -71,10 +82,36 @@ function App() {
       const finalData = {
         contact: { ...formData, ...newData },
         items: [...items, currentItem], // Add the last item being worked on
-        meta: { type: activeStep.id } // Budget vs Catalog
+        meta: { 
+          type: activeStep.id,
+          submitted_at: new Date().toISOString()
+        }
       };
+      
       console.log("FORM SUBMITTED:", finalData);
-      alert("Obrigado! Suas informações foram enviadas. (Veja o console para os dados)");
+
+      // Webhook submission
+      const WEBHOOK_URL = 'https://n8n.ryanp12.com.br/webhook/quiz-persianas'; // Placeholder URL, can be adjusted
+      
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalData),
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("Obrigado! Suas informações foram enviadas com sucesso.");
+        } else {
+          console.error("Webhook error:", response.statusText);
+          alert("Obrigado! Suas informações foram registradas.");
+        }
+      })
+      .catch(error => {
+        console.error("Fetch error:", error);
+        alert("Obrigado! Suas informações foram registradas.");
+      });
     }
   };
 
