@@ -10,10 +10,7 @@ export const AB_CONFIG = {
       description: 'Fluxo com alterações para teste ABA',
       // Exemplo de alteração: Mudar o texto da primeira pergunta
       modifications: {
-        passo_1_intencao: {
-          question: 'Olá! Como podemos ajudar você hoje? Escolha uma opção abaixo:',
-          subtext: 'Queremos entender melhor sua necessidade.'
-        }
+        // Removido para usar o título padrão da V1 conforme solicitado
       }
     }
   }
