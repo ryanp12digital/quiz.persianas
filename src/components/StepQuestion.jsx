@@ -163,9 +163,14 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                     <button
                         key={index}
                         onClick={() => onOptionSelect(option)}
-                        className="group relative bg-white border border-gray-200 rounded-2xl p-6 min-h-[100px] flex items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 hover:border-black active:scale-95 text-[0.9rem] font-medium text-gray-800"
+                        className="group relative bg-white border border-gray-200 rounded-2xl p-6 min-h-[100px] flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 hover:border-black active:scale-95 text-[0.9rem] font-medium text-gray-800"
                     >
-                        {option.label}
+                        <span className="font-bold mb-1">{option.label}</span>
+                        {option.description && (
+                            <span className="text-xs text-gray-500 font-normal leading-tight">
+                                {option.description}
+                            </span>
+                        )}
                     </button>
                 ))}
             </div>
