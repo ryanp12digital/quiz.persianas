@@ -154,6 +154,7 @@ export default function QuizV2() {
           inputs={modifiedStep.inputs}
           onOptionSelect={handleNext}
           onNext={handleNext}
+          formId="quizv2"
         />
       </div>
     </Layout>

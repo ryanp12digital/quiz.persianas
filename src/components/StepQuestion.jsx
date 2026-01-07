@@ -14,7 +14,7 @@ const formatPhoneNumber = (value) => {
     return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 7)}-${phoneNumber.slice(7, 11)}`;
 };
 
-export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext }) {
+export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, formId }) {
     const [inputValues, setInputValues] = useState({});
     const [errors, setErrors] = useState({});
 
@@ -93,7 +93,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             {subtext && <p className="step-subtext">{subtext}</p>}
 
             {inputs.length > 0 && (
-                <div className="w-full max-w-md mx-auto mb-8 flex flex-col gap-4">
+                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="w-full max-w-md mx-auto mb-8 flex flex-col gap-4">
                     {inputs.map((input) => (
                         <div key={input.id} className="text-left w-full">
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
@@ -155,7 +155,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             )}
                         </div>
                     ))}
-                </div>
+                </form>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl mx-auto">
