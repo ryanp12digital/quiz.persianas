@@ -105,6 +105,14 @@ export default function QuizV1() {
             content_category: 'Lead Generation'
           });
         }
+        // Enviar evento para o GTM via Data Layer
+        if (window.dataLayer) {
+          window.dataLayer.push({
+            event: 'form_submission',
+            form_id: 'quizv1',
+            version: 'v1'
+          });
+        }
         navigate('/quiz/obrigado');
       })
       .catch(() => navigate('/quiz/obrigado'));
