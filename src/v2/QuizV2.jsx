@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import StepQuestion from '../components/StepQuestion';
+import WelcomeScreen from '../components/WelcomeScreen';
 import { Progress } from '../components/ui/progress';
 import { STEPS } from './steps';
 import { AB_CONFIG, getVariant } from './ab_test';
@@ -10,6 +11,7 @@ export default function QuizV2() {
   const navigate = useNavigate();
   const variant = getVariant();
   
+  const [showWelcome, setShowWelcome] = useState(true);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [history, setHistory] = useState([0]);
   const [items, setItems] = useState([]);
@@ -76,8 +78,8 @@ export default function QuizV2() {
       // Lógica especial para "Adicionar mais um item"
       if (selectedOptionValue === 'adicionar_outro') {
         setItems([...items, updatedCurrentItem]);
-        setCurrentItem({}); // Limpa o item atual para o novo
-        nextStepId = 'passo_4_modelo'; // Volta para a escolha do modelo
+        setCurrentItem({});
+        nextStepId = 'passo_4_modelo';
       }
     }
 
@@ -97,10 +99,16 @@ export default function QuizV2() {
       const prevIndex = newHistory[newHistory.length - 1];
       setHistory(newHistory);
       setCurrentStepIndex(prevIndex);
-      // Nota: Manter os dados atuais ao voltar pode ser complexo, 
-      // mas para uma experiência simples, apenas voltamos o passo.
     }
   };
+
+  if (showWelcome) {
+    return (
+      <Layout>
+        <WelcomeScreen onStart={() => setShowWelcome(false)} />
+      </Layout>
+    );
+  }
 
   const progress = ((currentStepIndex + 1) / STEPS.length) * 100;
 

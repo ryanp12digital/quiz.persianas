@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import StepQuestion from '../components/StepQuestion';
+import WelcomeScreen from '../components/WelcomeScreen';
 import { Progress } from '../components/ui/progress';
 import { STEPS } from './steps';
 
 export default function QuizV1() {
   const navigate = useNavigate();
+  const [showWelcome, setShowWelcome] = useState(true);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [history, setHistory] = useState([0]);
   const [items, setItems] = useState([]);
@@ -73,9 +75,7 @@ export default function QuizV1() {
       if (selectedOptionValue === 'adicionar_outro') {
         setItems([...items, updatedCurrentItem]);
         setCurrentItem({});
-        // No V1, precisamos garantir que ele volte para o passo de modelo correto
-        // Se não houver passo_4_modelo, usamos o primeiro passo de escolha de produto
-        nextIndex = STEPS.findIndex(s => s.id.includes('modelo') || s.id.includes('produto'));
+        const nextIndex = STEPS.findIndex(s => s.id.includes('modelo') || s.id.includes('produto'));
         if (nextIndex !== -1) {
             setHistory([...history, nextIndex]);
             setCurrentStepIndex(nextIndex);
@@ -102,6 +102,14 @@ export default function QuizV1() {
       setCurrentStepIndex(prevIndex);
     }
   };
+
+  if (showWelcome) {
+    return (
+      <Layout>
+        <WelcomeScreen onStart={() => setShowWelcome(false)} />
+      </Layout>
+    );
+  }
 
   const progress = ((currentStepIndex + 1) / STEPS.length) * 100;
 
