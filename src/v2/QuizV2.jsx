@@ -130,9 +130,7 @@ export default function QuizV2() {
             <p className="text-gray-600 text-lg mb-8">
               Suas informações foram enviadas com sucesso. Nossa equipe entrará em contato em breve para dar continuidade ao seu orçamento.
             </p>
-            <button onClick={() => window.location.reload()} className="bg-[#4CAF50] text-white font-bold py-3 px-10 rounded-full shadow-lg hover:bg-green-600 transition-colors">
-              Voltar ao Início
-            </button>
+            {/* Botão removido conforme solicitação */}
           </div>
         </div>
       </Layout>
