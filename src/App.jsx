@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import QuizV1 from './v1/QuizV1';
 import QuizV2 from './v2/QuizV2';
+import ThankYouPage from './pages/ThankYouPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         {/* Rotas para as versões do quiz */}
         <Route path="/quiz/v1" element={<QuizV1 />} />
         <Route path="/quiz/v2" element={<QuizV2 />} />
+        <Route path="/quiz/obrigado" element={<ThankYouPage />} />
         
         {/* Fallback para qualquer outra rota */}
         <Route path="*" element={<Navigate to="/quiz/v1" replace />} />

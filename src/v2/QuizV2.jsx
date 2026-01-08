@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import StepQuestion from '../components/StepQuestion';
 import { Progress } from '../components/ui/progress';
@@ -6,6 +7,7 @@ import { STEPS } from './steps';
 import { AB_CONFIG, getVariant } from './ab_test';
 
 export default function QuizV2() {
+  const navigate = useNavigate();
   const variant = getVariant();
   
   const currentSteps = STEPS.map(step => {
@@ -106,8 +108,8 @@ export default function QuizV2() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalData),
       })
-      .then(() => setIsSubmitted(true))
-      .catch(() => setIsSubmitted(true));
+      .then(() => navigate('/quiz/obrigado'))
+      .catch(() => navigate('/quiz/obrigado'));
     }
   };
 

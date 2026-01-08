@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import StepQuestion from '../components/StepQuestion';
 import { Progress } from '../components/ui/progress';
 import { STEPS } from './steps';
 
 export default function QuizV1() {
+  const navigate = useNavigate();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [formData, setFormData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
@@ -95,8 +97,8 @@ export default function QuizV1() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalData),
       })
-      .then(() => setIsSubmitted(true))
-      .catch(() => setIsSubmitted(true));
+      .then(() => navigate('/quiz/obrigado'))
+      .catch(() => navigate('/quiz/obrigado'));
     }
   };
 
