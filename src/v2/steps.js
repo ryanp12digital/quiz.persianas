@@ -7,26 +7,8 @@ export const STEPS = [
         subtext: 'ex: Persiana Rolô blackout tamanho 1,50m x 1,50m',
         type: 'radio',
         options: [
-            { label: 'Quero ver as opções disponíveis', value: 'ver_opcoes', nextStep: 'passo_2_ambiente' },
+            { label: 'Quero ver as opções disponíveis', value: 'ver_opcoes', nextStep: 'passo_3_acionamento' },
             { label: 'Já sei o tipo de persiana/cortina e tenho as medidas e quero falar direto com um atendente', value: 'direto_atendente', nextStep: 'passo_8_captura' }
-        ]
-    },
-
-    // [FASE 2] AMBIENTE
-    {
-        id: 'passo_2_ambiente',
-        phase: 2,
-        question: 'Em qual ambiente você quer instalar essa persiana ou cortina?',
-        subtext: 'Informe primeiro sobre a primeira persiana que deseja orçar',
-        type: 'radio',
-        options: [
-            { label: 'Varanda / Sacada / Área externa Envidraçada', value: 'varanda', nextStep: 'passo_3_acionamento' },
-            { label: 'Quarto', value: 'quarto', nextStep: 'passo_3_acionamento' },
-            { label: 'Sala de Estar / Jantar', value: 'sala', nextStep: 'passo_3_acionamento' },
-            { label: 'Cozinha / Área Gourmet', value: 'cozinha', nextStep: 'passo_3_acionamento' },
-            { label: 'Banheiro / Lavabo', value: 'banheiro', nextStep: 'passo_3_acionamento' },
-            { label: 'Escritório / Home Office', value: 'escritorio', nextStep: 'passo_3_acionamento' },
-            { label: 'Outro', value: 'outro', nextStep: 'passo_3_acionamento' }
         ]
     },
 
@@ -50,15 +32,15 @@ export const STEPS = [
         question: 'Qual modelo você prefere?',
         type: 'radio',
         options: [
-            { label: 'Persiana Rolô', description: 'Prática e minimalista, o tecido enrola totalmente no topo quando aberta.', value: 'rolo', nextStep: 'passo_4_tecido_rolo' },
-            { label: 'Persiana Romana', description: 'Elegante, o tecido dobra-se em camadas horizontais conforme é suspensa.', value: 'romana', nextStep: 'passo_4_tecido_romana' },
-            { label: 'Persiana Double Vision', description: 'Faixas alternadas que permitem ver o exterior ou fechar totalmente a visão.', value: 'double_vision', nextStep: 'passo_4_tecido_double' },
-            { label: 'Persiana Vertical', description: 'Lâminas que giram e correm lateralmente, ideal para grandes vãos e escritórios.', value: 'vertical', nextStep: 'passo_4_tecido_vertical' },
-            { label: 'Horizontal de Madeira', description: 'Sofisticada e térmica, traz um visual nobre e rústico ao ambiente.', value: 'madeira', nextStep: 'passo_4_tecido_madeira' },
-            { label: 'Horizontal de Alumínio', description: 'Funcional e resistente à umidade, ótima para cozinhas e banheiros.', value: 'aluminio', nextStep: 'passo_4_tecido_aluminio' },
-            { label: 'Persiana de Teto', description: 'Feita sob medida para controlar o sol em claraboias e tetos de vidro.', value: 'teto', nextStep: 'passo_4_modelo_teto' },
-            { label: 'Persiana Painel', description: 'Painéis largos que correm lateralmente, ideal para portas de varanda.', value: 'painel', nextStep: 'passo_4_tecido_painel' },
-            { label: 'Cortina', description: 'Tecido tradicional em varão ou trilho, focada em aconchego e volume decorativo.', value: 'cortina', nextStep: 'passo_4_tecido_cortina' }
+            { label: 'Persiana Rolô', image: '/modelos/Persiana Rolô.webp', description: 'Prática e minimalista, o tecido enrola totalmente no topo quando aberta.', value: 'rolo', nextStep: 'passo_4_tecido_rolo' },
+            { label: 'Persiana Romana', image: '/modelos/Persiana Romana.webp', description: 'Elegante, o tecido dobra-se em camadas horizontais conforme é suspensa.', value: 'romana', nextStep: 'passo_4_tecido_romana' },
+            { label: 'Persiana Double Vision', image: '/modelos/Persiana Double Vision  Persiana Vertical.webp', description: 'Faixas alternadas que permitem ver o exterior ou fechar totalmente a visão.', value: 'double_vision', nextStep: 'passo_4_tecido_double' },
+            { label: 'Persiana Vertical', image: '/modelos/Persiana Vertical.webp', description: 'Lâminas que giram e correm lateralmente, ideal para grandes vãos e escritórios.', value: 'vertical', nextStep: 'passo_4_tecido_vertical' },
+            { label: 'Horizontal de Madeira', image: '/modelos/Horizontal de Madeira.webp', description: 'Sofisticada e térmica, traz um visual nobre e rústico ao ambiente.', value: 'madeira', nextStep: 'passo_4_tecido_madeira' },
+            { label: 'Horizontal de Alumínio', image: '/modelos/Horizontal de Alumínio.webp', description: 'Funcional e resistente à umidade, ótima para cozinhas e banheiros.', value: 'aluminio', nextStep: 'passo_4_tecido_aluminio' },
+            { label: 'Persiana de Teto', image: '/modelos/Persiana de Teto.webp', description: 'Feita sob medida para controlar o sol em claraboias e tetos de vidro.', value: 'teto', nextStep: 'passo_4_modelo_teto' },
+            { label: 'Persiana Painel', image: '/modelos/Persiana Painel.webp', description: 'Painéis largos que correm lateralmente, ideal para portas de varanda.', value: 'painel', nextStep: 'passo_4_tecido_painel' },
+            { label: 'Cortina', image: '/modelos/Cortina.webp', description: 'Tecido tradicional em varão ou trilho, focada em aconchego e volume decorativo.', value: 'cortina', nextStep: 'passo_4_tecido_cortina' }
         ]
     },
 
@@ -156,9 +138,7 @@ export const STEPS = [
             { label: 'Lâmina 50 mm (larga)', description: 'Visual moderno e robusto, com maior espaçamento entre as lâminas.', value: 'lamina_50', nextStep: 'passo_5_estagio' },
             { label: 'Perfurada (micro furos)', description: 'Lâminas com microperfurações que suavizam a entrada de luz e calor.', value: 'perfurada', nextStep: 'passo_5_estagio' },
             { label: 'Acabamento brilhante ou métalico', description: 'Efeito decorativo, com brilho e reflexão de luz.', value: 'brilhante', nextStep: 'passo_5_estagio' },
-            { label: 'Acabamento fosco ou acetinado', description: 'Visual discreto e sofisticado, reduz reflexos.', value: 'fosco', nextStep: 'passo_5_estagio' },
-            { label: 'Tonalidade amadeirada', description: 'Alumínio pintado imitando madeira, une resistência e estética natural.', value: 'amadeirada', nextStep: 'passo_5_estagio' },
-            { label: 'Com fita têxtil decorativa', description: 'Fitas largas de tecido que cobrem os furos das lâminas, aumentando a privacidade.', value: 'fita_decorativa', nextStep: 'passo_5_estagio' }
+            { label: 'Acabamento fosco ou acetinado', description: 'Visual discreto e sofisticado, reduz reflexos.', value: 'fosco', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -278,7 +258,7 @@ export const STEPS = [
         id: 'passo_6_medidas',
         phase: 6,
         question: 'Perfeito! Envie suas medidas abaixo',
-        subtext: 'Informe largura e altura de cada janela (cm). Não precisam ser exatas.',
+        subtext: '*Não se preocupe, essas informações são apenas para você receber um pré orçamento. Antes de enviar para produção, um técnico da nossa equipe vai até o local para tirar as medidas exatas e confirmar tudo com você, sem custo adicional.',
         type: 'mixed',
         inputs: [
             { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm' },

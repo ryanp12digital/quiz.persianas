@@ -7,26 +7,8 @@ export const STEPS = [
         subtext: 'ex: Persiana Rolô blackout tamanho 1,50m x 1,50m',
         type: 'radio',
         options: [
-            { label: 'Quero ver as opções disponíveis', value: 'ver_opcoes', nextStep: 'passo_2_ambiente' },
+            { label: 'Quero ver as opções disponíveis', value: 'ver_opcoes', nextStep: 'passo_3_acionamento' },
             { label: 'Já sei o tipo de persiana/cortina e tenho as medidas e quero falar direto com um atendente', value: 'direto_atendente', nextStep: 'passo_8_captura' }
-        ]
-    },
-
-    // [FASE 2] AMBIENTE
-    {
-        id: 'passo_2_ambiente',
-        phase: 2,
-        question: 'Em qual ambiente você quer instalar essa persiana ou cortina?',
-        subtext: 'Informe primeiro sobre a primeira persiana que deseja orçar',
-        type: 'radio',
-        options: [
-            { label: 'Varanda / Sacada / Área externa Envidraçada', value: 'varanda', nextStep: 'passo_3_acionamento' },
-            { label: 'Quarto', value: 'quarto', nextStep: 'passo_3_acionamento' },
-            { label: 'Sala de Estar / Jantar', value: 'sala', nextStep: 'passo_3_acionamento' },
-            { label: 'Cozinha / Área Gourmet', value: 'cozinha', nextStep: 'passo_3_acionamento' },
-            { label: 'Banheiro / Lavabo', value: 'banheiro', nextStep: 'passo_3_acionamento' },
-            { label: 'Escritório / Home Office', value: 'escritorio', nextStep: 'passo_3_acionamento' },
-            { label: 'Outro', value: 'outro', nextStep: 'passo_3_acionamento' }
         ]
     },
 
@@ -37,9 +19,28 @@ export const STEPS = [
         question: 'Você gostaria dessa persiana manual ou automática?',
         type: 'radio',
         options: [
-            { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_4_tecido' },
-            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_4_tecido' },
-            { label: 'Ainda não sei', value: 'nao_sei', nextStep: 'passo_4_tecido' }
+            { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_4_modelo' },
+            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_4_modelo' },
+            { label: 'Ainda não sei', value: 'nao_sei', nextStep: 'passo_4_modelo' }
+        ]
+    },
+
+    // [FASE 4] MODELO (Adicionado para V1 para suportar imagens e fluxo unificado)
+    {
+        id: 'passo_4_modelo',
+        phase: 4,
+        question: 'Qual modelo você prefere?',
+        type: 'radio',
+        options: [
+            { label: 'Persiana Rolô', image: '/modelos/Persiana Rolô.webp', value: 'rolo', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Romana', image: '/modelos/Persiana Romana.webp', value: 'romana', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Double Vision', image: '/modelos/Persiana Double Vision  Persiana Vertical.webp', value: 'double_vision', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Vertical', image: '/modelos/Persiana Vertical.webp', value: 'vertical', nextStep: 'passo_4_tecido' },
+            { label: 'Horizontal de Madeira', image: '/modelos/Horizontal de Madeira.webp', value: 'madeira', nextStep: 'passo_4_tecido' },
+            { label: 'Horizontal de Alumínio', image: '/modelos/Horizontal de Alumínio.webp', value: 'aluminio', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana de Teto', image: '/modelos/Persiana de Teto.webp', value: 'teto', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Painel', image: '/modelos/Persiana Painel.webp', value: 'painel', nextStep: 'passo_4_tecido' },
+            { label: 'Cortina', image: '/modelos/Cortina.webp', value: 'cortina', nextStep: 'passo_4_tecido' }
         ]
     },
 
@@ -79,7 +80,7 @@ export const STEPS = [
         id: 'passo_6_medidas',
         phase: 6,
         question: 'Perfeito! Envie suas medidas abaixo',
-        subtext: 'Informe largura e altura de cada janela (cm). Não precisam ser exatas.',
+        subtext: '*Não se preocupe, essas informações são apenas para você receber um pré orçamento. Antes de enviar para produção, um técnico da nossa equipe vai até o local para tirar as medidas exatas e confirmar tudo com você, sem custo adicional.',
         type: 'mixed',
         inputs: [
             { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm' },
