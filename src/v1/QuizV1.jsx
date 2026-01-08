@@ -97,7 +97,16 @@ export default function QuizV1() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(finalData),
       })
-      .then(() => navigate('/quiz/obrigado'))
+      .then(() => {
+        // Disparar evento do Meta Pixel se disponível
+        if (window.fbq) {
+          window.fbq('track', 'Lead', {
+            content_name: 'Quiz Persianas V1',
+            content_category: 'Lead Generation'
+          });
+        }
+        navigate('/quiz/obrigado');
+      })
       .catch(() => navigate('/quiz/obrigado'));
     }
   };
