@@ -32,6 +32,16 @@ export default function QuizV2() {
     const updatedCurrentItem = { ...currentItem, ...stepData };
     setCurrentItem(updatedCurrentItem);
 
+    // Rastreamento de etapa para o Dashboard/GTM
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'quiz_step_complete',
+        quiz_version: 'v2',
+        step_id: activeStep.id,
+        step_question: activeStep.question
+      });
+    }
+
     if (activeStep.isFinal) {
       const finalData = {
         ...leadData,
