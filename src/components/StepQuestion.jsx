@@ -103,21 +103,34 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
 
             <h2 className="step-title">{question}</h2>
             {subtext && (
-                <p className={`step-subtext ${subtext.startsWith('*') ? 'text-amber-600 font-medium italic text-sm bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left' : ''}`}>
-                    {subtext}
-                </p>
+                <div className={`step-subtext ${subtext.startsWith('*') ? 'text-amber-600 font-medium italic text-sm bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left' : type === 'textarea' ? 'text-left mb-4' : ''}`}>
+                    {type === 'textarea' && subtext.includes('Ex:') ? (
+                        <div className="text-gray-600 text-sm flex flex-col justify-start items-center">
+                            <span className="font-medium">Ex:</span>
+                            {subtext.split('\n').filter(line => line.trim()).map((line, idx) => (
+                                <div key={idx} className="mt-1">{line.replace('Ex:', '').trim()}</div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-center">{subtext}</p>
+                    )}
+                </div>
             )}
 
             {inputs.length > 0 && (
-                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="w-full max-w-md mx-auto mb-8">
-                    <div className="flex flex-wrap gap-4">
+                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full mx-auto mb-8 ${type === 'textarea' ? 'max-w-3xl' : 'max-w-md'}`}>
+                    <div className={`flex flex-wrap gap-4 ${type === 'textarea' ? 'flex-col' : ''}`}>
                         {inputs.map((input) => {
                             const isMeasurement = input.id === 'largura' || input.id === 'altura';
+                            const isTextarea = input.type === 'textarea';
+                            
                             return (
                                 <div key={input.id} className={`text-left ${isMeasurement ? 'flex-1 min-w-[140px]' : 'w-full'}`}>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                        {input.label} <span className="text-red-500">*</span>
-                                    </label>
+                                    {input.label && (
+                                        <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
+                                            {input.label} <span className="text-red-500">*</span>
+                                        </label>
+                                    )}
                                     <div className="relative flex items-center">
                                         {input.type === 'select' ? (
                                             <select
@@ -149,6 +162,14 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                                     ))}
                                                 </select>
                                             </div>
+                                        ) : isTextarea ? (
+                                            <textarea
+                                                placeholder={input.placeholder}
+                                                rows={8}
+                                                className={`w-full p-4 border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-[0.9rem] resize-none ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                                value={inputValues[input.id] || ''}
+                                                onChange={(e) => handleInputChange(e, input.id)}
+                                            />
                                         ) : (
                                             <>
                                                 <input
@@ -174,6 +195,41 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             );
                         })}
                     </div>
+                    
+                    {/* Guias minimalistas para textarea */}
+                    {type === 'textarea' && (
+                        <div className="mt-6 pt-6 border-t border-gray-200">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                                <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                    <h3 className="font-semibold text-gray-800 mb-3 text-sm">Modelos disponíveis:</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Rolo</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Double Vision</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Romana</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Horizontal de Madeira</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Horizontal de Alumínio</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Vertical</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Teto</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Painel</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Cortina</span>
+                                    </div>
+                                </div>
+                                <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                    <h3 className="font-semibold text-gray-800 mb-3 text-sm">Tipos:</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Blackout: Bloqueio 100%</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Semi Blackout</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Translúcido</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Tela Solar 1%</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Tela Solar 3%</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Tela Solar 5%</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Decorativo</span>
+                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Outros</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </form>
             )}
 

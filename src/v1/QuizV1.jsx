@@ -38,6 +38,21 @@ export default function QuizV1() {
       });
     }
 
+    // Lógica especial para salvar item descrito em texto livre
+    if (activeStep.id === 'passo_7_adicionar_item') {
+      const descricaoItem = stepData.descricao_item || '';
+      if (descricaoItem.trim()) {
+        setItems([...items, { descricao_livre: descricaoItem.trim() }]);
+        setCurrentItem({});
+        const nextIndex = STEPS.findIndex(s => s.id === 'passo_7_mais_itens');
+        if (nextIndex !== -1) {
+          setHistory([...history, nextIndex]);
+          setCurrentStepIndex(nextIndex);
+          return;
+        }
+      }
+    }
+
     if (activeStep.isFinal) {
       const finalData = {
         ...leadData,
@@ -85,7 +100,7 @@ export default function QuizV1() {
       if (selectedOptionValue === 'adicionar_outro') {
         setItems([...items, updatedCurrentItem]);
         setCurrentItem({});
-        const nextIndex = STEPS.findIndex(s => s.id.includes('modelo') || s.id.includes('produto'));
+        const nextIndex = STEPS.findIndex(s => s.id === 'passo_7_adicionar_item');
         if (nextIndex !== -1) {
             setHistory([...history, nextIndex]);
             setCurrentStepIndex(nextIndex);

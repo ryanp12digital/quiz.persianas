@@ -268,6 +268,24 @@ export const STEPS = [
         nextStep: 'passo_7_mais_itens'
     },
 
+    // [FASE 7] ADICIONAR NOVO ITEM (TEXTO LIVRE)
+    {
+        id: 'passo_7_adicionar_item',
+        phase: 7,
+        question: 'Informe sobre as próximas persianas e cortinas que deseja',
+        subtext: 'Ex: Persiana rolô Blackout 1,50 larg x 3,00 Alt\nEx: Persiana Double Vision Translúcida 1,30 x 2,50',
+        type: 'textarea',
+        inputs: [
+            { 
+                id: 'descricao_item', 
+                label: '', 
+                placeholder: 'Descreva o que você deseja...',
+                type: 'textarea'
+            }
+        ],
+        nextStep: 'passo_7_mais_itens'
+    },
+
     // [FASE 7] MAIS ITENS
     {
         id: 'passo_7_mais_itens',
@@ -277,7 +295,7 @@ export const STEPS = [
         type: 'mixed',
         inputs: [],
         options: [
-            { label: 'Informar sobre outra persiana (Adicionar novo item)', value: 'adicionar_outro', action: 'loop' },
+            { label: 'Informar sobre outra persiana (Adicionar novo item)', value: 'adicionar_outro', nextStep: 'passo_7_adicionar_item' },
             { label: 'Seguir somente com este orçamento', value: 'finalizar', nextStep: 'passo_8_captura' }
         ]
     },
