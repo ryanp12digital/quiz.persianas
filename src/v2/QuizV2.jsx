@@ -16,6 +16,10 @@ export default function QuizV2() {
   const [history, setHistory] = useState([0]);
   const [items, setItems] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
+  const [formId, setFormId] = useState('quizv2'); // FormId padrão
+  const [hasAddedExtraItem, setHasAddedExtraItem] = useState(false); // Controla se já adicionou item extra (FORMR30)
+  const [hasSeenMaisItens, setHasSeenMaisItens] = useState(false); // Controla se já viu a etapa passo_7_mais_itens
+  const [disableBackAfterAddItem, setDisableBackAfterAddItem] = useState(false); // Desabilita voltar após escolher adicionar item
   const [leadData, setLeadData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -42,17 +46,75 @@ export default function QuizV2() {
       });
     }
 
+    // Lógica para determinar o formId baseado nas escolhas do usuário
+    if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
+      const selectedOptionValue = Object.values(stepData)[0];
+      
+      // FORMR10: "Já sabe o que quer e quer falar direto com atendente"
+      // Quando escolhe "direto_atendente" na etapa inicial (passo_1_intencao)
+      if (activeStep.id === 'passo_1_intencao' && selectedOptionValue === 'direto_atendente') {
+        setFormId('FORMR10');
+      }
+      
+      // FORMR5: "Escolheu o que quer sem medidas"
+      // Quando escolhe "catalogo" na etapa "Em que fase você está agora?" (passo_5_estagio)
+      if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'catalogo') {
+        setFormId('FORMR5');
+      }
+      
+      // FORMR20: "Escolheu uma Persiana Com Medidas"
+      // Quando escolhe "orcamento" na etapa "Em que fase você está agora?" (passo_5_estagio)
+      if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'orcamento') {
+        setFormId('FORMR20');
+      }
+      
+      // FORMR30: "Escolhe mais de 1 Persiana com Medidas"
+      // Quando escolhe "adicionar_outro" na etapa passo_7_mais_itens (e ainda não adicionou item extra)
+      if (activeStep.id === 'passo_7_mais_itens' && selectedOptionValue === 'adicionar_outro' && !hasAddedExtraItem) {
+        setFormId('FORMR30');
+        setHasAddedExtraItem(true);
+        setDisableBackAfterAddItem(true); // Desabilita voltar após escolher adicionar item
+      }
+    }
+
+    // Marca que já viu a etapa passo_7_mais_itens quando chega nela pela primeira vez
+    if (activeStep.id === 'passo_7_mais_itens' && !hasSeenMaisItens) {
+      setHasSeenMaisItens(true);
+    }
+
     // Lógica especial para salvar item descrito em texto livre
     if (activeStep.id === 'passo_7_adicionar_item') {
       const descricaoItem = stepData.descricao_item || '';
       if (descricaoItem.trim()) {
         setItems([...items, { descricao_livre: descricaoItem.trim() }]);
         setCurrentItem({});
-        const nextIndex = STEPS.findIndex(s => s.id === 'passo_7_mais_itens');
-        if (nextIndex !== -1) {
-          setHistory([...history, nextIndex]);
-          setCurrentStepIndex(nextIndex);
-          return;
+        
+        // Se já adicionou item extra (FORMR30), vai direto para o formulário final
+        // Não volta para passo_7_mais_itens
+        if (hasAddedExtraItem) {
+          const finalIndex = STEPS.findIndex(s => s.id === 'passo_8_captura');
+          if (finalIndex !== -1) {
+            // Remove passo_7_adicionar_item do histórico e vai direto para o formulário final
+            const newHistory = history.filter((_, idx) => {
+              const stepIdx = history[idx];
+              return STEPS[stepIdx]?.id !== 'passo_7_adicionar_item';
+            });
+            setHistory([...newHistory, finalIndex]);
+            setCurrentStepIndex(finalIndex);
+            return;
+          }
+        } else {
+          // Se ainda não adicionou item extra, vai para passo_7_mais_itens normalmente
+          const nextIndex = STEPS.findIndex(s => s.id === 'passo_7_mais_itens');
+          if (nextIndex !== -1) {
+            const newHistory = history.filter((_, idx) => {
+              const stepIdx = history[idx];
+              return STEPS[stepIdx]?.id !== 'passo_7_adicionar_item';
+            });
+            setHistory([...newHistory, nextIndex]);
+            setCurrentStepIndex(nextIndex);
+            return;
+          }
         }
       }
     }
@@ -81,7 +143,7 @@ export default function QuizV2() {
         if (window.dataLayer) {
           window.dataLayer.push({
             event: 'form_submission',
-            form_id: 'quizv2',
+            form_id: formId,
             version: 'v2'
           });
         }
@@ -102,6 +164,8 @@ export default function QuizV2() {
       
       // Lógica especial para "Adicionar mais um item"
       if (selectedOptionValue === 'adicionar_outro') {
+        // Só permite adicionar item extra uma vez (para FORMR30)
+        // A verificação de hasAddedExtraItem já foi feita acima na linha 71
         setItems([...items, updatedCurrentItem]);
         setCurrentItem({});
         nextStepId = 'passo_7_adicionar_item';
@@ -142,6 +206,15 @@ export default function QuizV2() {
     Object.assign(modifiedStep, AB_CONFIG.variants.B.modifications[activeStep.id]);
   }
 
+  // Remove a opção "adicionar_outro" se o usuário já adicionou um item extra (FORMR30)
+  // ou se já viu essa etapa antes (para que apareça apenas uma vez)
+  if (activeStep.id === 'passo_7_mais_itens' && (hasAddedExtraItem || hasSeenMaisItens) && modifiedStep.options) {
+    modifiedStep.options = modifiedStep.options.filter(opt => opt.value !== 'adicionar_outro');
+  }
+
+  // Determina se pode voltar: não pode voltar se escolheu adicionar item ou está em passo_7_adicionar_item
+  const canGoBackStep = history.length > 1 && !disableBackAfterAddItem && activeStep.id !== 'passo_7_adicionar_item';
+
   return (
     <Layout>
       <div className="max-w-4xl mx-auto px-4 pt-8 pb-16">
@@ -163,8 +236,8 @@ export default function QuizV2() {
           onOptionSelect={(opt) => handleNext({ [activeStep.id]: opt.value })}
           onNext={handleNext}
           onBack={handleBack}
-          canGoBack={history.length > 1}
-          formId="quizv2"
+          canGoBack={canGoBackStep}
+          formId={formId}
         />
       </div>
     </Layout>

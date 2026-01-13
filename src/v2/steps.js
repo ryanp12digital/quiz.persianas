@@ -249,7 +249,7 @@ export const STEPS = [
         type: 'radio',
         options: [
             { label: 'Já tenho as medidas e quero um pré-orçamento', value: 'orcamento', nextStep: 'passo_6_medidas' },
-            { label: 'Estou apenas pesquisando ideias e quero receber um catálogo', value: 'catalogo', nextStep: 'passo_8_captura_catalogo' }
+            { label: 'Não tenho medidas e quero um pré-orçamento', value: 'catalogo', nextStep: 'passo_8_captura_catalogo' }
         ]
     },
 
@@ -336,12 +336,13 @@ export const STEPS = [
     {
         id: 'passo_8_captura_catalogo',
         phase: 8,
-        question: 'Receber Catálogo',
-        subtext: 'Preencha seus dados para receber o catálogo com todas as opções.',
+        question: 'Perfeito! Para te enviar este pré orçamento',
+        subtext: 'Preencha seus dados para receber as sugestões.',
         type: 'mixed',
         inputs: [
             { id: 'nome', label: 'Nome', placeholder: 'Seu nome' },
             { id: 'whatsapp', label: 'DDD+Whatsapp', placeholder: '(11) 99999-9999', mask: 'phone' },
+            { id: 'email', label: 'E-mail', placeholder: 'seu@email.com' },
             {
                 id: 'ambientes',
                 label: 'Qual(is) ambiente(s) deseja?',
