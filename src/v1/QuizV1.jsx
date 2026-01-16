@@ -60,7 +60,7 @@ export default function QuizV1() {
         items: items.length > 0 ? items : [updatedCurrentItem]
       };
       
-      const WEBHOOK_URL = 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/Quiz';
+      const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/6d894ce8-9a34-4326-b3af-d1e1a3ee5211';
       
       fetch(WEBHOOK_URL, {
         method: 'POST',
