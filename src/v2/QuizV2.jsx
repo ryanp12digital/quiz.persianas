@@ -126,7 +126,7 @@ export default function QuizV2() {
         items: items.length > 0 ? items : [updatedCurrentItem]
       };
       
-      const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/6d894ce8-9a34-4326-b3af-d1e1a3ee5211';
+      const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
       
       fetch(WEBHOOK_URL, {
         method: 'POST',
