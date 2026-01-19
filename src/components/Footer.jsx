@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="w-full border-t border-gray-200 dark:border-gray-800 mt-auto py-4 sm:py-8 px-2 sm:px-4">
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 sm:gap-6">
         {/* Logo e Copyright - Esquerda */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           <img 
             src={logo} 
             alt="Persianas Paulista" 
@@ -22,7 +22,7 @@ export default function Footer() {
         </div>
 
         {/* Endereço - Direita */}
-        <div className="flex items-start gap-2 sm:gap-3 text-center sm:text-right w-full sm:w-auto justify-center sm:justify-end">
+        <div className="flex items-center gap-2 sm:gap-3 text-center sm:text-right w-full sm:w-auto justify-center" style={{ verticalAlign: 'middle' }}>
           <svg 
             className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400 mt-0.5 shrink-0" 
             fill="none" 
@@ -44,7 +44,7 @@ export default function Footer() {
             />
           </svg>
           <div className="flex flex-col gap-1 sm:gap-2">
-            <p className="text-xs sm:text-sm text-gray-900 dark:text-gray-700 font-medium">
+            <p className="text-xs text-gray-900 dark:text-gray-700 font-medium">
               Rua Tabor 250 - Ipiranga São Paulo - SP
             </p>
             
