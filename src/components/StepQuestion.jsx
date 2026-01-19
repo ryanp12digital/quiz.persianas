@@ -92,9 +92,9 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             {canGoBack && (
                 <button 
                     onClick={onBack}
-                    className="absolute -top-12 left-0 flex items-center text-gray-400 hover:text-[#4CAF50] transition-colors group"
+                    className="absolute -top-8 sm:-top-12 left-0 flex items-center text-gray-400 hover:text-[#4CAF50] transition-colors group text-sm sm:text-base"
                 >
-                    <svg className="w-5 h-5 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                     </svg>
                     Voltar
@@ -134,7 +134,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                     <div className="relative flex items-center">
                                         {input.type === 'select' ? (
                                             <select
-                                                className={`w-full p-4 border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-[0.9rem] bg-white ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                                className={`w-full p-3 sm:p-4 border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] bg-white ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
                                                 value={inputValues[input.id] || ''}
                                                 onChange={(e) => handleInputChange(e, input.id)}
                                             >
@@ -166,7 +166,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                             <textarea
                                                 placeholder={input.placeholder}
                                                 rows={8}
-                                                className={`w-full p-4 border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-[0.9rem] resize-none ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                                className={`w-full p-3 sm:p-4 border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] resize-none ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
                                                 value={inputValues[input.id] || ''}
                                                 onChange={(e) => handleInputChange(e, input.id)}
                                             />
@@ -175,13 +175,13 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                                 <input
                                                     type={input.type || 'text'}
                                                     placeholder={input.placeholder}
-                                                    className={`w-full p-4 ${input.suffix ? 'pr-12' : ''} border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-[0.9rem] ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                                    className={`w-full p-3 sm:p-4 ${input.suffix ? 'pr-10 sm:pr-12' : ''} border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
                                                     value={inputValues[input.id] || ''}
                                                     onChange={(e) => handleInputChange(e, input.id, input.mask)}
                                                     maxLength={input.mask === 'phone' ? 15 : undefined}
                                                 />
                                                 {input.suffix && (
-                                                    <span className="absolute right-4 text-gray-400 font-medium pointer-events-none">
+                                                    <span className="absolute right-3 sm:right-4 text-gray-400 font-medium pointer-events-none text-sm sm:text-base">
                                                         {input.suffix}
                                                     </span>
                                                 )}
@@ -233,15 +233,15 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                 </form>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl mx-auto">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-2xl mx-auto">
                 {options.map((option, index) => (
                     <button
                         key={index}
                         onClick={() => onOptionSelect(option)}
-                        className="group relative bg-white border border-gray-200 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 hover:border-[#4CAF50] active:scale-95 text-[0.9rem] font-medium text-gray-800"
+                        className="group relative bg-white border border-gray-200 rounded-2xl p-3 sm:p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 hover:border-[#4CAF50] active:scale-95 text-xs sm:text-[0.9rem] font-medium text-gray-800"
                     >
                         {option.image && (
-                            <div className="w-full h-40 mb-4 overflow-hidden rounded-xl bg-gray-50">
+                            <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-gray-50">
                                 <img 
                                     src={option.image} 
                                     alt={option.label} 
@@ -252,7 +252,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                         )}
                         <span className="font-bold mb-1">{option.label}</span>
                         {option.description && (
-                            <span className="text-xs text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>
+                            <span className="text-[10px] sm:text-xs text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>
                                 {option.description}
                             </span>
                         )}
@@ -261,8 +261,8 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             </div>
 
             {(inputs.length > 0 || type === 'mixed') && (
-                <div className="mt-8">
-                    <button onClick={handleNext} className="bg-[#4CAF50] text-white font-bold py-3 px-10 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:-translate-y-1">
+                <div className="mt-6 sm:mt-8">
+                    <button onClick={handleNext} className="bg-[#4CAF50] text-white font-bold py-2.5 px-8 sm:py-3 sm:px-10 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:-translate-y-1 text-sm sm:text-base">
                         Continuar
                     </button>
                 </div>

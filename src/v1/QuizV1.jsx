@@ -150,10 +150,10 @@ export default function QuizV1() {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto px-4 pt-8 pb-16">
-        <div className="mb-12">
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16">
+        <div className="mb-6 sm:mb-12">
           <Progress value={progress} className="h-2 bg-gray-100" />
-          <div className="flex justify-between mt-2 text-xs font-medium text-gray-400 uppercase tracking-wider">
+          <div className="flex justify-between mt-2 text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wider">
             <span>Início</span>
             <span>Progresso: {Math.round(progress)}%</span>
             <span>Final</span>

@@ -110,20 +110,28 @@ button {
   color: hsl(var(--hu-foreground));
   font-weight: 700;
   margin-bottom: 8px;
-  font-size: 0.9rem;
-  width: 450px;
+  font-size: 0.85rem;
+  width: 100%;
+  max-width: 450px;
+}
+
+@media (min-width: 640px) {
+  .step-title {
+    font-size: 1.2rem;
+  }
 }
 
 .step-subtext {
   color: hsl(var(--hu-muted-foreground));
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   font-style: italic;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 
-@media (min-width: 768px) {
-  .step-title {
-    font-size: 1.2rem;
+@media (min-width: 640px) {
+  .step-subtext {
+    margin-bottom: 32px;
+    font-size: 0.7rem;
   }
 }
 
