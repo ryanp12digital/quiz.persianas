@@ -161,6 +161,17 @@ export default function QuizV2() {
       if (selectedOption?.nextStep) {
         nextStepId = selectedOption.nextStep;
       }
+
+      // Lógica especial: se escolheu "Não sei" em modelo E em tecido, redirecionar para catálogo
+      // Verifica se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
+      if (activeStep.id.startsWith('passo_4_tecido') && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
+        const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
+        if (nextIndex !== -1) {
+          setHistory([...history, nextIndex]);
+          setCurrentStepIndex(nextIndex);
+          return;
+        }
+      }
       
       // Lógica especial para "Adicionar mais um item"
       if (selectedOptionValue === 'adicionar_outro') {
@@ -212,8 +223,8 @@ export default function QuizV2() {
     modifiedStep.options = modifiedStep.options.filter(opt => opt.value !== 'adicionar_outro');
   }
 
-  // Determina se pode voltar: não pode voltar se escolheu adicionar item ou está em passo_7_adicionar_item
-  const canGoBackStep = history.length > 1 && !disableBackAfterAddItem && activeStep.id !== 'passo_7_adicionar_item';
+  // Determina se pode voltar: pode voltar sempre que há histórico
+  const canGoBackStep = history.length > 1;
 
   return (
     <Layout>

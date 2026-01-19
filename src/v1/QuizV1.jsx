@@ -96,6 +96,16 @@ export default function QuizV1() {
         nextStepId = selectedOption.nextStep;
       }
 
+      // Lógica especial: se escolheu "Não sei" em modelo E em tecido, redirecionar para catálogo
+      if (activeStep.id === 'passo_4_tecido' && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
+        const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
+        if (nextIndex !== -1) {
+          setHistory([...history, nextIndex]);
+          setCurrentStepIndex(nextIndex);
+          return;
+        }
+      }
+
       // Lógica especial para "Adicionar mais um item"
       if (selectedOptionValue === 'adicionar_outro') {
         setItems([...items, updatedCurrentItem]);

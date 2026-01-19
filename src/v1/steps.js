@@ -40,7 +40,8 @@ export const STEPS = [
             { label: 'Horizontal de Alumínio', image: '/modelos/Horizontal de Alumínio.webp', value: 'aluminio', nextStep: 'passo_4_tecido' },
             { label: 'Persiana de Teto', image: '/modelos/Persiana de Teto.webp', value: 'teto', nextStep: 'passo_4_tecido' },
             { label: 'Persiana Painel', image: '/modelos/Persiana Painel.webp', value: 'painel', nextStep: 'passo_4_tecido' },
-            { label: 'Cortina', image: '/modelos/Cortina.webp', value: 'cortina', nextStep: 'passo_4_tecido' }
+            { label: 'Cortina', image: '/modelos/Cortina.webp', value: 'cortina', nextStep: 'passo_4_tecido' },
+            { label: 'Não sei — Quero recomendação', value: 'nao_sei', nextStep: 'passo_4_tecido' }
         ]
     },
 
