@@ -97,8 +97,8 @@ export default function QuizV1() {
       }
 
       // Lógica especial: pular passo_3_acionamento se modelo = vertical ou painel
-      // Verifica quando está no passo_4_tecido e o modelo escolhido anteriormente foi vertical ou painel
-      if (activeStep.id === 'passo_4_tecido') {
+      // Verifica quando está em um passo de tecido e o modelo escolhido anteriormente foi vertical ou painel
+      if (activeStep.id.startsWith('passo_4_tecido') || activeStep.id === 'passo_4_acabamento_cortina') {
         // Buscar o modelo escolhido no currentItem (pode estar em passo_4_modelo)
         const modeloEscolhido = updatedCurrentItem.passo_4_modelo || currentItem.passo_4_modelo;
         if (modeloEscolhido === 'vertical' || modeloEscolhido === 'painel') {
@@ -108,7 +108,8 @@ export default function QuizV1() {
       }
 
       // Lógica especial: se escolheu "Não sei" em modelo E em tecido, redirecionar para catálogo
-      if (activeStep.id === 'passo_4_tecido' && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
+      // Verifica se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
+      if (activeStep.id.startsWith('passo_4_tecido') && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
         if (nextIndex !== -1) {
           setHistory([...history, nextIndex]);
