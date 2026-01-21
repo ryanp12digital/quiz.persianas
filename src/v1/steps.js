@@ -7,7 +7,7 @@ export const STEPS = [
         subtext: 'ex: Persiana Rolô blackout tamanho 1,50m x 1,50m',
         type: 'radio',
         options: [
-            { label: 'Quero ver as opções disponíveis', value: 'ver_opcoes', nextStep: 'passo_3_acionamento' },
+            { label: 'Quero ver as opções disponíveis', value: 'ver_opcoes', nextStep: 'passo_4_modelo' },
             { label: 'Já sei o tipo de persiana/cortina e tenho as medidas e quero falar direto com um atendente', value: 'direto_atendente', nextStep: 'passo_8_captura' }
         ]
     },
@@ -19,9 +19,9 @@ export const STEPS = [
         question: 'Você gostaria dessa persiana manual ou automática?',
         type: 'radio',
         options: [
-            { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_4_modelo' },
-            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_4_modelo' },
-            { label: 'Ainda não sei', value: 'nao_sei', nextStep: 'passo_4_modelo' }
+            { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_5_estagio' },
+            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_5_estagio' },
+            { label: 'Ainda não sei', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -29,18 +29,18 @@ export const STEPS = [
     {
         id: 'passo_4_modelo',
         phase: 4,
-        question: 'Qual modelo você prefere?',
+        question: 'Perfeito, então vamos começar pela <b>Primeira Peça.</b> Qual modelo você prefere?',
         type: 'radio',
         options: [
-            { label: 'Persiana Rolô', image: '/modelos/Persiana Rolô.webp', value: 'rolo', nextStep: 'passo_4_tecido' },
-            { label: 'Persiana Romana', image: '/modelos/Persiana Romana.webp', value: 'romana', nextStep: 'passo_4_tecido' },
-            { label: 'Persiana Double Vision', image: '/modelos/Persiana Double Vision  Persiana Vertical.webp', value: 'double_vision', nextStep: 'passo_4_tecido' },
-            { label: 'Persiana Vertical', image: '/modelos/Persiana Vertical.webp', value: 'vertical', nextStep: 'passo_4_tecido' },
-            { label: 'Horizontal de Madeira', image: '/modelos/Horizontal de Madeira.webp', value: 'madeira', nextStep: 'passo_4_tecido' },
-            { label: 'Horizontal de Alumínio', image: '/modelos/Horizontal de Alumínio.webp', value: 'aluminio', nextStep: 'passo_4_tecido' },
-            { label: 'Persiana de Teto', image: '/modelos/Persiana de Teto.webp', value: 'teto', nextStep: 'passo_4_tecido' },
-            { label: 'Persiana Painel', image: '/modelos/Persiana Painel.webp', value: 'painel', nextStep: 'passo_4_tecido' },
-            { label: 'Cortina', image: '/modelos/Cortina.webp', value: 'cortina', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Rolô', image: '/modelos/Persiana Rolô.webp', description: 'Prática e minimalista, o tecido enrola totalmente no topo quando aberta.', value: 'rolo', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Romana', image: '/modelos/Persiana Romana.webp', description: 'Elegante, o tecido dobra-se em camadas horizontais conforme é suspensa.', value: 'romana', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Double Vision', image: '/modelos/Persiana Double Vision  Persiana Vertical.webp', description: 'Faixas alternadas que permitem ver o exterior ou fechar totalmente a visão.', value: 'double_vision', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Vertical', image: '/modelos/Persiana Vertical.webp', description: 'Lâminas que giram e correm lateralmente, ideal para grandes vãos e escritórios.', value: 'vertical', nextStep: 'passo_4_tecido' },
+            { label: 'Horizontal de Madeira', image: '/modelos/Horizontal de Madeira.webp', description: 'Sofisticada e térmica, traz um visual nobre e rústico ao ambiente.', value: 'madeira', nextStep: 'passo_4_tecido' },
+            { label: 'Horizontal de Alumínio', image: '/modelos/Horizontal de Alumínio.webp', description: 'Funcional e resistente à umidade, ótima para cozinhas e banheiros.', value: 'aluminio', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana de Teto', image: '/modelos/Persiana de Teto.webp', description: 'Feita sob medida para controlar o sol em claraboias e tetos de vidro.', value: 'teto', nextStep: 'passo_4_tecido' },
+            { label: 'Persiana Painel', image: '/modelos/Persiana Painel.webp', description: 'Painéis largos que correm lateralmente, ideal para portas de varanda.', value: 'painel', nextStep: 'passo_4_tecido' },
+            { label: 'Cortina', image: '/modelos/Cortina.webp', description: 'Tecido tradicional em varão ou trilho, focada em aconchego e volume decorativo.', value: 'cortina', nextStep: 'passo_4_tecido' },
             { label: 'Não sei — Quero recomendação', value: 'nao_sei', nextStep: 'passo_4_tecido' }
         ]
     },
@@ -52,15 +52,15 @@ export const STEPS = [
         question: 'Tipo de Tecido',
         type: 'radio',
         options: [
-            { label: 'Blackout — Bloqueia 100% da luz.', value: 'blackout', nextStep: 'passo_5_estagio' },
-            { label: 'Semi Blackout — Reduz significativamente a luz.', value: 'semi_blackout', nextStep: 'passo_5_estagio' },
-            { label: 'Translúcido — Filtra a luz suavemente.', value: 'translucido', nextStep: 'passo_5_estagio' },
-            { label: 'Tela Solar 1% — Privacidade máxima.', value: 'tela_solar_1', nextStep: 'passo_5_estagio' },
-            { label: 'Tela Solar 3% — Equilíbrio visibilidade/proteção.', value: 'tela_solar_3', nextStep: 'passo_5_estagio' },
-            { label: 'Tela Solar 5% — Visão externa e luz.', value: 'tela_solar_5', nextStep: 'passo_5_estagio' },
-            { label: 'Decorativo — Foco estético.', value: 'decorativo', nextStep: 'passo_5_estagio' },
-            { label: 'Outros — Antichama, etc.', value: 'outros', nextStep: 'passo_5_estagio' },
-            { label: 'Ainda não sei — Quero recomendação.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
+            { label: 'Blackout — Bloqueia 100% da luz.', value: 'blackout', nextStep: 'passo_3_acionamento' },
+            { label: 'Semi Blackout — Reduz significativamente a luz.', value: 'semi_blackout', nextStep: 'passo_3_acionamento' },
+            { label: 'Translúcido — Filtra a luz suavemente.', value: 'translucido', nextStep: 'passo_3_acionamento' },
+            { label: 'Tela Solar 1% — Privacidade máxima.', value: 'tela_solar_1', nextStep: 'passo_3_acionamento' },
+            { label: 'Tela Solar 3% — Equilíbrio visibilidade/proteção.', value: 'tela_solar_3', nextStep: 'passo_3_acionamento' },
+            { label: 'Tela Solar 5% — Visão externa e luz.', value: 'tela_solar_5', nextStep: 'passo_3_acionamento' },
+            { label: 'Decorativo — Foco estético.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
+            { label: 'Outros — Antichama, etc.', value: 'outros', nextStep: 'passo_3_acionamento' },
+            { label: 'Ainda não sei — Quero recomendação.', value: 'nao_sei', nextStep: 'passo_3_acionamento' }
         ]
     },
 
@@ -80,13 +80,13 @@ export const STEPS = [
     {
         id: 'passo_6_medidas',
         phase: 6,
-        question: 'Perfeito! Envie suas medidas abaixo',
+        question: 'Perfeito! Envie as medidas necessárias',
         subtext: '*Não se preocupe, essas informações são apenas para você receber um pré orçamento. Antes de enviar para produção, um técnico da nossa equipe vai até o local para tirar as medidas exatas e confirmar tudo com você, sem custo adicional.',
-        type: 'mixed',
+        type: 'medidas',
         inputs: [
-            { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm' },
-            { id: 'altura', label: 'Altura', placeholder: 'Ex: 140', suffix: 'cm' },
-            { id: 'urgencia', label: 'Nível de Urgência', type: 'select', options: ['O quanto antes (Urgente)', 'Nos próximos 30 dias', 'Estou em obra (Sem pressa)', 'Apenas pesquisando'] }
+            { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm', required: false },
+            { id: 'altura', label: 'Altura', placeholder: 'Ex: 140', suffix: 'cm', required: false },
+            { id: 'urgencia', label: 'Nível de Urgência', type: 'select', options: ['O quanto antes (Urgente)', 'Nos próximos 30 dias', 'Estou em obra (Sem pressa)', 'Apenas pesquisando'], required: true }
         ],
         nextStep: 'passo_7_mais_itens'
     },

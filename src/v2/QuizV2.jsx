@@ -12,8 +12,10 @@ export default function QuizV2() {
   const variant = getVariant();
   
   const [showWelcome, setShowWelcome] = useState(true);
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [history, setHistory] = useState([0]);
+  // Começar direto no passo_4_modelo (remover passo_1_intencao do fluxo)
+  const initialStepIndex = STEPS.findIndex(s => s.id === 'passo_4_modelo');
+  const [currentStepIndex, setCurrentStepIndex] = useState(initialStepIndex >= 0 ? initialStepIndex : 0);
+  const [history, setHistory] = useState([initialStepIndex >= 0 ? initialStepIndex : 0]);
   const [items, setItems] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
   const [formId, setFormId] = useState('quizv2'); // FormId padrão
@@ -162,6 +164,40 @@ export default function QuizV2() {
         nextStepId = selectedOption.nextStep;
       }
 
+      // Lógica especial: pular passo_3_acionamento se modelo = vertical ou painel
+      // Verifica se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
+      if (activeStep.id.startsWith('passo_4_tecido') || activeStep.id === 'passo_4_acabamento_cortina') {
+        // Buscar o modelo escolhido no currentItem (pode estar em passo_4_modelo)
+        const modeloEscolhido = updatedCurrentItem.passo_4_modelo || currentItem.passo_4_modelo;
+        if (modeloEscolhido === 'vertical' || modeloEscolhido === 'painel') {
+          // Pular passo_3_acionamento e ir direto para passo_5_estagio
+          nextStepId = 'passo_5_estagio';
+        }
+      }
+
+      // Lógica especial: após escolher tecido, verificar se deve pular passo_5_estagio
+      // Se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
+      if (activeStep.id.startsWith('passo_4_tecido') || activeStep.id === 'passo_4_acabamento_cortina') {
+        const modeloNaoSei = updatedCurrentItem.passo_4_modelo === 'nao_sei';
+        const tecidoNaoSei = selectedOptionValue === 'nao_sei';
+        
+        if (modeloNaoSei && tecidoNaoSei) {
+          // Se não sabe modelo E não sabe tecido → direcionar para "Não tenho medidas"
+          const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
+          if (nextIndex !== -1) {
+            setHistory([...history, nextIndex]);
+            setCurrentStepIndex(nextIndex);
+            return;
+          }
+        } else if (!modeloNaoSei && !tecidoNaoSei) {
+          // Se escolheu algo nas duas → direcionar automaticamente para "Já tenho as medidas"
+          // Pular passo_5_estagio e ir direto para passo_6_medidas
+          if (nextStepId === 'passo_5_estagio') {
+            nextStepId = 'passo_6_medidas';
+          }
+        }
+      }
+
       // Lógica especial: se escolheu "Não sei" em modelo E em tecido, redirecionar para catálogo
       // Verifica se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
       if (activeStep.id.startsWith('passo_4_tecido') && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
@@ -245,10 +281,16 @@ export default function QuizV2() {
           options={modifiedStep.options}
           inputs={modifiedStep.inputs}
           onOptionSelect={(opt) => handleNext({ [activeStep.id]: opt.value })}
-          onNext={handleNext}
+          onNext={(data) => {
+            // Salvar dados de inputs no currentItem
+            const stepData = { [activeStep.id]: currentItem[activeStep.id] || null, ...data };
+            handleNext(stepData);
+          }}
           onBack={handleBack}
           canGoBack={canGoBackStep}
           formId={formId}
+          initialValues={currentItem}
+          selectedValue={currentItem[activeStep.id]}
         />
       </div>
     </Layout>

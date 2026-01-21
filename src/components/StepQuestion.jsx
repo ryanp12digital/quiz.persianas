@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import MeasurementsStep from './MeasurementsStep';
 
 const formatPhoneNumber = (value) => {
     if (!value) return value;
@@ -14,9 +15,30 @@ const formatPhoneNumber = (value) => {
     return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 7)}-${phoneNumber.slice(7, 11)}`;
 };
 
-export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId }) {
-    const [inputValues, setInputValues] = useState({});
+export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null }) {
+    const [inputValues, setInputValues] = useState(() => {
+        const initial = {};
+        inputs.forEach(input => {
+            initial[input.id] = initialValues[input.id] || '';
+        });
+        return initial;
+    });
     const [errors, setErrors] = useState({});
+
+    // Atualizar valores quando initialValues mudar
+    useEffect(() => {
+        if (Object.keys(initialValues).length > 0) {
+            setInputValues(prev => {
+                const updated = { ...prev };
+                inputs.forEach(input => {
+                    if (initialValues[input.id] !== undefined) {
+                        updated[input.id] = initialValues[input.id];
+                    }
+                });
+                return updated;
+            });
+        }
+    }, [initialValues]);
 
     const handleInputChange = (e, fieldId, mask) => {
         let value = e.target.value;
@@ -59,6 +81,10 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
         let isValid = true;
 
         inputs.forEach(input => {
+            // Apenas validar campos obrigatórios (required: true ou não especificado)
+            const isRequired = input.required !== false;
+            if (!isRequired) return; // Pular validação para campos opcionais
+
             const value = inputValues[input.id];
             const isMultiSelect = input.type === 'multi-select';
 
@@ -87,6 +113,22 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
         }
     };
 
+    // Se for tipo medidas, usar componente especial
+    if (type === 'medidas') {
+        return (
+            <MeasurementsStep
+                question={question}
+                subtext={subtext}
+                inputs={inputs}
+                onNext={onNext}
+                onBack={onBack}
+                canGoBack={canGoBack}
+                formId={formId}
+                initialValues={initialValues}
+            />
+        );
+    }
+
     return (
         <div className="step-container relative">
             {canGoBack && (
@@ -101,7 +143,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                 </button>
             )}
 
-            <h2 className="step-title">{question}</h2>
+            <h2 className="step-title" dangerouslySetInnerHTML={{ __html: question }} />
             {subtext && (
                 <div className={`step-subtext ${subtext.startsWith('*') ? 'text-amber-600 font-medium italic text-sm bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left' : type === 'textarea' ? 'text-left mb-4' : ''}`}>
                     {type === 'textarea' && subtext.includes('Ex:') ? (
@@ -128,7 +170,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                 <div key={input.id} className={`text-left ${isMeasurement ? 'flex-1 min-w-[140px]' : 'w-full'}`}>
                                     {input.label && (
                                         <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                            {input.label} <span className="text-red-500">*</span>
+                                            {input.label} {input.required !== false && <span className="text-red-500">*</span>}
                                         </label>
                                     )}
                                     <div className="relative flex items-center">
@@ -234,11 +276,17 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             )}
 
             <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-2xl mx-auto">
-                {options.map((option, index) => (
+                {options.map((option, index) => {
+                    const isSelected = selectedValue === option.value;
+                    return (
                     <button
                         key={index}
                         onClick={() => onOptionSelect(option)}
-                        className="group relative bg-white border border-gray-200 rounded-2xl p-3 sm:p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 hover:border-[#4CAF50] active:scale-95 text-xs sm:text-[0.9rem] font-medium text-gray-800"
+                        className={`group relative bg-white border rounded-2xl p-3 sm:p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 active:scale-95 text-xs sm:text-[0.9rem] font-medium ${
+                            isSelected 
+                                ? 'border-[#4CAF50] bg-green-50 shadow-md' 
+                                : 'border-gray-200 hover:border-[#4CAF50] text-gray-800'
+                        }`}
                     >
                         {option.image && (
                             <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-gray-50">
@@ -257,7 +305,8 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             </span>
                         )}
                     </button>
-                ))}
+                    );
+                })}
             </div>
 
             {(inputs.length > 0 || type === 'mixed') && (

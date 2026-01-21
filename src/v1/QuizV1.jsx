@@ -96,6 +96,17 @@ export default function QuizV1() {
         nextStepId = selectedOption.nextStep;
       }
 
+      // Lógica especial: pular passo_3_acionamento se modelo = vertical ou painel
+      // Verifica quando está no passo_4_tecido e o modelo escolhido anteriormente foi vertical ou painel
+      if (activeStep.id === 'passo_4_tecido') {
+        // Buscar o modelo escolhido no currentItem (pode estar em passo_4_modelo)
+        const modeloEscolhido = updatedCurrentItem.passo_4_modelo || currentItem.passo_4_modelo;
+        if (modeloEscolhido === 'vertical' || modeloEscolhido === 'painel') {
+          // Pular passo_3_acionamento e ir direto para passo_5_estagio
+          nextStepId = 'passo_5_estagio';
+        }
+      }
+
       // Lógica especial: se escolheu "Não sei" em modelo E em tecido, redirecionar para catálogo
       if (activeStep.id === 'passo_4_tecido' && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
@@ -167,10 +178,16 @@ export default function QuizV1() {
           options={activeStep.options}
           inputs={activeStep.inputs}
           onOptionSelect={(opt) => handleNext({ [activeStep.id]: opt.value })}
-          onNext={handleNext}
+          onNext={(data) => {
+            // Salvar dados de inputs no currentItem
+            const stepData = { [activeStep.id]: currentItem[activeStep.id] || null, ...data };
+            handleNext(stepData);
+          }}
           onBack={handleBack}
           canGoBack={history.length > 1}
           formId="quizv1"
+          initialValues={currentItem}
+          selectedValue={currentItem[activeStep.id]}
         />
       </div>
     </Layout>
