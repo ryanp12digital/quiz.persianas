@@ -58,14 +58,12 @@ export default function QuizV2() {
         setFormId('FORMR10');
       }
       
-      // FORMR5: "Escolheu o que quer sem medidas"
-      // Quando escolhe "catalogo" na etapa "Em que fase você está agora?" (passo_5_estagio)
+      // FORMR5: "Escolheu o que quer sem medidas" — catálogo
       if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'catalogo') {
         setFormId('FORMR5');
       }
       
       // FORMR20: "Escolheu uma Persiana Com Medidas"
-      // Quando escolhe "orcamento" na etapa "Em que fase você está agora?" (passo_5_estagio)
       if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'orcamento') {
         setFormId('FORMR20');
       }
@@ -175,37 +173,37 @@ export default function QuizV2() {
         }
       }
 
-      // Lógica especial: após escolher tecido, verificar se deve pular passo_5_estagio
-      // Se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
+      // Regras ao sair de tecido/acabamento: pular "Em que fase você está agora?"
       if (activeStep.id.startsWith('passo_4_tecido') || activeStep.id === 'passo_4_acabamento_cortina') {
         const modeloNaoSei = updatedCurrentItem.passo_4_modelo === 'nao_sei';
         const tecidoNaoSei = selectedOptionValue === 'nao_sei';
         
         if (modeloNaoSei && tecidoNaoSei) {
-          // Se não sabe modelo E não sabe tecido → direcionar para "Não tenho medidas"
+          // Não sei modelo + não sei tecido → direto para "Não tenho medidas" (catálogo)
+          setFormId('FORMR5');
           const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
           if (nextIndex !== -1) {
             setHistory([...history, nextIndex]);
             setCurrentStepIndex(nextIndex);
             return;
           }
-        } else if (!modeloNaoSei && !tecidoNaoSei) {
-          // Se escolheu algo nas duas → direcionar automaticamente para "Já tenho as medidas"
-          // Pular passo_5_estagio e ir direto para passo_6_medidas
-          if (nextStepId === 'passo_5_estagio') {
-            nextStepId = 'passo_6_medidas';
-          }
+        }
+        if (!modeloNaoSei && !tecidoNaoSei && nextStepId === 'passo_5_estagio') {
+          // Qualquer modelo + qualquer tecido → direto para "Já tenho medidas"
+          setFormId('FORMR20');
+          nextStepId = 'passo_6_medidas';
         }
       }
 
-      // Lógica especial: se escolheu "Não sei" em modelo E em tecido, redirecionar para catálogo
-      // Verifica se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
-      if (activeStep.id.startsWith('passo_4_tecido') && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
-        const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
-        if (nextIndex !== -1) {
-          setHistory([...history, nextIndex]);
-          setCurrentStepIndex(nextIndex);
-          return;
+      // Regra 2 (continuação): Ao sair do acionamento, se modelo+tecido específicos, pular passo_5_estagio → passo_6_medidas
+      if (activeStep.id === 'passo_3_acionamento' && nextStepId === 'passo_5_estagio') {
+        const modeloNaoSei = updatedCurrentItem.passo_4_modelo === 'nao_sei';
+        const temTecidoEspecifico = Object.entries(updatedCurrentItem).some(
+          ([k, v]) => (k.startsWith('passo_4_tecido_') || k === 'passo_4_acabamento_cortina') && v && v !== 'nao_sei'
+        );
+        if (!modeloNaoSei && temTecidoEspecifico) {
+          setFormId('FORMR20');
+          nextStepId = 'passo_6_medidas';
         }
       }
       
