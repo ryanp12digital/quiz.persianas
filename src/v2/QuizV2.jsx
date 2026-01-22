@@ -121,6 +121,7 @@ export default function QuizV2() {
 
     if (activeStep.isFinal) {
       const finalData = {
+        form_id: formId,
         ...leadData,
         ...stepData,
         items: items.length > 0 ? items : [updatedCurrentItem]
