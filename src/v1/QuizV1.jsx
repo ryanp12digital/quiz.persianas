@@ -13,9 +13,10 @@ export default function QuizV1() {
   const [history, setHistory] = useState([0]);
   const [items, setItems] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
-  const [hasAddedExtraItem, setHasAddedExtraItem] = useState(false);
-  const [hasSeenMaisItens, setHasSeenMaisItens] = useState(false);
-  const [disableBackAfterAddItem, setDisableBackAfterAddItem] = useState(false);
+  const [formId, setFormId] = useState('quizv1'); // FormId padrão
+  const [hasAddedExtraItem, setHasAddedExtraItem] = useState(false); // Controla se já adicionou item extra (FORMR30)
+  const [hasSeenMaisItens, setHasSeenMaisItens] = useState(false); // Controla se já viu a etapa passo_7_mais_itens
+  const [disableBackAfterAddItem, setDisableBackAfterAddItem] = useState(false); // Desabilita voltar após escolher adicionar item
   const [leadData, setLeadData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -39,6 +40,35 @@ export default function QuizV1() {
         step_id: activeStep.id,
         step_question: activeStep.question
       });
+    }
+
+    // Lógica para determinar o formId baseado nas escolhas do usuário
+    if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
+      const selectedOptionValue = Object.values(stepData)[0];
+      
+      // FORMR10: "Já sabe o que quer e quer falar direto com atendente"
+      // Quando escolhe "direto_atendente" na etapa inicial (passo_1_intencao)
+      if (activeStep.id === 'passo_1_intencao' && selectedOptionValue === 'direto_atendente') {
+        setFormId('FORMR10');
+      }
+      
+      // FORMR5: "Escolheu o que quer sem medidas" — catálogo
+      if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'catalogo') {
+        setFormId('FORMR5');
+      }
+      
+      // FORMR20: "Escolheu uma Persiana Com Medidas"
+      if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'orcamento') {
+        setFormId('FORMR20');
+      }
+      
+      // FORMR30: "Escolhe mais de 1 Persiana com Medidas"
+      // Quando escolhe "adicionar_outro" na etapa passo_7_mais_itens (e ainda não adicionou item extra)
+      if (activeStep.id === 'passo_7_mais_itens' && selectedOptionValue === 'adicionar_outro' && !hasAddedExtraItem) {
+        setFormId('FORMR30');
+        setHasAddedExtraItem(true);
+        setDisableBackAfterAddItem(true); // Desabilita voltar após escolher adicionar item
+      }
     }
 
     // Marca que já viu a etapa passo_7_mais_itens quando chega nela pela primeira vez
@@ -73,7 +103,7 @@ export default function QuizV1() {
 
     if (activeStep.isFinal) {
       const finalData = {
-        form_id: 'quizv1',
+        form_id: formId,
         ...leadData,
         ...stepData,
         items: items.length > 0 ? items : [updatedCurrentItem]
@@ -96,7 +126,7 @@ export default function QuizV1() {
         if (window.dataLayer) {
           window.dataLayer.push({
             event: 'form_submission',
-            form_id: 'quizv1',
+            form_id: formId,
             version: 'v1'
           });
         }
@@ -129,6 +159,7 @@ export default function QuizV1() {
       // Lógica especial: se escolheu "Não sei" em modelo E em tecido, redirecionar para catálogo
       // Verifica se o passo atual é um passo de tecido (começa com 'passo_4_tecido')
       if (activeStep.id.startsWith('passo_4_tecido') && selectedOptionValue === 'nao_sei' && updatedCurrentItem.passo_4_modelo === 'nao_sei') {
+        setFormId('FORMR5');
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
         if (nextIndex !== -1) {
           setHistory([...history, nextIndex]);
@@ -137,11 +168,44 @@ export default function QuizV1() {
         }
       }
 
+      // Regras ao sair de tecido/acabamento: pular "Em que fase você está agora?"
+      if (activeStep.id.startsWith('passo_4_tecido') || activeStep.id === 'passo_4_acabamento_cortina') {
+        const modeloNaoSei = updatedCurrentItem.passo_4_modelo === 'nao_sei';
+        const tecidoNaoSei = selectedOptionValue === 'nao_sei';
+        
+        if (modeloNaoSei && tecidoNaoSei) {
+          // Não sei modelo + não sei tecido → direto para "Não tenho medidas" (catálogo)
+          setFormId('FORMR5');
+          const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
+          if (nextIndex !== -1) {
+            setHistory([...history, nextIndex]);
+            setCurrentStepIndex(nextIndex);
+            return;
+          }
+        }
+        if (!modeloNaoSei && !tecidoNaoSei && nextStepId === 'passo_5_estagio') {
+          // Qualquer modelo + qualquer tecido → direto para "Já tenho medidas"
+          setFormId('FORMR20');
+          nextStepId = 'passo_6_medidas';
+        }
+      }
+
+      // Regra 2 (continuação): Ao sair do acionamento, se modelo+tecido específicos, pular passo_5_estagio → passo_6_medidas
+      if (activeStep.id === 'passo_3_acionamento' && nextStepId === 'passo_5_estagio') {
+        const modeloNaoSei = updatedCurrentItem.passo_4_modelo === 'nao_sei';
+        const temTecidoEspecifico = Object.entries(updatedCurrentItem).some(
+          ([k, v]) => (k.startsWith('passo_4_tecido_') || k === 'passo_4_acabamento_cortina') && v && v !== 'nao_sei'
+        );
+        if (!modeloNaoSei && temTecidoEspecifico) {
+          setFormId('FORMR20');
+          nextStepId = 'passo_6_medidas';
+        }
+      }
+
       // Lógica especial para "Adicionar mais um item" (igual à V2)
       if (selectedOptionValue === 'adicionar_outro') {
         if (!hasAddedExtraItem) {
           setHasAddedExtraItem(true);
-          setDisableBackAfterAddItem(true);
         }
         setItems([...items, updatedCurrentItem]);
         setCurrentItem({});
@@ -185,7 +249,7 @@ export default function QuizV1() {
 
   const modifiedStep = { ...activeStep };
 
-  const canGoBackStep = history.length > 1 && !(disableBackAfterAddItem && activeStep.id === 'passo_7_adicionar_item');
+  const canGoBackStep = history.length > 1;
 
   return (
     <Layout>
@@ -213,7 +277,7 @@ export default function QuizV1() {
           }}
           onBack={handleBack}
           canGoBack={canGoBackStep}
-          formId="quizv1"
+          formId={formId}
           initialValues={currentItem}
           selectedValue={currentItem[activeStep.id]}
         />
