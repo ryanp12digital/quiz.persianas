@@ -252,12 +252,6 @@ export default function QuizV2() {
     Object.assign(modifiedStep, AB_CONFIG.variants.B.modifications[activeStep.id]);
   }
 
-  // Remove a opção "adicionar_outro" se o usuário já adicionou um item extra (FORMR30)
-  // ou se já viu essa etapa antes (para que apareça apenas uma vez)
-  if (activeStep.id === 'passo_7_mais_itens' && (hasAddedExtraItem || hasSeenMaisItens) && modifiedStep.options) {
-    modifiedStep.options = modifiedStep.options.filter(opt => opt.value !== 'adicionar_outro');
-  }
-
   // Determina se pode voltar: pode voltar sempre que há histórico
   const canGoBackStep = history.length > 1;
 

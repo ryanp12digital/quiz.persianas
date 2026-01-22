@@ -13,6 +13,9 @@ export default function QuizV1() {
   const [history, setHistory] = useState([0]);
   const [items, setItems] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
+  const [hasAddedExtraItem, setHasAddedExtraItem] = useState(false);
+  const [hasSeenMaisItens, setHasSeenMaisItens] = useState(false);
+  const [disableBackAfterAddItem, setDisableBackAfterAddItem] = useState(false);
   const [leadData, setLeadData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -38,15 +41,30 @@ export default function QuizV1() {
       });
     }
 
+    // Marca que já viu a etapa passo_7_mais_itens quando chega nela pela primeira vez
+    if (activeStep.id === 'passo_7_mais_itens' && !hasSeenMaisItens) {
+      setHasSeenMaisItens(true);
+    }
+
     // Lógica especial para salvar item descrito em texto livre
     if (activeStep.id === 'passo_7_adicionar_item') {
       const descricaoItem = stepData.descricao_item || '';
       if (descricaoItem.trim()) {
         setItems([...items, { descricao_livre: descricaoItem.trim() }]);
         setCurrentItem({});
+        if (hasAddedExtraItem) {
+          const finalIndex = STEPS.findIndex(s => s.id === 'passo_8_captura');
+          if (finalIndex !== -1) {
+            const newHistory = history.filter((stepIdx) => STEPS[stepIdx]?.id !== 'passo_7_adicionar_item');
+            setHistory([...newHistory, finalIndex]);
+            setCurrentStepIndex(finalIndex);
+            return;
+          }
+        }
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_7_mais_itens');
         if (nextIndex !== -1) {
-          setHistory([...history, nextIndex]);
+          const newHistory = history.filter((stepIdx) => STEPS[stepIdx]?.id !== 'passo_7_adicionar_item');
+          setHistory([...newHistory, nextIndex]);
           setCurrentStepIndex(nextIndex);
           return;
         }
@@ -119,15 +137,19 @@ export default function QuizV1() {
         }
       }
 
-      // Lógica especial para "Adicionar mais um item"
+      // Lógica especial para "Adicionar mais um item" (igual à V2)
       if (selectedOptionValue === 'adicionar_outro') {
+        if (!hasAddedExtraItem) {
+          setHasAddedExtraItem(true);
+          setDisableBackAfterAddItem(true);
+        }
         setItems([...items, updatedCurrentItem]);
         setCurrentItem({});
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_7_adicionar_item');
         if (nextIndex !== -1) {
-            setHistory([...history, nextIndex]);
-            setCurrentStepIndex(nextIndex);
-            return;
+          setHistory([...history, nextIndex]);
+          setCurrentStepIndex(nextIndex);
+          return;
         }
       }
     }
@@ -161,6 +183,10 @@ export default function QuizV1() {
 
   const progress = ((currentStepIndex + 1) / STEPS.length) * 100;
 
+  const modifiedStep = { ...activeStep };
+
+  const canGoBackStep = history.length > 1 && !(disableBackAfterAddItem && activeStep.id === 'passo_7_adicionar_item');
+
   return (
     <Layout>
       <div className="max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16">
@@ -174,11 +200,11 @@ export default function QuizV1() {
         </div>
 
         <StepQuestion
-          question={activeStep.question}
-          subtext={activeStep.subtext}
-          type={activeStep.type}
-          options={activeStep.options}
-          inputs={activeStep.inputs}
+          question={modifiedStep.question}
+          subtext={modifiedStep.subtext}
+          type={modifiedStep.type}
+          options={modifiedStep.options}
+          inputs={modifiedStep.inputs}
           onOptionSelect={(opt) => handleNext({ [activeStep.id]: opt.value })}
           onNext={(data) => {
             // Salvar dados de inputs no currentItem
@@ -186,7 +212,7 @@ export default function QuizV1() {
             handleNext(stepData);
           }}
           onBack={handleBack}
-          canGoBack={history.length > 1}
+          canGoBack={canGoBackStep}
           formId="quizv1"
           initialValues={currentItem}
           selectedValue={currentItem[activeStep.id]}

@@ -238,6 +238,15 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                         })}
                     </div>
                     
+                    {/* Botão Continuar logo abaixo do campo (textarea) */}
+                    {type === 'textarea' && (
+                        <div className="mt-6">
+                            <button type="button" onClick={handleNext} className="bg-[#4CAF50] text-white font-bold py-2.5 px-8 sm:py-3 sm:px-10 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:-translate-y-1 text-sm sm:text-base">
+                                Continuar
+                            </button>
+                        </div>
+                    )}
+                    
                     {/* Guias minimalistas para textarea */}
                     {type === 'textarea' && (
                         <div className="mt-6 pt-6 border-t border-gray-200">
@@ -309,7 +318,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                 })}
             </div>
 
-            {(inputs.length > 0 || type === 'mixed') && (
+            {(inputs.length > 0 || type === 'mixed') && !(type === 'textarea') && (
                 <div className="mt-6 sm:mt-8">
                     <button onClick={handleNext} className="bg-[#4CAF50] text-white font-bold py-2.5 px-8 sm:py-3 sm:px-10 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:-translate-y-1 text-sm sm:text-base">
                         Continuar
