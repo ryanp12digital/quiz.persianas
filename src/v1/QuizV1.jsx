@@ -104,6 +104,7 @@ export default function QuizV1() {
     if (activeStep.isFinal) {
       const finalData = {
         form_id: formId,
+        quiz_version: 'v1',
         ...leadData,
         ...stepData,
         items: items.length > 0 ? items : [updatedCurrentItem]
