@@ -6,6 +6,68 @@ import WelcomeScreen from '../components/WelcomeScreen';
 import { Progress } from '../components/ui/progress';
 import { STEPS } from './steps';
 
+// Função para converter WhatsApp do formato com máscara para formato internacional (GHL)
+const formatWhatsAppForGHL = (whatsapp) => {
+  if (!whatsapp) return whatsapp;
+  
+  // Remove todos os caracteres não numéricos
+  const numbersOnly = whatsapp.replace(/[^\d]/g, '');
+  
+  // Se não tiver números, retorna como está
+  if (!numbersOnly) return whatsapp;
+  
+  // Se já começar com 55 e tiver 12 ou mais dígitos (código do país já incluído), remove para adicionar o + depois
+  let phoneNumber = numbersOnly;
+  if (phoneNumber.startsWith('55') && phoneNumber.length >= 12) {
+    phoneNumber = phoneNumber.substring(2);
+  }
+  
+  // Adiciona o código do país +55
+  return `+55${phoneNumber}`;
+};
+
+// Função para achatamento de items e remoção de duplicatas
+const flattenItems = (items, stepData) => {
+  if (!items || items.length === 0) return {};
+  
+  const flattened = {};
+  const stepDataKeys = new Set(Object.keys(stepData || {}));
+  
+  // Itera sobre todos os items
+  items.forEach(item => {
+    Object.keys(item).forEach(key => {
+      // Ignora campos que já existem no stepData (stepData tem prioridade)
+      if (stepDataKeys.has(key)) {
+        return;
+      }
+      
+      const value = item[key];
+      
+      // Se o valor já existe no flattened e é um array, concatena valores únicos
+      if (Array.isArray(value)) {
+        if (Array.isArray(flattened[key])) {
+          // Concatena arrays e remove duplicatas
+          flattened[key] = [...new Set([...flattened[key], ...value])];
+        } else {
+          flattened[key] = [...new Set(value)];
+        }
+      } else if (value !== null && value !== undefined && value !== '') {
+        // Para valores não-array, sobrescreve (último item tem prioridade)
+        flattened[key] = value;
+      }
+    });
+  });
+  
+  // Concatena arrays do stepData também (ex: ambientes)
+  Object.keys(stepData || {}).forEach(key => {
+    if (Array.isArray(stepData[key]) && Array.isArray(flattened[key])) {
+      flattened[key] = [...new Set([...flattened[key], ...stepData[key]])];
+    }
+  });
+  
+  return flattened;
+};
+
 export default function QuizV1() {
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(true);
@@ -102,12 +164,22 @@ export default function QuizV1() {
     }
 
     if (activeStep.isFinal) {
+      // Prepara os dados finais, convertendo WhatsApp para formato internacional
+      const processedStepData = { ...stepData };
+      if (processedStepData.whatsapp) {
+        processedStepData.whatsapp = formatWhatsAppForGHL(processedStepData.whatsapp);
+      }
+      
+      // Achatamento de items e remoção de duplicatas
+      const itemsToFlatten = items.length > 0 ? items : [updatedCurrentItem];
+      const flattenedItems = flattenItems(itemsToFlatten, processedStepData);
+      
       const finalData = {
         form_id: formId,
         quiz_version: 'v1',
         ...leadData,
-        ...stepData,
-        items: items.length > 0 ? items : [updatedCurrentItem]
+        ...processedStepData,
+        ...flattenedItems
       };
       
       const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
