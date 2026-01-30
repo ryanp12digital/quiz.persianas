@@ -114,6 +114,18 @@ export default function QuizV2() {
     if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
       const selectedOptionValue = Object.values(stepData)[0];
       
+      // Regra: qualquer "nao_sei" antes do passo_5_estagio pula a etapa de fase
+      // e vai direto para "Não tenho medidas e quero um pré orçamento" (catálogo)
+      if (selectedOptionValue === 'nao_sei' && activeStep.id !== 'passo_5_estagio') {
+        setFormId('FORMR5');
+        const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
+        if (nextIndex !== -1) {
+          setHistory([...history, nextIndex]);
+          setCurrentStepIndex(nextIndex);
+          return;
+        }
+      }
+      
       // FORMR10: "Já sabe o que quer e quer falar direto com atendente"
       // Quando escolhe "direto_atendente" na etapa inicial (passo_1_intencao)
       if (activeStep.id === 'passo_1_intencao' && selectedOptionValue === 'direto_atendente') {

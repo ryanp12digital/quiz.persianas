@@ -41,7 +41,7 @@ export const STEPS = [
             { label: 'Persiana de Teto', image: '/modelos/Persiana de Teto.webp', description: 'Feita sob medida para controlar o sol em claraboias e tetos de vidro.', value: 'teto', nextStep: 'passo_4_modelo_teto' },
             { label: 'Persiana Painel', image: '/modelos/Persiana Painel.webp', description: 'Painéis largos que correm lateralmente, ideal para portas de varanda.', value: 'painel', nextStep: 'passo_4_tecido_painel' },
             { label: 'Cortina', image: '/modelos/Cortina.webp', description: 'Tecido tradicional em varão ou trilho, focada em aconchego e volume decorativo.', value: 'cortina', nextStep: 'passo_4_tecido_cortina' },
-            { label: 'Não sei — Quero recomendação', value: 'nao_sei', nextStep: 'passo_4_tecido_rolo' }
+            { label: 'Não sei — Quero recomendação', value: 'nao_sei', nextStep: 'passo_8_captura_catalogo' }
         ]
     },
 
@@ -65,7 +65,7 @@ export const STEPS = [
             { label: 'Screen Metalizado 1%', description: 'Máximo controle de luz e calor para áreas muito ensolaradas.', value: 'metalizado_1', nextStep: 'passo_3_acionamento' },
             { label: 'Screen Metalizado 3%', description: 'Reduz ofuscamento e calor, mantendo parte da vista externa.', value: 'metalizado_3', nextStep: 'passo_3_acionamento' },
             { label: 'Screen Metalizado 5%', description: 'Combina controle solar com maior transparência e conforto visual.', value: 'metalizado_5', nextStep: 'passo_3_acionamento' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_3_acionamento' }
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -83,7 +83,7 @@ export const STEPS = [
             { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento' },
             { label: 'Tecido decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_3_acionamento' }
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -96,7 +96,7 @@ export const STEPS = [
         options: [
             { label: 'Blackout com translucido', description: 'Combina faixas blackout e transparentes em sistema duplo, permitindo alternar entre escuro total, luz parcial e visão externa.', value: 'blackout_translucido', nextStep: 'passo_3_acionamento' },
             { label: 'Semi-Blackout com translucido', description: 'Faixas opacas mais densas, reduzem bem a luminosidade.', value: 'semi_blackout_translucido', nextStep: 'passo_3_acionamento' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_3_acionamento' }
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -128,7 +128,7 @@ export const STEPS = [
             { label: 'Eco wood com fita', description: 'Versão com fitas têxteis que aumentam a privacidade e o apelo decorativo, mantendo o caráter ecológico.', value: 'eco_fita', nextStep: 'passo_3_acionamento' },
             { label: 'Bambu com cadarço', description: 'Persiana natural de bambu trançado, com cadarços aparentes e textura leve e tropical.', value: 'bambu_cadarco', nextStep: 'passo_3_acionamento' },
             { label: 'Bambu com fita', description: 'Modelo com fitas de tecido decorativas, que trazem toque artesanal e sofisticação ao estilo nautral do bambu.', value: 'bambu_fita', nextStep: 'passo_3_acionamento' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_3_acionamento' }
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -145,7 +145,7 @@ export const STEPS = [
             { label: 'Perfurada (micro furos)', description: 'Lâminas com microperfurações que suavizam a entrada de luz e calor.', value: 'perfurada', nextStep: 'passo_3_acionamento' },
             { label: 'Acabamento brilhante ou métalico', description: 'Efeito decorativo, com brilho e reflexão de luz.', value: 'brilhante', nextStep: 'passo_3_acionamento' },
             { label: 'Acabamento fosco ou acetinado', description: 'Visual discreto e sofisticado, reduz reflexos.', value: 'fosco', nextStep: 'passo_3_acionamento' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_3_acionamento' }
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -157,8 +157,9 @@ export const STEPS = [
         type: 'radio',
         options: [
             { label: 'Persiana Romana de Teto', description: 'Sistema com dobras horizontais elegantes, ideal para claraboias e tetos de vidro, proporcionando charme e controle de luz.', value: 'romana_teto', nextStep: 'passo_4_tecido_teto_romana' },
-            { label: 'Persianas celular de teto', description: 'Tecido com estrutura colmeia (celular) que cria isolamento natural, garantindo eficiência térmica e controle de luminosidade.', value: 'celular_teto', nextStep: 'passo_4_tecido_teto_celular' },
-            { label: 'Persianas plissadas de teto', description: 'Modelo com tecido em pregas finas que se recolhem suavemente, oferecendo leveza, difusão de luz e conforto térmico.', value: 'plissada_teto', nextStep: 'passo_4_tecido_teto_plissada' }
+            { label: 'Persiana celular de Teto', description: 'Tecido com estrutura colmeia (celular) que cria isolamento natural, garantindo eficiência térmica e controle de luminosidade.', value: 'celular_teto', nextStep: 'passo_4_tecido_teto_celular' },
+            { label: 'Persiana plissada de Teto', description: 'Modelo com tecido em pregas finas que se recolhem suavemente, oferecendo leveza, difusão de luz e conforto térmico.', value: 'plissada_teto', nextStep: 'passo_4_tecido_teto_plissada' },
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -174,7 +175,7 @@ export const STEPS = [
             { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_3_acionamento' }
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
@@ -249,7 +250,8 @@ export const STEPS = [
             { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento' },
             { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento' },
             { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento' },
-            { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento' }
+            { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento' },
+            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
 
