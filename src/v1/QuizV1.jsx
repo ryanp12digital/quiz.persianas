@@ -193,7 +193,8 @@ export default function QuizV1() {
         ...processedStepData,
         ...flattenedItems
       };
-      
+      delete finalData.urgencia;
+
       const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
       
       fetch(WEBHOOK_URL, {

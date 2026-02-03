@@ -173,7 +173,7 @@ export default function MeasurementsStep({ question, subtext, inputs = [], onNex
                     })}
                     
                     {/* Aviso amarelo acima do campo de urgência */}
-                    {subtext && inputs.some(input => input.id === 'urgencia') && (
+                    {subtext && (
                         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 w-full mb-0">
                             <p className="text-sm sm:text-base text-amber-800 text-center" style={{ fontSize: '11px' }}>
                                 {subtext}
@@ -181,7 +181,7 @@ export default function MeasurementsStep({ question, subtext, inputs = [], onNex
                         </div>
                     )}
                     
-                    {/* Outros campos (incluindo Nível de Urgência) */}
+                    {/* Outros campos */}
                     {inputs.filter(input => input.id !== 'largura' && input.id !== 'altura').map((input) => {
                         const isRequired = input.required !== false;
                         

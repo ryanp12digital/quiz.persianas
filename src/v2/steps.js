@@ -276,8 +276,7 @@ export const STEPS = [
         type: 'medidas',
         inputs: [
             { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm', required: false },
-            { id: 'altura', label: 'Altura', placeholder: 'Ex: 140', suffix: 'cm', required: false },
-            { id: 'urgencia', label: 'Nível de Urgência', type: 'select', options: ['O quanto antes (Urgente)', 'Nos próximos 30 dias', 'Estou em obra (Sem pressa)', 'Apenas pesquisando'], required: true }
+            { id: 'altura', label: 'Altura', placeholder: 'Ex: 140', suffix: 'cm', required: false }
         ],
         nextStep: 'passo_7_mais_itens'
     },
