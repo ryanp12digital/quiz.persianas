@@ -160,14 +160,14 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             )}
 
             {inputs.length > 0 && (
-                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full mx-auto mb-8 ${type === 'textarea' ? 'max-w-3xl' : 'max-w-md'}`}>
-                    <div className={`flex flex-wrap gap-4 ${type === 'textarea' ? 'flex-col' : ''}`}>
+                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full mx-auto mb-8 min-w-0 ${type === 'textarea' ? 'max-w-3xl' : 'max-w-md'}`}>
+                    <div className={type === 'textarea' ? 'flex flex-col gap-4' : 'grid grid-cols-1 sm:grid-cols-2 gap-4'}>
                         {inputs.map((input) => {
                             const isMeasurement = input.id === 'largura' || input.id === 'altura';
                             const isTextarea = input.type === 'textarea';
-                            
+
                             return (
-                                <div key={input.id} className={`text-left ${isMeasurement ? 'flex-1 min-w-[140px]' : 'w-full'}`}>
+                                <div key={input.id} className="text-left w-full min-w-0">
                                     {input.label && (
                                         <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
                                             {input.label} {input.required !== false && <span className="text-red-500">*</span>}

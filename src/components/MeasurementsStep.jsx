@@ -137,50 +137,52 @@ export default function MeasurementsStep({ question, subtext, inputs = [], onNex
             </div>
 
             {/* Campos de entrada */}
-            <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="w-full mx-auto mb-6 max-w-md">
-                <div className="flex flex-wrap gap-4" style={{ height: '300px' }}>
+            <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="w-full mx-auto mb-6 max-w-md min-w-0">
+                <div className="flex flex-col">
                     {/* Campos de medida (largura e altura) */}
-                    {inputs.filter(input => input.id === 'largura' || input.id === 'altura').map((input) => {
-                        const isRequired = input.required !== false;
-                        
-                        return (
-                            <div key={input.id} className="text-left flex-1 min-w-[140px]">
-                                {input.label && (
-                                    <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                        {input.label} {isRequired && <span className="text-red-500">*</span>}
-                                    </label>
-                                )}
-                                <div className="relative flex items-center">
-                                    <input
-                                        type={input.type || 'text'}
-                                        placeholder={input.placeholder}
-                                        className={`w-full p-3 sm:p-4 ${input.suffix ? 'pr-10 sm:pr-12' : ''} border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
-                                        value={inputValues[input.id] || ''}
-                                        onChange={(e) => handleInputChange(e, input.id, input.mask)}
-                                        maxLength={input.mask === 'phone' ? 15 : undefined}
-                                    />
-                                    {input.suffix && (
-                                        <span className="absolute right-3 sm:right-4 text-gray-400 font-medium pointer-events-none text-sm sm:text-base">
-                                            {input.suffix}
-                                        </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 min-w-0">
+                        {inputs.filter(input => input.id === 'largura' || input.id === 'altura').map((input) => {
+                            const isRequired = input.required !== false;
+
+                            return (
+                                <div key={input.id} className="text-left w-full min-w-0">
+                                    {input.label && (
+                                        <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
+                                            {input.label} {isRequired && <span className="text-red-500">*</span>}
+                                        </label>
+                                    )}
+                                    <div className="relative flex items-center">
+                                        <input
+                                            type={input.type || 'text'}
+                                            placeholder={input.placeholder}
+                                            className={`w-full p-3 sm:p-4 ${input.suffix ? 'pr-10 sm:pr-12' : ''} border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                            value={inputValues[input.id] || ''}
+                                            onChange={(e) => handleInputChange(e, input.id, input.mask)}
+                                            maxLength={input.mask === 'phone' ? 15 : undefined}
+                                        />
+                                        {input.suffix && (
+                                            <span className="absolute right-3 sm:right-4 text-gray-400 font-medium pointer-events-none text-sm sm:text-base">
+                                                {input.suffix}
+                                            </span>
+                                        )}
+                                    </div>
+                                    {errors[input.id] && (
+                                        <p className="text-red-500 text-xs ml-1 mt-1 animate-fadeIn">{errors[input.id]}</p>
                                     )}
                                 </div>
-                                {errors[input.id] && (
-                                    <p className="text-red-500 text-xs ml-1 mt-1 animate-fadeIn">{errors[input.id]}</p>
-                                )}
-                            </div>
-                        );
-                    })}
-                    
-                    {/* Aviso amarelo acima do campo de urgência */}
+                            );
+                        })}
+                    </div>
+
+                    {/* Aviso amarelo */}
                     {subtext && (
-                        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 w-full mb-0">
+                        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 w-full mt-4">
                             <p className="text-sm sm:text-base text-amber-800 text-center" style={{ fontSize: '11px' }}>
                                 {subtext}
                             </p>
                         </div>
                     )}
-                    
+
                     {/* Outros campos */}
                     {inputs.filter(input => input.id !== 'largura' && input.id !== 'altura').map((input) => {
                         const isRequired = input.required !== false;
