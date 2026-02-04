@@ -275,8 +275,8 @@ export const STEPS = [
         subtext: '*Não se preocupe, essas informações são apenas para você receber um pré orçamento. Antes de enviar para produção, um técnico da nossa equipe vai até o local para tirar as medidas exatas e confirmar tudo com você, sem custo adicional.',
         type: 'medidas',
         inputs: [
-            { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm', required: false },
-            { id: 'altura', label: 'Altura', placeholder: 'Ex: 140', suffix: 'cm', required: false }
+            { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm', required: true },
+            { id: 'altura', label: 'Altura', placeholder: 'Ex: 140', suffix: 'cm', required: true }
         ],
         nextStep: 'passo_7_mais_itens'
     },
