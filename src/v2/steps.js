@@ -53,14 +53,14 @@ export const STEPS = [
         type: 'radio',
         options: [
             { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento' },
-            { label: 'Tecido FR Blackout', description: 'Blackout com proteção anti-chama certificada.', value: 'fr_blackout', nextStep: 'passo_3_acionamento' },
+            { label: 'FR Blackout', description: 'Blackout com proteção anti-chama certificada.', value: 'fr_blackout', nextStep: 'passo_3_acionamento' },
             { label: 'Semi-blackout', description: 'Nível intermediário de luz, com leve escurecimento.', value: 'semi_blackout', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento' },
             { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento' },
-            { label: 'Tecido decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
-            { label: 'Tecido FR Translúcido', description: 'Translúcido com retardante de chama para maior segurança.', value: 'fr_translucido', nextStep: 'passo_3_acionamento' },
+            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
+            { label: 'FR Translúcido', description: 'Translúcido com retardante de chama para maior segurança.', value: 'fr_translucido', nextStep: 'passo_3_acionamento' },
             { label: 'Hospitalar Antimicrobiano', description: 'Superfície higiênica, alta privacidade e bloqueio de luz.', value: 'hospitalar', nextStep: 'passo_3_acionamento' },
             { label: 'Screen Metalizado 1%', description: 'Máximo controle de luz e calor para áreas muito ensolaradas.', value: 'metalizado_1', nextStep: 'passo_3_acionamento' },
             { label: 'Screen Metalizado 3%', description: 'Reduz ofuscamento e calor, mantendo parte da vista externa.', value: 'metalizado_3', nextStep: 'passo_3_acionamento' },
@@ -82,7 +82,7 @@ export const STEPS = [
             { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento' },
             { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento' },
-            { label: 'Tecido decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
+            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -110,7 +110,7 @@ export const STEPS = [
             { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio' },
             { label: 'PVC Blackout', description: 'Lâminas em PVC opaco, fáceis de limpar, alta durabilidade e ótimo custo-benefício em áreas úmidas.', value: 'pvc_blackout', nextStep: 'passo_5_estagio' },
             { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio' },
-            { label: 'Tecido decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_5_estagio' },
+            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_5_estagio' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
