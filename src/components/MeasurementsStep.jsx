@@ -86,7 +86,7 @@ export default function MeasurementsStep({ question, subtext, inputs = [], onNex
                     <h3 className="text-sm font-bold text-orange-800 mb-3 w-full text-center">Dentro do vão</h3>
                     <div className="w-full max-w-xs mb-4 rounded-xl overflow-hidden bg-gray-50">
                         <img 
-                            src="/medidas/Medida de dentro do vão.png" 
+                            src="/medidas/medida-dentro-vao.png" 
                             alt="Medida dentro do vão"
                             className="w-full h-auto"
                             onError={(e) => {
@@ -113,7 +113,7 @@ export default function MeasurementsStep({ question, subtext, inputs = [], onNex
                     <h3 className="text-sm font-bold text-orange-800 mb-3 w-full text-center">Fora do vão</h3>
                     <div className="w-full max-w-xs mb-4 rounded-xl overflow-hidden bg-gray-50">
                         <img 
-                            src="/medidas/Medida fora do vão.png" 
+                            src="/medidas/medida-fora-vao.png" 
                             alt="Medida fora do vão"
                             className="w-full h-auto"
                             onError={(e) => {

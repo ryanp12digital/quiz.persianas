@@ -375,7 +375,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             <>
                                 {option.image && (
                                     <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-white">
-                                        <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                        <img src={option.image} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                     </div>
                                 )}
                                 <span className="font-bold mb-1">{option.label}</span>
@@ -387,7 +387,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             option.image ? (
                             <>
                                 <div className="min-w-0 flex items-center justify-center overflow-hidden rounded-lg bg-white h-24 sm:h-32">
-                                    <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                    <img src={option.image} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                 </div>
                                 <div className="min-w-0 flex flex-col justify-center gap-0.5">
                                     <span className="font-bold">{option.label}</span>
@@ -408,7 +408,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             <>
                                 {option.image && (
                                     <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-white">
-                                        <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                        <img src={option.image} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                     </div>
                                 )}
                                 <span className="font-bold mb-1">{option.label}</span>
