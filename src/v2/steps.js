@@ -212,12 +212,12 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Persiana Painel:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio' },
-            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_5_estagio' },
-            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_5_estagio' },
-            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_5_estagio' },
-            { label: 'Decorativa/Texturizada', description: 'Estética refinada com texturas que valorizam a decoração do ambiente.', value: 'decorativa', nextStep: 'passo_5_estagio' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio', image: '/tecidos/Painel 01-Blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio', image: '/tecidos/Painel 02-Translúcida.png' },
+            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_5_estagio', image: '/tecidos/Painel 03-Tela solar 1%.png' },
+            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_5_estagio', image: '/tecidos/Painel 04-Tela solar 3%.png' },
+            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_5_estagio', image: '/tecidos/Painel 05-Tela solar 5%.png' },
+            { label: 'Decorativa/Texturizada', description: 'Estética refinada com texturas que valorizam a decoração do ambiente.', value: 'decorativa', nextStep: 'passo_5_estagio', image: '/tecidos/Painel 06-Decorativa.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },

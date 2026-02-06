@@ -296,14 +296,13 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             isSelected 
                                 ? 'border-[#4CAF50] bg-green-50 shadow-md' 
                                 : 'border-gray-200 hover:border-[#4CAF50] text-gray-800'
-                        } ${isTecidoStep ? 'grid grid-cols-[minmax(0,20%)_1fr] gap-3 sm:gap-4 items-center text-left' : 'flex flex-col items-center justify-center text-center'}`}
+                        } ${isTecidoStep ? (option.image ? 'grid grid-cols-[minmax(0,20%)_1fr] gap-3 sm:gap-4 items-center text-left' : 'flex flex-col justify-center text-left') : 'flex flex-col items-center justify-center text-center'}`}
                     >
                         {isTecidoStep ? (
+                            option.image ? (
                             <>
                                 <div className="min-w-0 flex items-center justify-center overflow-hidden rounded-lg bg-white h-24 sm:h-32">
-                                    {option.image ? (
-                                        <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
-                                    ) : null}
+                                    <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                 </div>
                                 <div className="min-w-0 flex flex-col justify-center gap-0.5">
                                     <span className="font-bold">{option.label}</span>
@@ -312,6 +311,14 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                     )}
                                 </div>
                             </>
+                            ) : (
+                            <div className="min-w-0 flex flex-col justify-center gap-0.5">
+                                <span className="font-bold">{option.label}</span>
+                                {option.description && (
+                                    <span className="text-[10px] sm:text-xs text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                )}
+                            </div>
+                            )
                         ) : (
                             <>
                                 {option.image && (
