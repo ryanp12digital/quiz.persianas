@@ -17,8 +17,11 @@ const formatPhoneNumber = (value) => {
 
 const getImageSrc = (path) => {
     if (!path) return '';
-    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
-    return `${base}${path.startsWith('/') ? path : '/' + path}`;
+    if (typeof window === 'undefined') {
+        const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+        return `${base}${path.startsWith('/') ? path : '/' + path}`;
+    }
+    return new URL(path.startsWith('/') ? path : '/' + path, window.location.origin).href;
 };
 
 export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null }) {
@@ -367,6 +370,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                     const isSelected = selectedValue === option.value;
                     const isModeloStep = stepId === 'passo_4_modelo';
                     const isTecidoOrAcabamento = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento');
+                    const layoutVertical = !!(isModeloStep || (isTecidoOrAcabamento && option.image));
                     return (
                     <button
                         key={index}
@@ -375,9 +379,9 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             isSelected 
                                 ? 'border-[#4CAF50] bg-green-50 shadow-md' 
                                 : 'border-gray-200 hover:border-[#4CAF50] text-gray-800'
-                        } ${(isModeloStep || (isTecidoOrAcabamento && option.image)) ? 'flex flex-col items-center justify-center text-center' : isTecidoOrAcabamento ? 'flex flex-col justify-center text-center' : 'flex flex-col items-center justify-center text-center'}`}
+                        } ${layoutVertical ? 'flex flex-col items-center justify-center text-center' : isTecidoOrAcabamento ? 'flex flex-col justify-center text-center' : 'flex flex-col items-center justify-center text-center'}`}
                     >
-                        {(isModeloStep || (isTecidoOrAcabamento && option.image)) ? (
+                        {layoutVertical ? (
                             <>
                                 {option.image && (
                                     <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-white">

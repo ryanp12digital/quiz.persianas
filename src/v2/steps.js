@@ -20,7 +20,7 @@ export const STEPS = [
         type: 'radio',
         options: [
             { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_5_estagio', image: '/acionamento/manual-corrente-haste-bastao.png' },
-            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_5_estagio', image: '/acionamento/motorizada.png' },
+            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_5_estagio', image: '/acionamento/Motorizada.png' },
             { label: 'Ainda não sei', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -40,7 +40,7 @@ export const STEPS = [
             { label: 'Horizontal de Alumínio', image: '/modelos/horizontal-aluminio.webp', description: 'Funcional e resistente à umidade, ótima para cozinhas e banheiros.', value: 'aluminio', nextStep: 'passo_4_tecido_aluminio' },
             { label: 'Persiana de Teto', image: '/modelos/persiana-teto.webp', description: 'Feita sob medida para controlar o sol em claraboias e tetos de vidro.', value: 'teto', nextStep: 'passo_4_modelo_teto' },
             { label: 'Persiana Painel', image: '/modelos/persiana-painel.webp', description: 'Painéis largos que correm lateralmente, ideal para portas de varanda.', value: 'painel', nextStep: 'passo_4_tecido_painel' },
-            { label: 'Cortina', image: '/modelos/cortina.webp', description: 'Tecido tradicional em varão ou trilho, focada em aconchego e volume decorativo.', value: 'cortina', nextStep: 'passo_4_tecido_cortina' },
+            { label: 'Cortina', image: '/modelos/Cortina.webp', description: 'Tecido tradicional em varão ou trilho, focada em aconchego e volume decorativo.', value: 'cortina', nextStep: 'passo_4_tecido_cortina' },
             { label: 'Não sei — Quero recomendação', value: 'nao_sei', nextStep: 'passo_8_captura_catalogo' }
         ]
     },
