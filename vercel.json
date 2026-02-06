@@ -1,8 +1,6 @@
 {
   "rewrites": [
-    {
-      "source": "/((?!tecidos/|modelos/|acionamento/|medidas/|assets/|favicon\\.webp|vite\\.svg)(?!.*\\.(png|webp|jpg|jpeg|gif|ico|svg|css|js|woff2?|ttf|eot)$).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/quiz/:path*", "destination": "/index.html" }
   ]
 }
