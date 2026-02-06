@@ -388,16 +388,16 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                         <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                     </div>
                                 )}
-                                <span className="font-bold mb-1">{option.label}</span>
+                                <span className="font-bold mb-1 text-[14px] sm:text-[18px]">{option.label}</span>
                                 {option.description && (
-                                    <span className="text-[18px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                    <span className="text-[13px] sm:text-[16px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
                                 )}
                             </>
                         ) : isTecidoOrAcabamento ? (
                             <div className="flex flex-col justify-center gap-0.5">
-                                <span className="font-bold">{option.label}</span>
+                                <span className="font-bold text-[14px] sm:text-[18px]">{option.label}</span>
                                 {option.description && (
-                                    <span className="text-[18px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                    <span className="text-[13px] sm:text-[16px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
                                 )}
                             </div>
                         ) : (
@@ -407,9 +407,9 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                         <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                     </div>
                                 )}
-                                <span className="font-bold mb-1">{option.label}</span>
+                                <span className="font-bold mb-1 text-[14px] sm:text-[18px]">{option.label}</span>
                                 {option.description && (
-                                    <span className="text-[18px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                    <span className="text-[13px] sm:text-[16px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
                                 )}
                             </>
                         )}
