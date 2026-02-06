@@ -356,10 +356,11 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                 </form>
             )}
 
-            <div className={`gap-2 sm:gap-4 w-full max-w-2xl mx-auto ${stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina') ? 'grid grid-cols-1 sm:grid-cols-2' : 'grid grid-cols-2'}`}>
+            <div className={`gap-2 sm:gap-4 w-full max-w-2xl mx-auto ${stepId && (stepId === 'passo_4_modelo' || stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento') ? 'grid grid-cols-1 sm:grid-cols-2' : 'grid grid-cols-2'}`}>
                 {options.map((option, index) => {
                     const isSelected = selectedValue === option.value;
-                    const isTecidoStep = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina');
+                    const isModeloStep = stepId === 'passo_4_modelo';
+                    const isTecidoOrAcabamento = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento');
                     return (
                     <button
                         key={index}
@@ -368,9 +369,21 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             isSelected 
                                 ? 'border-[#4CAF50] bg-green-50 shadow-md' 
                                 : 'border-gray-200 hover:border-[#4CAF50] text-gray-800'
-                        } ${isTecidoStep ? (option.image ? 'grid grid-cols-[minmax(0,20%)_1fr] gap-3 sm:gap-4 items-center text-left' : 'flex flex-col justify-center text-left') : 'flex flex-col items-center justify-center text-center'}`}
+                        } ${isModeloStep ? 'flex flex-col items-center justify-center text-center' : isTecidoOrAcabamento ? (option.image ? 'grid grid-cols-[minmax(72px,28%)_1fr] gap-3 sm:gap-4 items-center text-left' : 'flex flex-col justify-center text-left') : 'flex flex-col items-center justify-center text-center'}`}
                     >
-                        {isTecidoStep ? (
+                        {isModeloStep ? (
+                            <>
+                                {option.image && (
+                                    <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-white">
+                                        <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                    </div>
+                                )}
+                                <span className="font-bold mb-1">{option.label}</span>
+                                {option.description && (
+                                    <span className="text-[10px] sm:text-xs text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                )}
+                            </>
+                        ) : isTecidoOrAcabamento ? (
                             option.image ? (
                             <>
                                 <div className="min-w-0 flex items-center justify-center overflow-hidden rounded-lg bg-white h-24 sm:h-32">
