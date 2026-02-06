@@ -238,7 +238,7 @@ export const STEPS = [
         ]
     },
 
-    // [FASE 4.9.1] ACABAMENTO CORTINA
+    // [FASE 4.9.1] ACABAMENTO CORTINA — imagens por tecido escolhido (passo_4_tecido_cortina)
     {
         id: 'passo_4_acabamento_cortina',
         phase: 4,
@@ -252,7 +252,54 @@ export const STEPS = [
             { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 05-Prega Fêmea (Argola ou trilho).png' },
             { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 06-Prega Franzida (argola ou trilho).png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
-        ]
+        ],
+        optionsByTecido: {
+            blackout: [
+                { label: 'Ilhós', description: 'Acabamento moderno e prático, com deslizamento fácil e visual contemporâneo.', value: 'ilhos', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 01-Ilhós.png' },
+                { label: 'Wave (Ripplefold)', description: 'Ondulação uniforme e elegante, proporcionando caimento sofisticado e contínuo.', value: 'wave', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 02-Wave (Ripplefold).png' },
+                { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 03-Prega Americana (argola ou trilho).png' },
+                { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 04-Prega Macho (argola ou trilho).png' },
+                { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 05-Prega Fêmea (Argola ou trilho).png' },
+                { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 06-Prega Franzida (argola ou trilho).png' },
+                { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
+            ],
+            semi_blackout_70: [
+                { label: 'Ilhós', description: 'Acabamento moderno e prático, com deslizamento fácil e visual contemporâneo.', value: 'ilhos', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Semi-Blackout 70% 01-Ilhós.png' },
+                { label: 'Wave (Ripplefold)', description: 'Ondulação uniforme e elegante, proporcionando caimento sofisticado e contínuo.', value: 'wave', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Semi-Blackout 70% 02-Wave (Ripplefold).png' },
+                { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Semi-Blackout 70% 03-Prega Americana (argola ou trilho).png' },
+                { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Semi-Blackout 70% 04-Prega Macho (argola ou trilho).png' },
+                { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Semi-Blackout 70% 05-Prega Fêmea (Argola ou trilho).png' },
+                { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Semi-Blackout 70% 06-Prega Franzida (argola ou trilho).png' },
+                { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
+            ],
+            voil: [
+                { label: 'Ilhós', description: 'Acabamento moderno e prático, com deslizamento fácil e visual contemporâneo.', value: 'ilhos', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida Voil 01-Ilhós.png' },
+                { label: 'Wave (Ripplefold)', description: 'Ondulação uniforme e elegante, proporcionando caimento sofisticado e contínuo.', value: 'wave', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida Voil 02-Wave (Ripplefold).png' },
+                { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida Voil 03-Prega Americana (argola ou trilho).png' },
+                { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida Voil 04-Prega Macho (argola ou trilho).png' },
+                { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida Voil 05-Prega Fêmea (Argola ou trilho).png' },
+                { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida Voil 06-Prega Franzida (argola ou trilho).png' },
+                { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
+            ],
+            linho: [
+                { label: 'Ilhós', description: 'Acabamento moderno e prático, com deslizamento fácil e visual contemporâneo.', value: 'ilhos', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida de Linho 01-Ilhós.png' },
+                { label: 'Wave (Ripplefold)', description: 'Ondulação uniforme e elegante, proporcionando caimento sofisticado e contínuo.', value: 'wave', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida de Linho 02-Wave (Ripplefold).png' },
+                { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida de Linho 03-Prega Americana (argola ou trilho).png' },
+                { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida de Linho 04-Prega Macho (argola ou trilho).png' },
+                { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida de Linho 05-Prega Fêmea (Argola ou trilho).png' },
+                { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Translúcida de Linho 06-Prega Franzida (argola ou trilho).png' },
+                { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
+            ],
+            dupla: [
+                { label: 'Ilhós', description: 'Acabamento moderno e prático, com deslizamento fácil e visual contemporâneo.', value: 'ilhos', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Dupla (Voil + Blackout) 01-Ilhós.png' },
+                { label: 'Wave (Ripplefold)', description: 'Ondulação uniforme e elegante, proporcionando caimento sofisticado e contínuo.', value: 'wave', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Dupla (Voil + Blackout) 02-Wave (Ripplefold).png' },
+                { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Dupla (Voil + Blackout) 03-Prega Americana (argola ou trilho).png' },
+                { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Dupla (Voil + Blackout) 04-Prega Macho (argola ou trilho).png' },
+                { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Dupla (Voil + Blackout) 05-Prega Fêmea (Argola ou trilho).png' },
+                { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Dupla (Voil + Blackout) 06-Prega Franzida (argola ou trilho).png' },
+                { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
+            ]
+        }
     },
 
     // [FASE 5] ESTÁGIO

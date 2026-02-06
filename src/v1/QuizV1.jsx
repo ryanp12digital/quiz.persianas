@@ -334,6 +334,12 @@ export default function QuizV1() {
   const progress = ((currentStepIndex + 1) / STEPS.length) * 100;
 
   const modifiedStep = { ...activeStep };
+  if (activeStep.id === 'passo_4_acabamento_cortina' && activeStep.optionsByTecido) {
+    const tecidoCortina = currentItem.passo_4_tecido_cortina;
+    modifiedStep.options = (tecidoCortina && activeStep.optionsByTecido[tecidoCortina])
+      ? activeStep.optionsByTecido[tecidoCortina]
+      : activeStep.options;
+  }
 
   const canGoBackStep = history.length > 1;
 
