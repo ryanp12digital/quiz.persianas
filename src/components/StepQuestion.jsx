@@ -15,6 +15,12 @@ const formatPhoneNumber = (value) => {
     return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 7)}-${phoneNumber.slice(7, 11)}`;
 };
 
+const getImageSrc = (path) => {
+    if (!path) return '';
+    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+    return `${base}${path.startsWith('/') ? path : '/' + path}`;
+};
+
 export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
@@ -369,13 +375,13 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                             isSelected 
                                 ? 'border-[#4CAF50] bg-green-50 shadow-md' 
                                 : 'border-gray-200 hover:border-[#4CAF50] text-gray-800'
-                        } ${isModeloStep ? 'flex flex-col items-center justify-center text-center' : isTecidoOrAcabamento ? (option.image ? 'grid grid-cols-[minmax(72px,28%)_1fr] gap-3 sm:gap-4 items-center text-left' : 'flex flex-col justify-center text-left') : 'flex flex-col items-center justify-center text-center'}`}
+                        } ${(isModeloStep || (isTecidoOrAcabamento && option.image)) ? 'flex flex-col items-center justify-center text-center' : isTecidoOrAcabamento ? 'flex flex-col justify-center text-center' : 'flex flex-col items-center justify-center text-center'}`}
                     >
-                        {isModeloStep ? (
+                        {(isModeloStep || (isTecidoOrAcabamento && option.image)) ? (
                             <>
                                 {option.image && (
                                     <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-white">
-                                        <img src={option.image} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                        <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                     </div>
                                 )}
                                 <span className="font-bold mb-1">{option.label}</span>
@@ -384,31 +390,17 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                 )}
                             </>
                         ) : isTecidoOrAcabamento ? (
-                            option.image ? (
-                            <>
-                                <div className="min-w-0 flex items-center justify-center overflow-hidden rounded-lg bg-white h-24 sm:h-32">
-                                    <img src={option.image} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
-                                </div>
-                                <div className="min-w-0 flex flex-col justify-center gap-0.5">
-                                    <span className="font-bold">{option.label}</span>
-                                    {option.description && (
-                                        <span className="text-xs sm:text-sm text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
-                                    )}
-                                </div>
-                            </>
-                            ) : (
-                            <div className="min-w-0 flex flex-col justify-center gap-0.5">
+                            <div className="flex flex-col justify-center gap-0.5">
                                 <span className="font-bold">{option.label}</span>
                                 {option.description && (
                                     <span className="text-xs sm:text-sm text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
                                 )}
                             </div>
-                            )
                         ) : (
                             <>
                                 {option.image && (
                                     <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-white">
-                                        <img src={option.image} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                        <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                     </div>
                                 )}
                                 <span className="font-bold mb-1">{option.label}</span>
