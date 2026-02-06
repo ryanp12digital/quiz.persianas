@@ -366,6 +366,7 @@ export default function QuizV1() {
           formId={formId}
           initialValues={currentItem}
           selectedValue={currentItem[activeStep.id]}
+          stepId={activeStep.id}
         />
       </div>
     </Layout>

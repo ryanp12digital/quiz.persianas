@@ -19,8 +19,8 @@ export const STEPS = [
         question: 'Você gostaria dessa persiana manual ou automática?',
         type: 'radio',
         options: [
-            { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_5_estagio' },
-            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_5_estagio' },
+            { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_5_estagio', image: '/acionamento/Manual (com corrente, haste ou bastão).png' },
+            { label: 'Motorizada', value: 'motorizada', nextStep: 'passo_5_estagio', image: '/acionamento/Motorizada.png' },
             { label: 'Ainda não sei', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -52,19 +52,19 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Persiana Rolô:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento' },
-            { label: 'FR Blackout', description: 'Blackout com proteção anti-chama certificada.', value: 'fr_blackout', nextStep: 'passo_3_acionamento' },
-            { label: 'Semi-blackout', description: 'Nível intermediário de luz, com leve escurecimento.', value: 'semi_blackout', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento' },
-            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
-            { label: 'FR Translúcido', description: 'Translúcido com retardante de chama para maior segurança.', value: 'fr_translucido', nextStep: 'passo_3_acionamento' },
-            { label: 'Hospitalar Antimicrobiano', description: 'Superfície higiênica, alta privacidade e bloqueio de luz.', value: 'hospitalar', nextStep: 'passo_3_acionamento' },
-            { label: 'Screen Metalizado 1%', description: 'Máximo controle de luz e calor para áreas muito ensolaradas.', value: 'metalizado_1', nextStep: 'passo_3_acionamento' },
-            { label: 'Screen Metalizado 3%', description: 'Reduz ofuscamento e calor, mantendo parte da vista externa.', value: 'metalizado_3', nextStep: 'passo_3_acionamento' },
-            { label: 'Screen Metalizado 5%', description: 'Combina controle solar com maior transparência e conforto visual.', value: 'metalizado_5', nextStep: 'passo_3_acionamento' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 01-Blackout.png' },
+            { label: 'FR Blackout', description: 'Blackout com proteção anti-chama certificada.', value: 'fr_blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 02-FR Blackout.png' },
+            { label: 'Semi-blackout', description: 'Nível intermediário de luz, com leve escurecimento.', value: 'semi_blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 03-Semi-blackout.png' },
+            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 04-Tela solar 1%.png' },
+            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 05-Tela solar 3%.png' },
+            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 06-Tela solar 5%.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 07-Translúcida.png' },
+            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 08-Decorativo.png' },
+            { label: 'FR Translúcido', description: 'Translúcido com retardante de chama para maior segurança.', value: 'fr_translucido', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 09-FR Translúcido.png' },
+            { label: 'Hospitalar Antimicrobiano', description: 'Superfície higiênica, alta privacidade e bloqueio de luz.', value: 'hospitalar', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 10-Hospitalar Antimicrobiano.png' },
+            { label: 'Screen Metalizado 1%', description: 'Máximo controle de luz e calor para áreas muito ensolaradas.', value: 'metalizado_1', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 11-Screen Metalizado 1%.png' },
+            { label: 'Screen Metalizado 3%', description: 'Reduz ofuscamento e calor, mantendo parte da vista externa.', value: 'metalizado_3', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 12-Screen Metalizado 3%.png' },
+            { label: 'Screen Metalizado 5%', description: 'Combina controle solar com maior transparência e conforto visual.', value: 'metalizado_5', nextStep: 'passo_3_acionamento', image: '/tecidos/Rolô 13-Screen Metalizado 5%.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -76,13 +76,13 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Persiana Romana:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento' },
-            { label: 'Semi-blackout', description: 'Nível intermediário de luz, com leve escurecimento.', value: 'semi_blackout', nextStep: 'passo_3_acionamento' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento' },
-            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana 01-Blackout.png' },
+            { label: 'Semi-blackout', description: 'Nível intermediário de luz, com leve escurecimento.', value: 'semi_blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana 02-Semi-blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana 06-Translúcida.png' },
+            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana 03-Tela solar 1%.png' },
+            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana 04-Tela solar 3%.png' },
+            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana 05-Tela solar 5%.png' },
+            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana 07-Decorativo.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -94,8 +94,8 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Double Vision:',
         type: 'radio',
         options: [
-            { label: 'Blackout com translucido', description: 'Combina faixas blackout e transparentes em sistema duplo, permitindo alternar entre escuro total, luz parcial e visão externa.', value: 'blackout_translucido', nextStep: 'passo_3_acionamento' },
-            { label: 'Semi-Blackout com translucido', description: 'Faixas opacas mais densas, reduzem bem a luminosidade.', value: 'semi_blackout_translucido', nextStep: 'passo_3_acionamento' },
+            { label: 'Blackout com translucido', description: 'Combina faixas blackout e transparentes em sistema duplo, permitindo alternar entre escuro total, luz parcial e visão externa.', value: 'blackout_translucido', nextStep: 'passo_3_acionamento', image: '/tecidos/Double Vision 01-Blackout com Translúcido.png' },
+            { label: 'Semi-Blackout com translucido', description: 'Faixas opacas mais densas, reduzem bem a luminosidade.', value: 'semi_blackout_translucido', nextStep: 'passo_3_acionamento', image: '/tecidos/Double Vision 02-Semi-blackout com Translúcido.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -107,10 +107,10 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Persiana Vertical:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio' },
-            { label: 'PVC Blackout', description: 'Lâminas em PVC opaco, fáceis de limpar, alta durabilidade e ótimo custo-benefício em áreas úmidas.', value: 'pvc_blackout', nextStep: 'passo_5_estagio' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio' },
-            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_5_estagio' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio', image: '/tecidos/Vertical 01-Blackout.png' },
+            { label: 'PVC Blackout', description: 'Lâminas em PVC opaco, fáceis de limpar, alta durabilidade e ótimo custo-benefício em áreas úmidas.', value: 'pvc_blackout', nextStep: 'passo_5_estagio', image: '/tecidos/Vertical 02-PVC Blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio', image: '/tecidos/Vertical 03-Translúcida.png' },
+            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_5_estagio', image: '/tecidos/Vertical 04-Decorativo.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -122,12 +122,12 @@ export const STEPS = [
         question: 'Escolha o acabamento para sua Persiana de Madeira:',
         type: 'radio',
         options: [
-            { label: 'Madeira natural 50 mm com cadarço', description: 'Persiana clássica de lâminas largas com cadarço aparente, une beleza natural e controle eficiente da luz.', value: 'natural_cadarco', nextStep: 'passo_3_acionamento' },
-            { label: 'Madeira natural 50 mm com fita', description: 'Versão com fitas têxteis largas que cobrem os furos, oferecendo acabamento sofisticado e mais privacidade.', value: 'natural_fita', nextStep: 'passo_3_acionamento' },
-            { label: 'Eco wood com cadarço', description: 'Persiana sustentável feita com composto sintético e fibras recicláveis, resistente à umidade e fácil de limpar.', value: 'eco_cadarco', nextStep: 'passo_3_acionamento' },
-            { label: 'Eco wood com fita', description: 'Versão com fitas têxteis que aumentam a privacidade e o apelo decorativo, mantendo o caráter ecológico.', value: 'eco_fita', nextStep: 'passo_3_acionamento' },
-            { label: 'Bambu com cadarço', description: 'Persiana natural de bambu trançado, com cadarços aparentes e textura leve e tropical.', value: 'bambu_cadarco', nextStep: 'passo_3_acionamento' },
-            { label: 'Bambu com fita', description: 'Modelo com fitas de tecido decorativas, que trazem toque artesanal e sofisticação ao estilo nautral do bambu.', value: 'bambu_fita', nextStep: 'passo_3_acionamento' },
+            { label: 'Madeira natural 50 mm com cadarço', description: 'Persiana clássica de lâminas largas com cadarço aparente, une beleza natural e controle eficiente da luz.', value: 'natural_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Madeira 01-Madeira natural 50mm com cadarço.png' },
+            { label: 'Madeira natural 50 mm com fita', description: 'Versão com fitas têxteis largas que cobrem os furos, oferecendo acabamento sofisticado e mais privacidade.', value: 'natural_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Madeira 02-Madeira natural 50mm com fita.png' },
+            { label: 'Eco wood com cadarço', description: 'Persiana sustentável feita com composto sintético e fibras recicláveis, resistente à umidade e fácil de limpar.', value: 'eco_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Madeira 03-Eco wood com cadarço.png' },
+            { label: 'Eco wood com fita', description: 'Versão com fitas têxteis que aumentam a privacidade e o apelo decorativo, mantendo o caráter ecológico.', value: 'eco_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Madeira 04-Eco wood com fita.png' },
+            { label: 'Bambu com cadarço', description: 'Persiana natural de bambu trançado, com cadarços aparentes e textura leve e tropical.', value: 'bambu_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Madeira 05-Bambu com cadarço.png' },
+            { label: 'Bambu com fita', description: 'Modelo com fitas de tecido decorativas, que trazem toque artesanal e sofisticação ao estilo nautral do bambu.', value: 'bambu_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Madeira 06-Bambu com fita.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -139,12 +139,12 @@ export const STEPS = [
         question: 'Escolha o acabamento para sua Persiana de Alumínio:',
         type: 'radio',
         options: [
-            { label: 'Lâmina 16 mm (micro)', description: 'Lâminas finas e delicadas, ideais para janelas pequenas ou portas de vidro.', value: 'lamina_16', nextStep: 'passo_3_acionamento' },
-            { label: 'Lâmina 25 mm (padrão)', description: 'Modelo mais comum, permite bom controle da luz e ventilação.', value: 'lamina_25', nextStep: 'passo_3_acionamento' },
-            { label: 'Lâmina 50 mm (larga)', description: 'Visual moderno e robusto, com maior espaçamento entre as lâminas.', value: 'lamina_50', nextStep: 'passo_3_acionamento' },
-            { label: 'Perfurada (micro furos)', description: 'Lâminas com microperfurações que suavizam a entrada de luz e calor.', value: 'perfurada', nextStep: 'passo_3_acionamento' },
-            { label: 'Acabamento brilhante ou métalico', description: 'Efeito decorativo, com brilho e reflexão de luz.', value: 'brilhante', nextStep: 'passo_3_acionamento' },
-            { label: 'Acabamento fosco ou acetinado', description: 'Visual discreto e sofisticado, reduz reflexos.', value: 'fosco', nextStep: 'passo_3_acionamento' },
+            { label: 'Lâmina 16 mm (micro)', description: 'Lâminas finas e delicadas, ideais para janelas pequenas ou portas de vidro.', value: 'lamina_16', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Alumínio 01-Lâmina 16mm (micro).png' },
+            { label: 'Lâmina 25 mm (padrão)', description: 'Modelo mais comum, permite bom controle da luz e ventilação.', value: 'lamina_25', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Alumínio 02-Lâmina 25mm (padrão).png' },
+            { label: 'Lâmina 50 mm (larga)', description: 'Visual moderno e robusto, com maior espaçamento entre as lâminas.', value: 'lamina_50', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Alumínio 03-Lâmina 50mm (larga).png' },
+            { label: 'Perfurada (micro furos)', description: 'Lâminas com microperfurações que suavizam a entrada de luz e calor.', value: 'perfurada', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Alumínio 04-Perfurada (micro furos).png' },
+            { label: 'Acabamento brilhante ou métalico', description: 'Efeito decorativo, com brilho e reflexão de luz.', value: 'brilhante', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Alumínio 05-Acabamento brilhante ou metálico.png' },
+            { label: 'Acabamento fosco ou acetinado', description: 'Visual discreto e sofisticado, reduz reflexos.', value: 'fosco', nextStep: 'passo_3_acionamento', image: '/tecidos/Horizontal de Alumínio 06-Acabamento fosco ou acetinado.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -170,11 +170,11 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Romana de Teto:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento' },
-            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana de Teto 01-Blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana de Teto 02-Translúcida.png' },
+            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana de Teto 03-Tela solar 1%.png' },
+            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana de Teto 04-Tela solar 3%.png' },
+            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento', image: '/tecidos/Romana de Teto 05-Tela solar 5%.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -186,8 +186,8 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Celular de Teto:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio', image: '/tecidos/Celular de Teto 01-Blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio', image: '/tecidos/Celular de Teto 02-Translúcida.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -199,8 +199,8 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Plissada de Teto:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio', image: '/tecidos/Plissadade Teto 01-Blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio', image: '/tecidos/Plissadade Teto 02-Translúcida.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -229,11 +229,11 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Cortina:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_4_acabamento_cortina' },
-            { label: 'Semi-blacKout 70%', description: 'Mantém cerca de 70% da luminosidade.', value: 'semi_blackout_70', nextStep: 'passo_4_acabamento_cortina' },
-            { label: 'Translúcido Voil', description: 'Cortina leve, com excelente passagem de luz natural.', value: 'voil', nextStep: 'passo_4_acabamento_cortina' },
-            { label: 'Translúcido de Linho', description: 'Cortina com visual mais encorpado e sofisticado, mantendo translucidez e trazendo textura natural ao ambiente.', value: 'linho', nextStep: 'passo_4_acabamento_cortina' },
-            { label: 'Cortina Dupla (Voil + Blackout)', description: 'Combinação funcional e elegante: o voil garante leveza durante o dia e o blackout proporciona bloqueio de luz e privacidade quando necessário.', value: 'dupla', nextStep: 'passo_4_acabamento_cortina' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 01-Blackout.png' },
+            { label: 'Semi-blacKout 70%', description: 'Mantém cerca de 70% da luminosidade.', value: 'semi_blackout_70', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 02-Semi-Blackout 70%.png' },
+            { label: 'Translúcido Voil', description: 'Cortina leve, com excelente passagem de luz natural.', value: 'voil', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 03-Translúcido Voil.png' },
+            { label: 'Translúcido de Linho', description: 'Cortina com visual mais encorpado e sofisticado, mantendo translucidez e trazendo textura natural ao ambiente.', value: 'linho', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 04-Translúcido de Linho.png' },
+            { label: 'Cortina Dupla (Voil + Blackout)', description: 'Combinação funcional e elegante: o voil garante leveza durante o dia e o blackout proporciona bloqueio de luz e privacidade quando necessário.', value: 'dupla', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 05-Cortina Dupla (Voil + Blackout).png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -245,12 +245,12 @@ export const STEPS = [
         question: 'Escolha o acabamento para sua Cortina:',
         type: 'radio',
         options: [
-            { label: 'Ilhós', description: 'Acabamento moderno e prático, com deslizamento fácil e visual contemporâneo.', value: 'ilhos', nextStep: 'passo_3_acionamento' },
-            { label: 'Wave (Ripplefold)', description: 'Ondulação uniforme e elegante, proporcionando caimento sofisticado e contínuo.', value: 'wave', nextStep: 'passo_3_acionamento' },
-            { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento' },
-            { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento' },
-            { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento' },
-            { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento' },
+            { label: 'Ilhós', description: 'Acabamento moderno e prático, com deslizamento fácil e visual contemporâneo.', value: 'ilhos', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 01-Ilhós.png' },
+            { label: 'Wave (Ripplefold)', description: 'Ondulação uniforme e elegante, proporcionando caimento sofisticado e contínuo.', value: 'wave', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 02-Wave (Ripplefold).png' },
+            { label: 'Prega Americana (argola ou trilho)', description: 'Visual clássico e alinhado, com pregas marcadas que garantem elegância e movimento.', value: 'americana', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 03-Prega Americana (argola ou trilho).png' },
+            { label: 'Prega Macho (argola ou trilho)', description: 'Prega reta e estruturada, ideal para ambientes modernos e bem definidos.', value: 'macho', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 04-Prega Macho (argola ou trilho).png' },
+            { label: 'Prega Fêmea (argola ou trilho)', description: 'Acabamento delicado com pregas internas, oferecendo um visual suave e refinado.', value: 'femea', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 05-Prega Fêmea (Argola ou trilho).png' },
+            { label: 'Prega Franzida (argola ou trilho)', description: 'Caimento volumoso e tradicional, com pregas mais cheias e efeito aconchegante.', value: 'franzida', nextStep: 'passo_3_acionamento', image: '/tecidos/Cortina Blackout 06-Prega Franzida (argola ou trilho).png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },

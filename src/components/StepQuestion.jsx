@@ -15,7 +15,7 @@ const formatPhoneNumber = (value) => {
     return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 7)}-${phoneNumber.slice(7, 11)}`;
 };
 
-export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null }) {
+export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
         inputs.forEach(input => {
@@ -284,34 +284,46 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                 </form>
             )}
 
-            <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-2xl mx-auto">
+            <div className={`gap-2 sm:gap-4 w-full max-w-2xl mx-auto ${stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina') ? 'grid grid-cols-1 sm:grid-cols-2' : 'grid grid-cols-2'}`}>
                 {options.map((option, index) => {
                     const isSelected = selectedValue === option.value;
+                    const isTecidoStep = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina');
                     return (
                     <button
                         key={index}
                         onClick={() => onOptionSelect(option)}
-                        className={`group relative bg-white border rounded-2xl p-3 sm:p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 active:scale-95 text-xs sm:text-[0.9rem] font-medium ${
+                        className={`group relative bg-white border rounded-2xl p-3 sm:p-6 cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 active:scale-95 text-xs sm:text-[0.9rem] font-medium w-full min-w-0 ${
                             isSelected 
                                 ? 'border-[#4CAF50] bg-green-50 shadow-md' 
                                 : 'border-gray-200 hover:border-[#4CAF50] text-gray-800'
-                        }`}
+                        } ${isTecidoStep ? 'grid grid-cols-[minmax(0,20%)_1fr] gap-3 sm:gap-4 items-center text-left' : 'flex flex-col items-center justify-center text-center'}`}
                     >
-                        {option.image && (
-                            <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-gray-50">
-                                <img 
-                                    src={option.image} 
-                                    alt={option.label} 
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    onError={(e) => e.target.style.display = 'none'}
-                                />
-                            </div>
-                        )}
-                        <span className="font-bold mb-1">{option.label}</span>
-                        {option.description && (
-                            <span className="text-[10px] sm:text-xs text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>
-                                {option.description}
-                            </span>
+                        {isTecidoStep ? (
+                            <>
+                                <div className="min-w-0 flex items-center justify-center overflow-hidden rounded-lg bg-white h-24 sm:h-32">
+                                    {option.image ? (
+                                        <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                    ) : null}
+                                </div>
+                                <div className="min-w-0 flex flex-col justify-center gap-0.5">
+                                    <span className="font-bold">{option.label}</span>
+                                    {option.description && (
+                                        <span className="text-[10px] sm:text-xs text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                    )}
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                {option.image && (
+                                    <div className="w-full h-24 sm:h-40 mb-2 sm:mb-4 overflow-hidden rounded-xl bg-white">
+                                        <img src={encodeURI(option.image)} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                    </div>
+                                )}
+                                <span className="font-bold mb-1">{option.label}</span>
+                                {option.description && (
+                                    <span className="text-[10px] sm:text-xs text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                )}
+                            </>
                         )}
                     </button>
                     );
