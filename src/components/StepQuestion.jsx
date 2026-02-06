@@ -365,7 +365,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                 </form>
             )}
 
-            <div className={`gap-2 sm:gap-4 w-full max-w-2xl mx-auto ${stepId && (stepId === 'passo_4_modelo' || stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento') ? 'grid grid-cols-1 sm:grid-cols-2' : 'grid grid-cols-2'}`}>
+            <div className="gap-2 sm:gap-4 w-full max-w-2xl mx-auto grid grid-cols-2">
                 {options.map((option, index) => {
                     const isSelected = selectedValue === option.value;
                     const isModeloStep = stepId === 'passo_4_modelo';
@@ -390,14 +390,14 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                 )}
                                 <span className="font-bold mb-1">{option.label}</span>
                                 {option.description && (
-                                    <span className="text-xs sm:text-sm text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                    <span className="text-[18px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
                                 )}
                             </>
                         ) : isTecidoOrAcabamento ? (
                             <div className="flex flex-col justify-center gap-0.5">
                                 <span className="font-bold">{option.label}</span>
                                 {option.description && (
-                                    <span className="text-xs sm:text-sm text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                    <span className="text-[18px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
                                 )}
                             </div>
                         ) : (
@@ -409,7 +409,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                                 )}
                                 <span className="font-bold mb-1">{option.label}</span>
                                 {option.description && (
-                                    <span className="text-xs sm:text-sm text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                    <span className="text-[18px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
                                 )}
                             </>
                         )}
