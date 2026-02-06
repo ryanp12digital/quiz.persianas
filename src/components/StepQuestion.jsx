@@ -160,122 +160,194 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
             )}
 
             {inputs.length > 0 && (
-                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full mx-auto mb-8 min-w-0 ${type === 'textarea' ? 'max-w-3xl' : 'max-w-md'}`}>
-                    <div className={type === 'textarea' ? 'flex flex-col gap-4' : 'grid grid-cols-1 sm:grid-cols-2 gap-4'}>
-                        {inputs.map((input) => {
-                            const isMeasurement = input.id === 'largura' || input.id === 'altura';
-                            const isTextarea = input.type === 'textarea';
-
-                            return (
-                                <div key={input.id} className="text-left w-full min-w-0">
-                                    {input.label && (
-                                        <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                            {input.label} {input.required !== false && <span className="text-red-500">*</span>}
-                                        </label>
-                                    )}
-                                    <div className="relative flex items-center">
-                                        {input.type === 'select' ? (
-                                            <select
-                                                className={`w-full p-3 sm:p-4 border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] bg-white ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
-                                                value={inputValues[input.id] || ''}
-                                                onChange={(e) => handleInputChange(e, input.id)}
-                                            >
-                                                <option value="">Selecione...</option>
-                                                {input.options.map(opt => (
-                                                    <option key={opt} value={opt}>{opt}</option>
-                                                ))}
-                                            </select>
-                                        ) : input.type === 'multi-select' ? (
-                                            <div className={`w-full p-2 border rounded-2xl bg-white min-h-[56px] flex flex-wrap items-center gap-2 relative ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}>
-                                                {(inputValues[input.id] || []).map(item => (
-                                                    <span key={item} className="bg-gray-200 text-gray-800 text-sm px-3 py-1 rounded-full flex items-center gap-2 animate-fadeIn">
-                                                        {item}
-                                                        <button type="button" onClick={() => removeMultiSelectItem(input.id, item)} className="text-gray-500 hover:text-red-500 font-bold leading-none focus:outline-none">&times;</button>
-                                                    </span>
-                                                ))}
-                                                <select
-                                                    className="grow p-2 bg-transparent outline-none text-[0.9rem] min-w-[150px] cursor-pointer"
-                                                    onChange={(e) => handleMultiSelectChange(e, input.id)}
-                                                    value=""
-                                                >
-                                                    <option value="" disabled>{inputValues[input.id] && inputValues[input.id].length > 0 ? "Adicionar outro..." : input.placeholder}</option>
-                                                    {input.options.filter(opt => !(inputValues[input.id] || []).includes(opt)).map(opt => (
-                                                        <option key={opt} value={opt}>{opt}</option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        ) : isTextarea ? (
-                                            <textarea
-                                                placeholder={input.placeholder}
-                                                rows={8}
-                                                className={`w-full p-3 sm:p-4 border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] resize-none ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
-                                                value={inputValues[input.id] || ''}
-                                                onChange={(e) => handleInputChange(e, input.id)}
-                                            />
-                                        ) : (
-                                            <>
+                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full mx-auto mb-8 min-w-0 ${type === 'textarea' ? 'max-w-3xl' : 'max-w-lg'}`}>
+                    <div className={type === 'textarea' ? 'flex flex-col gap-5' : 'flex flex-col gap-5'}>
+                        {/* Agrupamento lógico para captura: nome+whatsapp | email+cidade+bairro | ambientes */}
+                        {type === 'mixed' && inputs.some(i => i.id === 'nome') ? (
+                            <>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    {inputs.filter(i => i.id === 'nome' || i.id === 'whatsapp').map((input) => (
+                                        <div key={input.id} className="text-left w-full min-w-0">
+                                            {input.label && (
+                                                <label htmlFor={input.id} className="block text-sm font-semibold text-gray-800 mb-2">
+                                                    {input.label} {input.required !== false && <span className="text-red-500">*</span>}
+                                                </label>
+                                            )}
+                                            <div className="relative flex items-center">
                                                 <input
+                                                    id={input.id}
+                                                    name={input.id}
                                                     type={input.type || 'text'}
                                                     placeholder={input.placeholder}
-                                                    className={`w-full p-3 sm:p-4 ${input.suffix ? 'pr-10 sm:pr-12' : ''} border rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none transition-all text-sm sm:text-[0.9rem] ${errors[input.id] ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-300'}`}
+                                                    className={`w-full p-4 sm:py-4 sm:px-5 ${input.suffix ? 'pr-14' : ''} border-2 rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-[#4CAF50] outline-none transition-all text-base ${errors[input.id] ? 'border-red-500 bg-red-50/50' : 'border-gray-200 hover:border-gray-300'}`}
                                                     value={inputValues[input.id] || ''}
                                                     onChange={(e) => handleInputChange(e, input.id, input.mask)}
                                                     maxLength={input.mask === 'phone' ? 15 : undefined}
                                                 />
                                                 {input.suffix && (
-                                                    <span className="absolute right-3 sm:right-4 text-gray-400 font-medium pointer-events-none text-sm sm:text-base">
-                                                        {input.suffix}
-                                                    </span>
+                                                    <span className="absolute right-4 text-gray-500 font-medium pointer-events-none text-sm">{input.suffix}</span>
                                                 )}
-                                            </>
-                                        )}
-                                    </div>
-                                    {errors[input.id] && (
-                                        <p className="text-red-500 text-xs ml-1 mt-1 animate-fadeIn">{errors[input.id]}</p>
-                                    )}
+                                            </div>
+                                            {errors[input.id] && <p className="text-red-500 text-xs mt-2 font-medium">{errors[input.id]}</p>}
+                                        </div>
+                                    ))}
                                 </div>
-                            );
-                        })}
+                                {inputs.filter(i => ['email', 'cidade', 'bairro'].includes(i.id)).length > 0 && (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                        {inputs.filter(i => ['email', 'cidade', 'bairro'].includes(i.id)).map((input) => (
+                                            <div key={input.id} className="text-left w-full min-w-0">
+                                                {input.label && (
+                                                    <label htmlFor={input.id} className="block text-sm font-semibold text-gray-800 mb-2">
+                                                        {input.label} {input.required !== false && <span className="text-red-500">*</span>}
+                                                    </label>
+                                                )}
+                                                <input
+                                                    id={input.id}
+                                                    name={input.id}
+                                                    type={input.type || 'text'}
+                                                    placeholder={input.placeholder}
+                                                    className={`w-full p-4 sm:py-4 sm:px-5 border-2 rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-[#4CAF50] outline-none transition-all text-base ${errors[input.id] ? 'border-red-500 bg-red-50/50' : 'border-gray-200 hover:border-gray-300'}`}
+                                                    value={inputValues[input.id] || ''}
+                                                    onChange={(e) => handleInputChange(e, input.id, input.mask)}
+                                                />
+                                                {errors[input.id] && <p className="text-red-500 text-xs mt-2 font-medium">{errors[input.id]}</p>}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                {inputs.filter(i => i.type === 'multi-select').map((input) => (
+                                    <div key={input.id} className="text-left w-full">
+                                        <label htmlFor={`${input.id}-select`} className="block text-sm font-semibold text-gray-800 mb-2">
+                                            {input.label} {input.required !== false && <span className="text-red-500">*</span>}
+                                        </label>
+                                        <p className="text-xs text-gray-500 mb-2">Selecione um ou mais ambientes</p>
+                                        <div className={`w-full p-4 border-2 rounded-2xl bg-white min-h-[64px] flex flex-wrap items-center gap-2 ${errors[input.id] ? 'border-red-500 bg-red-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                                            {(inputValues[input.id] || []).map(item => (
+                                                <span key={item} className="bg-[#4CAF50]/15 text-[#4CAF50] text-sm px-3 py-1.5 rounded-xl flex items-center gap-2 font-medium">
+                                                    {item}
+                                                    <button type="button" onClick={() => removeMultiSelectItem(input.id, item)} className="text-gray-500 hover:text-red-500 font-bold leading-none focus:outline-none" aria-label="Remover">&times;</button>
+                                                </span>
+                                            ))}
+                                            <select
+                                                id={`${input.id}-select`}
+                                                name={input.id}
+                                                className="grow min-w-[180px] p-2 bg-transparent outline-none text-base cursor-pointer border-none"
+                                                onChange={(e) => handleMultiSelectChange(e, input.id)}
+                                                value=""
+                                            >
+                                                <option value="" disabled>{inputValues[input.id]?.length > 0 ? "Adicionar outro ambiente..." : input.placeholder}</option>
+                                                {input.options.filter(opt => !(inputValues[input.id] || []).includes(opt)).map(opt => (
+                                                    <option key={opt} value={opt}>{opt}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        {errors[input.id] && <p className="text-red-500 text-xs mt-2 font-medium">{errors[input.id]}</p>}
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            inputs.map((input) => {
+                                const isTextarea = input.type === 'textarea';
+                                const inputClasses = `w-full p-4 sm:py-4 sm:px-5 border-2 rounded-2xl focus:ring-2 focus:ring-[#4CAF50] focus:border-[#4CAF50] outline-none transition-all text-base ${errors[input.id] ? 'border-red-500 bg-red-50/50' : 'border-gray-200 hover:border-gray-300'}`;
+                                return (
+                                    <div key={input.id} className="text-left w-full min-w-0">
+                                        {input.label && (
+                                            <label htmlFor={input.id} className="block text-sm font-semibold text-gray-800 mb-2">
+                                                {input.label} {input.required !== false && <span className="text-red-500">*</span>}
+                                            </label>
+                                        )}
+                                        <div className="relative flex items-center">
+                                            {input.type === 'select' ? (
+                                                <select
+                                                    id={input.id}
+                                                    name={input.id}
+                                                    className={inputClasses + ' bg-white'}
+                                                    value={inputValues[input.id] || ''}
+                                                    onChange={(e) => handleInputChange(e, input.id)}
+                                                >
+                                                    <option value="">Selecione...</option>
+                                                    {input.options.map(opt => (
+                                                        <option key={opt} value={opt}>{opt}</option>
+                                                    ))}
+                                                </select>
+                                            ) : input.type === 'multi-select' ? (
+                                                <div className={`w-full p-4 border-2 rounded-2xl bg-white min-h-[64px] flex flex-wrap items-center gap-2 ${errors[input.id] ? 'border-red-500 bg-red-50/50' : 'border-gray-200'}`}>
+                                                    {(inputValues[input.id] || []).map(item => (
+                                                        <span key={item} className="bg-[#4CAF50]/15 text-[#4CAF50] text-sm px-3 py-1.5 rounded-xl flex items-center gap-2 font-medium">
+                                                            {item}
+                                                            <button type="button" onClick={() => removeMultiSelectItem(input.id, item)} className="hover:text-red-500 font-bold leading-none">&times;</button>
+                                                        </span>
+                                                    ))}
+                                                    <select
+                                                        className="grow min-w-[150px] p-2 bg-transparent outline-none cursor-pointer"
+                                                        onChange={(e) => handleMultiSelectChange(e, input.id)}
+                                                        value=""
+                                                    >
+                                                        <option value="" disabled>{inputValues[input.id]?.length > 0 ? "Adicionar outro..." : input.placeholder}</option>
+                                                        {input.options.filter(opt => !(inputValues[input.id] || []).includes(opt)).map(opt => (
+                                                            <option key={opt} value={opt}>{opt}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            ) : isTextarea ? (
+                                                <textarea
+                                                    id={input.id}
+                                                    name={input.id}
+                                                    placeholder={input.placeholder}
+                                                    rows={10}
+                                                    className={inputClasses + ' resize-none min-h-[140px]'}
+                                                    value={inputValues[input.id] || ''}
+                                                    onChange={(e) => handleInputChange(e, input.id)}
+                                                />
+                                            ) : (
+                                                <>
+                                                    <input
+                                                        id={input.id}
+                                                        name={input.id}
+                                                        type={input.type || 'text'}
+                                                        placeholder={input.placeholder}
+                                                        className={inputClasses + (input.suffix ? ' pr-14' : '')}
+                                                        value={inputValues[input.id] || ''}
+                                                        onChange={(e) => handleInputChange(e, input.id, input.mask)}
+                                                        maxLength={input.mask === 'phone' ? 15 : undefined}
+                                                    />
+                                                    {input.suffix && <span className="absolute right-4 text-gray-500 font-medium pointer-events-none text-sm">{input.suffix}</span>}
+                                                </>
+                                            )}
+                                        </div>
+                                        {errors[input.id] && <p className="text-red-500 text-xs mt-2 font-medium">{errors[input.id]}</p>}
+                                    </div>
+                                );
+                            })
+                        )}
                     </div>
                     
-                    {/* Botão Continuar logo abaixo do campo (textarea) */}
                     {type === 'textarea' && (
                         <div className="mt-6">
-                            <button type="button" onClick={handleNext} className="bg-[#4CAF50] text-white font-bold py-2.5 px-8 sm:py-3 sm:px-10 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:-translate-y-1 text-sm sm:text-base">
+                            <button type="button" onClick={handleNext} className="w-full sm:w-auto bg-[#4CAF50] text-white font-bold py-4 px-10 rounded-2xl shadow-md hover:bg-green-600 hover:shadow-lg active:scale-[0.98] transition-all text-base">
                                 Continuar
                             </button>
                         </div>
                     )}
                     
-                    {/* Guias minimalistas para textarea */}
                     {type === 'textarea' && (
-                        <div className="mt-6 pt-6 border-t border-gray-200">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                                    <h3 className="font-semibold text-gray-800 mb-3 text-sm">Modelos disponíveis:</h3>
+                        <div className="mt-8 pt-6 border-t-2 border-gray-100">
+                            <h3 className="text-sm font-bold text-gray-700 mb-4 text-center">Referência rápida</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+                                    <h4 className="font-bold text-gray-800 mb-3 text-sm">Modelos</h4>
                                     <div className="flex flex-wrap gap-2">
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Rolo</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Double Vision</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Romana</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Horizontal de Madeira</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Horizontal de Alumínio</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Vertical</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Teto</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Painel</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Cortina</span>
+                                        {['Rolo', 'Double Vision', 'Romana', 'Horizontal Madeira', 'Horizontal Alumínio', 'Vertical', 'Teto', 'Painel', 'Cortina'].map(m => (
+                                            <span key={m} className="text-xs text-gray-700 bg-white px-3 py-1.5 rounded-lg border border-gray-200">{m}</span>
+                                        ))}
                                     </div>
                                 </div>
-                                <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                                    <h3 className="font-semibold text-gray-800 mb-3 text-sm">Tipos:</h3>
+                                <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+                                    <h4 className="font-bold text-gray-800 mb-3 text-sm">Tipos de tecido</h4>
                                     <div className="flex flex-wrap gap-2">
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Blackout: Bloqueio 100%</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Semi Blackout</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Translúcido</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Tela Solar 1%</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Tela Solar 3%</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Tela Solar 5%</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Decorativo</span>
-                                        <span className="text-[10px] text-gray-600 bg-white px-2.5 py-1 rounded-md border border-gray-200">Outros</span>
+                                        {['Blackout', 'Semi Blackout', 'Translúcido', 'Tela Solar 1/3/5%', 'Decorativo', 'Outros'].map(t => (
+                                            <span key={t} className="text-xs text-gray-700 bg-white px-3 py-1.5 rounded-lg border border-gray-200">{t}</span>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -339,7 +411,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
 
             {(inputs.length > 0 || type === 'mixed') && !(type === 'textarea') && (
                 <div className="mt-6 sm:mt-8">
-                    <button onClick={handleNext} className="bg-[#4CAF50] text-white font-bold py-2.5 px-8 sm:py-3 sm:px-10 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:-translate-y-1 text-sm sm:text-base">
+                    <button type="button" onClick={handleNext} className="w-full sm:w-auto bg-[#4CAF50] text-white font-bold py-4 px-10 rounded-2xl shadow-md hover:bg-green-600 hover:shadow-lg active:scale-[0.98] transition-all text-base">
                         Continuar
                     </button>
                 </div>

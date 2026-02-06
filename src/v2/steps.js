@@ -230,7 +230,7 @@ export const STEPS = [
         type: 'radio',
         options: [
             { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 01-Blackout.png' },
-            { label: 'Semi-blacKout 70%', description: 'Mantém cerca de 70% da luminosidade.', value: 'semi_blackout_70', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 02-Semi-Blackout 70%.png' },
+            { label: 'Semi-Blackout 70%', description: 'Mantém cerca de 70% da luminosidade.', value: 'semi_blackout_70', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 02-Semi-Blackout 70%.png' },
             { label: 'Translúcido Voil', description: 'Cortina leve, com excelente passagem de luz natural.', value: 'voil', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 03-Translúcido Voil.png' },
             { label: 'Translúcido de Linho', description: 'Cortina com visual mais encorpado e sofisticado, mantendo translucidez e trazendo textura natural ao ambiente.', value: 'linho', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 04-Translúcido de Linho.png' },
             { label: 'Cortina Dupla (Voil + Blackout)', description: 'Combinação funcional e elegante: o voil garante leveza durante o dia e o blackout proporciona bloqueio de luz e privacidade quando necessário.', value: 'dupla', nextStep: 'passo_4_acabamento_cortina', image: '/tecidos/Cortina 05-Cortina Dupla (Voil + Blackout).png' },
