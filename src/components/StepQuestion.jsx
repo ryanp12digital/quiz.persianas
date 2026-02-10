@@ -24,6 +24,12 @@ const getImageSrc = (path) => {
     return new URL(path.startsWith('/') ? path : '/' + path, window.location.origin).href;
 };
 
+const scrollToTop = () => {
+    if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+};
+
 export default function StepQuestion({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
@@ -116,6 +122,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
 
     const handleNext = () => {
         if (validate()) {
+            scrollToTop();
             if (onNext) {
                 onNext(inputValues);
             }
@@ -142,7 +149,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
         <div className="step-container relative">
             {canGoBack && (
                 <button 
-                    onClick={onBack}
+                    onClick={() => { scrollToTop(); onBack(); }}
                     className="absolute -top-8 sm:-top-12 left-0 flex items-center text-gray-400 hover:text-[#4CAF50] transition-colors group text-sm sm:text-base"
                 >
                     <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -374,7 +381,7 @@ export default function StepQuestion({ question, subtext, options = [], inputs =
                     return (
                     <button
                         key={index}
-                        onClick={() => onOptionSelect(option)}
+                        onClick={() => { scrollToTop(); onOptionSelect(option); }}
                         className={`group relative bg-white border rounded-2xl p-3 sm:p-6 cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1 active:scale-95 text-xs sm:text-[0.9rem] font-medium w-full min-w-0 ${
                             isSelected 
                                 ? 'border-[#4CAF50] bg-green-50 shadow-md' 

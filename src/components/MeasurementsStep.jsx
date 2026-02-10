@@ -14,6 +14,12 @@ const formatPhoneNumber = (value) => {
     return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 7)}-${phoneNumber.slice(7, 11)}`;
 };
 
+const scrollToTop = () => {
+    if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+};
+
 export default function MeasurementsStep({ question, subtext, inputs = [], onNext, onBack, canGoBack, formId, initialValues = {} }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
@@ -57,6 +63,7 @@ export default function MeasurementsStep({ question, subtext, inputs = [], onNex
 
     const handleNext = () => {
         if (validate()) {
+            scrollToTop();
             if (onNext) {
                 onNext(inputValues);
             }
@@ -67,7 +74,7 @@ export default function MeasurementsStep({ question, subtext, inputs = [], onNex
         <div className="step-container relative">
             {canGoBack && (
                 <button 
-                    onClick={onBack}
+                    onClick={() => { scrollToTop(); onBack(); }}
                     className="absolute -top-8 sm:-top-12 left-0 flex items-center text-gray-400 hover:text-[#4CAF50] transition-colors group text-sm sm:text-base"
                 >
                     <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
