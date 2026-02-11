@@ -68,6 +68,93 @@ const flattenItems = (items, stepData) => {
   return flattened;
 };
 
+// Função para construir payload padronizado do webhook
+const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, currentItem, items) => {
+  // Extrair campos do formulário final
+  const nome = stepData?.nome || '';
+  const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';
+  const email = stepData?.email || '';
+  const cidade = stepData?.cidade || '';
+  const bairro = stepData?.bairro || '';
+  const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
+
+  // Extrair modelo do currentItem
+  let modelo = '';
+  if (currentItem?.passo_4_modelo) {
+    modelo = currentItem.passo_4_modelo;
+  } else if (currentItem?.passo_4_modelo_teto) {
+    modelo = currentItem.passo_4_modelo_teto;
+  }
+
+  // Extrair tecido do currentItem (qualquer chave que comece com passo_4_tecido_)
+  let tecido = '';
+  Object.keys(currentItem || {}).forEach(key => {
+    if (key.startsWith('passo_4_tecido_')) {
+      tecido = currentItem[key] || '';
+    }
+  });
+
+  // Extrair acionamento
+  const acionamento = currentItem?.passo_3_acionamento || '';
+
+  // Extrair medidas (pode estar em passo_6_medidas como objeto ou achatado)
+  let largura = '';
+  let altura = '';
+  if (currentItem?.passo_6_medidas) {
+    if (typeof currentItem.passo_6_medidas === 'object') {
+      largura = currentItem.passo_6_medidas.largura || '';
+      altura = currentItem.passo_6_medidas.altura || '';
+    }
+  } else {
+    largura = currentItem?.largura || '';
+    altura = currentItem?.altura || '';
+  }
+
+  // Extrair acabamento (para cortina)
+  let acabamento = '';
+  if (currentItem?.passo_4_acabamento_cortina) {
+    acabamento = currentItem.passo_4_acabamento_cortina;
+  }
+
+  // Processar itens adicionais
+  const itens_adicionais = Array.isArray(items) && items.length > 0
+    ? items.map(item => ({
+        descricao_livre: item?.descricao_livre || ''
+      }))
+    : [];
+
+  // Construir payload padronizado
+  return {
+    // Metadados
+    form_id: formId || '',
+    quiz_version: quizVersion || '',
+    
+    // Lead/UTM
+    utm_source: leadData?.utm_source || '',
+    utm_medium: leadData?.utm_medium || '',
+    utm_campaign: leadData?.utm_campaign || '',
+    
+    // Dados do formulário final
+    nome: nome,
+    whatsapp: whatsapp,
+    email: email,
+    cidade: cidade,
+    bairro: bairro,
+    ambientes: ambientes,
+    
+    // Dados do item atual
+    modelo: modelo,
+    tecido: tecido,
+    acionamento: acionamento,
+    largura: largura,
+    altura: altura,
+    acabamento: acabamento,
+    
+    // Itens adicionais
+    itens_adicionais: itens_adicionais
+  };
+};
+
 export default function QuizV1() {
   const navigate = useNavigate();
   const [showWelcome, setShowWelcome] = useState(true);
@@ -176,26 +263,17 @@ export default function QuizV1() {
     }
 
     if (activeStep.isFinal) {
-      // Prepara os dados finais, convertendo WhatsApp para formato internacional
-      const processedStepData = { ...stepData };
-      if (processedStepData.whatsapp) {
-        processedStepData.whatsapp = formatWhatsAppForGHL(processedStepData.whatsapp);
-      }
-      
-      // Achatamento de items e remoção de duplicatas
-      const itemsToFlatten = items.length > 0 ? items : [updatedCurrentItem];
-      const flattenedItems = flattenItems(itemsToFlatten, processedStepData);
-      
-      const finalData = {
-        form_id: formId,
-        quiz_version: 'v1',
-        ...leadData,
-        ...processedStepData,
-        ...flattenedItems
-      };
-      delete finalData.urgencia;
+      // Prepara os dados finais usando função padronizada
+      const finalData = buildStandardizedPayload(
+        formId,
+        'v1',
+        leadData,
+        stepData,
+        updatedCurrentItem,
+        items
+      );
 
-      const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
+      const WEBHOOK_URL = 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv1';
       
       fetch(WEBHOOK_URL, {
         method: 'POST',
