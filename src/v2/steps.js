@@ -156,9 +156,9 @@ export const STEPS = [
         question: 'Qual modelo de Persiana de Teto você prefere?',
         type: 'radio',
         options: [
-            { label: 'Persiana Romana de Teto', description: 'Sistema com dobras horizontais elegantes, ideal para claraboias e tetos de vidro, proporcionando charme e controle de luz.', value: 'romana_teto', nextStep: 'passo_4_tecido_teto_romana' },
-            { label: 'Persiana celular de Teto', description: 'Tecido com estrutura colmeia (celular) que cria isolamento natural, garantindo eficiência térmica e controle de luminosidade.', value: 'celular_teto', nextStep: 'passo_4_tecido_teto_celular' },
-            { label: 'Persiana plissada de Teto', description: 'Modelo com tecido em pregas finas que se recolhem suavemente, oferecendo leveza, difusão de luz e conforto térmico.', value: 'plissada_teto', nextStep: 'passo_4_tecido_teto_plissada' },
+            { label: 'Romana de Teto', description: 'Sistema com dobras horizontais elegantes, ideal para claraboias e tetos de vidro, proporcionando charme e controle de luz.', value: 'romana_teto', nextStep: 'passo_4_tecido_teto_romana', image: '/modelos/teto-romana.png' },
+            { label: 'Celular de Teto', description: 'Tecido com estrutura colmeia (celular) que cria isolamento natural, garantindo eficiência térmica e controle de luminosidade.', value: 'celular_teto', nextStep: 'passo_4_tecido_teto_celular', image: '/modelos/teto-celular.png' },
+            { label: 'Plissada de Teto', description: 'Modelo com tecido em pregas finas que se recolhem suavemente, oferecendo leveza, difusão de luz e conforto térmico.', value: 'plissada_teto', nextStep: 'passo_4_tecido_teto_plissada', image: '/modelos/teto-plissada.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
