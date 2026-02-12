@@ -160,8 +160,8 @@ export default function MeasurementsStepV1({ question, subtext, inputs = [], onN
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         {inputs.filter(input => input.id === 'largura' || input.id === 'altura').map((input) => {
                             const isRequired = input.required !== false;
-                            const measureSuffix = 'm';
-                            const measurePlaceholder = 'Ex: 1,50';
+                            const measureSuffix = 'cm';
+                            const measurePlaceholder = 'Ex: 150';
 
                             return (
                                 <div key={input.id} className="text-left w-full min-w-0">
