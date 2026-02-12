@@ -3,12 +3,12 @@ export const STEPS = [
     {
         id: 'passo_1_intencao',
         phase: 1,
-        question: 'Você já sabe exatamente o que precisa ou gostaria de ver as opções disponíveis?',
-        subtext: 'ex: Persiana Rolô blackout tamanho 1,50m x 1,50m',
+        question: 'Orçamento de Persiana / Cortina',
+        subtext: 'Escolha o que combina com seu ambiente e receba uma estimativa alinhada às suas escolhas.',
         type: 'radio',
         options: [
-            { label: 'Quero ver as opções disponíveis', value: 'ver_opcoes', nextStep: 'passo_4_modelo' },
-            { label: 'Já sei o tipo de persiana/cortina e tenho as medidas e quero falar direto com um atendente', value: 'direto_atendente', nextStep: 'passo_8_captura' }
+            { label: 'Escolha o modelo que combina com o seu ambiente', value: 'ver_opcoes', nextStep: 'passo_4_modelo', featured: true },
+            { label: 'Já sei o modelo e tecido e tenho as medidas', description: 'Persiana Rolô blackout tamanho 1,50m x 1,50m', value: 'direto_atendente', nextStep: 'passo_8_captura' }
         ]
     },
 
@@ -16,7 +16,7 @@ export const STEPS = [
     {
         id: 'passo_3_acionamento',
         phase: 3,
-        question: 'Você gostaria dessa persiana manual ou automática?',
+        question: 'Você prefere manual ou automática?',
         type: 'radio',
         options: [
             { label: 'Manual (com corrente, haste ou bastão)', value: 'manual', nextStep: 'passo_5_estagio', image: '/acionamento/manual-corrente-haste-bastao.png' },
@@ -29,7 +29,8 @@ export const STEPS = [
     {
         id: 'passo_4_modelo',
         phase: 4,
-        question: 'Perfeito, então vamos começar pela <b>Primeira Peça.</b> Qual modelo você prefere?',
+        question: 'Qual modelo você prefere?',
+        subtext: 'Escolha o que combina com seu ambiente',
         type: 'radio',
         options: [
             { label: 'Persiana Rolô', image: '/modelos/persiana-rolo.webp', description: 'Prática e minimalista, o tecido enrola totalmente no topo quando aberta.', value: 'rolo', nextStep: 'passo_4_tecido_rolo' },
@@ -127,7 +128,7 @@ export const STEPS = [
             { label: 'Eco wood com cadarço', description: 'Persiana sustentável feita com composto sintético e fibras recicláveis, resistente à umidade e fácil de limpar.', value: 'eco_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-03-eco-wood-cadarco.png' },
             { label: 'Eco wood com fita', description: 'Versão com fitas têxteis que aumentam a privacidade e o apelo decorativo, mantendo o caráter ecológico.', value: 'eco_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-04-eco-wood-fita.png' },
             { label: 'Bambu com cadarço', description: 'Persiana natural de bambu trançado, com cadarços aparentes e textura leve e tropical.', value: 'bambu_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-05-bambu-cadarco.png' },
-            { label: 'Bambu com fita', description: 'Modelo com fitas de tecido decorativas, que trazem toque artesanal e sofisticação ao estilo nautral do bambu.', value: 'bambu_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-06-bambu-fita.png' },
+            { label: 'Bambu com fita', description: 'Modelo com fitas de tecido decorativas, que trazem toque artesanal e sofisticação ao estilo natural do bambu.', value: 'bambu_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-06-bambu-fita.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -143,7 +144,7 @@ export const STEPS = [
             { label: 'Lâmina 25 mm (padrão)', description: 'Modelo mais comum, permite bom controle da luz e ventilação.', value: 'lamina_25', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-02-lamina-25mm-padrao.png' },
             { label: 'Lâmina 50 mm (larga)', description: 'Visual moderno e robusto, com maior espaçamento entre as lâminas.', value: 'lamina_50', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-03-lamina-50mm-larga.png' },
             { label: 'Perfurada (micro furos)', description: 'Lâminas com microperfurações que suavizam a entrada de luz e calor.', value: 'perfurada', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-04-perfurada-micro-furos.png' },
-            { label: 'Acabamento brilhante ou métalico', description: 'Efeito decorativo, com brilho e reflexão de luz.', value: 'brilhante', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-05-acabamento-brilhante-metalico.png' },
+            { label: 'Acabamento brilhante ou metálico', description: 'Efeito decorativo, com brilho e reflexão de luz.', value: 'brilhante', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-05-acabamento-brilhante-metalico.png' },
             { label: 'Acabamento fosco ou acetinado', description: 'Visual discreto e sofisticado, reduz reflexos.', value: 'fosco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-06-acabamento-fosco-acetinado.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
@@ -306,11 +307,12 @@ export const STEPS = [
     {
         id: 'passo_5_estagio',
         phase: 5,
-        question: 'Em que fase você está agora?',
+        question: 'Você já tem as medidas?',
+        subtext: 'Medidas aproximadas são suficientes. Confirmamos na visita técnica.',
         type: 'radio',
         options: [
-            { label: 'Já tenho as medidas e quero um pré-orçamento', value: 'orcamento', nextStep: 'passo_6_medidas' },
-            { label: 'Não tenho medidas e quero um pré-orçamento', value: 'catalogo', nextStep: 'passo_8_captura_catalogo' }
+            { label: 'Sim, já tenho as medidas', value: 'orcamento', nextStep: 'passo_6_medidas' },
+            { label: 'Não, ainda não tenho as medidas', value: 'catalogo', nextStep: 'passo_8_captura_catalogo' }
         ]
     },
 
@@ -318,8 +320,8 @@ export const STEPS = [
     {
         id: 'passo_6_medidas',
         phase: 6,
-        question: 'Perfeito! Envie as medidas necessárias',
-        subtext: '*Não se preocupe, essas informações são apenas para você receber um pré orçamento. Antes de enviar para produção, um técnico da nossa equipe vai até o local para tirar as medidas exatas e confirmar tudo com você, sem custo adicional.',
+        question: 'Envie as medidas necessárias',
+        subtext: '*Medidas aproximadas são suficientes. Confirmamos na visita técnica sem custo adicional.',
         type: 'medidas',
         inputs: [
             { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm', required: true },
@@ -350,13 +352,13 @@ export const STEPS = [
     {
         id: 'passo_7_mais_itens',
         phase: 7,
-        question: 'Caso deseje, pode escolher uma nova persiana/cortina ou pode prosseguir para próxima etapa!',
-        subtext: 'Escolha como prosseguir.',
+        question: 'Deseja adicionar mais persianas ou cortinas?',
+        subtext: 'Você pode informar outras peças ou seguir com o pré-orçamento atual.',
         type: 'mixed',
         inputs: [],
         options: [
-            { label: 'Informar sobre outra persiana (Adicionar novo item)', value: 'adicionar_outro', nextStep: 'passo_7_adicionar_item' },
-            { label: 'Seguir somente com este orçamento', value: 'finalizar', nextStep: 'passo_8_captura' }
+            { label: 'Adicionar outra persiana/cortina', value: 'adicionar_outro', nextStep: 'passo_7_adicionar_item' },
+            { label: 'Finalizar com este pré-orçamento', value: 'finalizar', nextStep: 'passo_8_captura' }
         ]
     },
 
@@ -364,8 +366,8 @@ export const STEPS = [
     {
         id: 'passo_8_captura',
         phase: 8,
-        question: 'Perfeito! Para te enviar este pré orçamento',
-        subtext: 'Preencha seus dados para receber as sugestões.',
+        question: 'Perfeito! Para te enviar este pré-orçamento',
+        subtext: 'Preencha seus dados para receber a estimativa. O valor final será confirmado após visita técnica.',
         type: 'mixed',
         inputs: [
             { id: 'nome', label: 'Nome', placeholder: 'Seu nome' },
@@ -397,7 +399,7 @@ export const STEPS = [
         id: 'passo_8_captura_catalogo',
         phase: 8,
         question: 'Receber Catálogo',
-        subtext: 'Preencha seus dados para receber o catálogo com todas as opções.',
+        subtext: 'Preencha seus dados para receber o catálogo com todas as opções e sugestões personalizadas.',
         type: 'mixed',
         inputs: [
             { id: 'nome', label: 'Nome', placeholder: 'Seu nome' },

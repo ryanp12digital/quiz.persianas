@@ -110,14 +110,14 @@ button {
   color: hsl(var(--hu-foreground));
   font-weight: 700;
   margin-bottom: 8px;
-  font-size: 0.85rem;
+  font-size: 1.4375rem;
   width: 100%;
   max-width: 450px;
 }
 
 @media (min-width: 640px) {
   .step-title {
-    font-size: 1.2rem;
+    font-size: 1.4375rem;
   }
 }
 

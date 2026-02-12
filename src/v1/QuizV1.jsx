@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../components/Layout';
-import StepQuestion from '../components/StepQuestion';
-import WelcomeScreen from '../components/WelcomeScreen';
-import { Progress } from '../components/ui/progress';
+import LayoutV1 from '../components/LayoutV1';
+import StepQuestionV1 from '../components/StepQuestionV1';
+import WelcomeScreenV1 from '../components/WelcomeScreenV1';
+import QuizStepper from '../components/QuizStepper';
+import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 
 // Função para converter WhatsApp do formato com máscara para formato internacional (GHL)
@@ -403,13 +404,11 @@ export default function QuizV1() {
 
   if (showWelcome) {
     return (
-      <Layout>
-        <WelcomeScreen onStart={() => setShowWelcome(false)} />
-      </Layout>
+      <LayoutV1>
+        <WelcomeScreenV1 onStart={() => setShowWelcome(false)} />
+      </LayoutV1>
     );
   }
-
-  const progress = ((currentStepIndex + 1) / STEPS.length) * 100;
 
   const modifiedStep = { ...activeStep };
   if (activeStep.id === 'passo_4_acabamento_cortina' && activeStep.optionsByTecido) {
@@ -422,18 +421,15 @@ export default function QuizV1() {
   const canGoBackStep = history.length > 1;
 
   return (
-    <Layout>
+    <LayoutV1>
       <div className="max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16">
-        <div className="mb-6 sm:mb-12">
-          <Progress value={progress} className="h-2 bg-gray-100" />
-          <div className="flex justify-between mt-2 text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wider">
-            <span>Início</span>
-            <span>Progresso: {Math.round(progress)}%</span>
-            <span>Final</span>
-          </div>
-        </div>
+        {/* TrustBadges - visível em todas as etapas principais */}
+        <TrustBadges />
+        
+        {/* QuizStepper - mostra progresso das 5 etapas principais */}
+        <QuizStepper currentStepId={activeStep.id} steps={STEPS} />
 
-        <StepQuestion
+        <StepQuestionV1
           question={modifiedStep.question}
           subtext={modifiedStep.subtext}
           type={modifiedStep.type}
@@ -453,6 +449,6 @@ export default function QuizV1() {
           stepId={activeStep.id}
         />
       </div>
-    </Layout>
+    </LayoutV1>
   );
 }
