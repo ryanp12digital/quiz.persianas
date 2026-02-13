@@ -6,7 +6,7 @@ const STEPS_CONFIG = [
   { id: 'tecido', label: 'Tecido', Icon: Palette },
   { id: 'acionamento', label: 'Acionamento', Icon: Settings },
   { id: 'medidas', label: 'Medidas', Icon: Ruler },
-  { id: 'outras', label: 'Adicionais', Icon: PlusCircle },
+  { id: 'outras', label: 'Final', Icon: PlusCircle },
 ];
 
 // Função para identificar a fase atual baseado no stepId
@@ -67,8 +67,8 @@ export default function QuizStepper({ currentStepId, steps = [] }) {
   const currentPhaseIndex = STEPS_CONFIG.findIndex(s => s.id === currentPhase);
 
   return (
-    <div className="w-full mb-6 sm:mb-8">
-      <div className="flex items-center gap-2 sm:gap-4">
+    <div className="w-full mb-6 sm:mb-8 min-w-0 overflow-x-auto overflow-y-hidden -mx-1 px-1">
+      <div className="flex items-center gap-1 sm:gap-4 min-w-0 sm:min-w-full">
         {STEPS_CONFIG.map((step, index) => {
           const isCompleted = completedPhases.includes(step.id);
           const isCurrent = step.id === currentPhase;
@@ -76,10 +76,10 @@ export default function QuizStepper({ currentStepId, steps = [] }) {
 
           return (
             <React.Fragment key={step.id}>
-              <div className="flex flex-col items-center flex-1">
+              <div className="flex flex-col items-center flex-1 min-w-0 shrink-0 sm:shrink basis-0">
                 <div
                   className={`
-                    w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center
+                    w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0
                     transition-all
                     ${isCompleted
                       ? 'bg-green-500 text-white shadow-md'
@@ -90,16 +90,17 @@ export default function QuizStepper({ currentStepId, steps = [] }) {
                   `}
                 >
                   {isCompleted ? (
-                    <Check className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.5} />
+                    <Check className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={2.5} />
                   ) : (
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
+                    <Icon className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={2} />
                   )}
                 </div>
                 <span
                   className={`
-                    mt-2 text-xs sm:text-sm font-medium text-center
+                    mt-1.5 sm:mt-2 text-[10px] sm:text-sm font-medium text-center truncate max-w-full
                     ${isCurrent ? 'text-[#4CAF50] font-semibold' : isCompleted ? 'text-gray-600' : 'text-gray-400'}
                   `}
+                  title={step.label}
                 >
                   {step.label}
                 </span>
@@ -108,7 +109,7 @@ export default function QuizStepper({ currentStepId, steps = [] }) {
               {index < STEPS_CONFIG.length - 1 && (
                 <div
                   className={`
-                    flex-1 h-0.5 sm:h-1 mx-1
+                    flex-1 min-w-[6px] sm:min-w-0 h-0.5 sm:h-1 mx-0.5 sm:mx-1 shrink-0
                     ${isCompleted || index < currentPhaseIndex
                       ? 'bg-green-500'
                       : 'bg-gray-200'
