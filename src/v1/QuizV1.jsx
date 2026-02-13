@@ -69,9 +69,12 @@ const flattenItems = (items, stepData) => {
   return flattened;
 };
 
-// Função para construir payload padronizado do webhook
-const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, currentItem, items) => {
-  // Extrair campos do formulário final
+// Função para construir payload padronizado do webhook (detalhado e organizado)
+const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, currentItem, items, options = {}) => {
+  const { sessionStartedAt = null, stepsHistory = [] } = options;
+  const submittedAt = new Date();
+
+  // Extrair campos do formulário final (captura)
   const nome = stepData?.nome || '';
   const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';
   const email = stepData?.email || '';
@@ -119,40 +122,108 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
 
   // Processar itens adicionais
   const itens_adicionais = Array.isArray(items) && items.length > 0
-    ? items.map(item => ({
-        descricao_livre: item?.descricao_livre || ''
+    ? items.map((item, idx) => ({
+        ordem: idx + 1,
+        descricao_livre: item?.descricao_livre || '',
+        modelo: item?.passo_4_modelo || item?.passo_4_modelo_teto || '',
+        tecido: item?.passo_4_tecido_rolo || item?.passo_4_tecido_cortina || item?.passo_4_tecido_vertical || item?.passo_4_tecido_painel || item?.passo_4_tecido_romana || item?.passo_4_tecido_double_vision || item?.passo_4_tecido_horizontal_madeira || item?.passo_4_tecido_horizontal_aluminio || item?.passo_4_tecido_teto || item?.passo_4_acabamento_cortina || '',
+        acionamento: item?.passo_3_acionamento || '',
+        largura: typeof item?.passo_6_medidas === 'object' ? item.passo_6_medidas?.largura : item?.largura,
+        altura: typeof item?.passo_6_medidas === 'object' ? item.passo_6_medidas?.altura : item?.altura
       }))
     : [];
 
-  // Construir payload padronizado
+  const sessionStartedAtISO = sessionStartedAt ? new Date(sessionStartedAt).toISOString() : null;
+  const submittedAtISO = submittedAt.toISOString();
+  const durationSeconds = sessionStartedAt
+    ? Math.round((submittedAt - new Date(sessionStartedAt)) / 1000)
+    : null;
+
   return {
-    // Metadados
-    form_id: formId || '',
-    quiz_version: quizVersion || '',
-    
-    // Lead/UTM
-    utm_source: leadData?.utm_source || '',
-    utm_medium: leadData?.utm_medium || '',
-    utm_campaign: leadData?.utm_campaign || '',
-    
-    // Dados do formulário final
-    nome: nome,
-    whatsapp: whatsapp,
-    email: email,
-    cidade: cidade,
-    bairro: bairro,
-    ambientes: ambientes,
-    
-    // Dados do item atual
-    modelo: modelo,
-    tecido: tecido,
-    acionamento: acionamento,
-    largura: largura,
-    altura: altura,
-    acabamento: acabamento,
-    
-    // Itens adicionais
-    itens_adicionais: itens_adicionais
+    // --- METADADOS ---
+    metadata: {
+      form_id: formId || '',
+      quiz_version: quizVersion || '',
+      source: 'quiz_web',
+      submitted_at: submittedAtISO,
+      submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+    },
+
+    // --- TIMESTAMPS ---
+    timestamps: {
+      submitted_at: submittedAtISO,
+      submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+      session_started_at: sessionStartedAtISO,
+      duration_seconds: durationSeconds,
+      duration_readable: durationSeconds != null ? `${Math.floor(durationSeconds / 60)}m ${durationSeconds % 60}s` : null
+    },
+
+    // --- UTM / ORIGEM ---
+    utm: {
+      utm_source: leadData?.utm_source || '',
+      utm_medium: leadData?.utm_medium || '',
+      utm_campaign: leadData?.utm_campaign || '',
+      referrer: typeof document !== 'undefined' ? (document.referrer || '') : ''
+    },
+
+    // --- CONTATO (dados do formulário final) ---
+    contact: {
+      nome,
+      whatsapp,
+      email,
+      cidade,
+      bairro,
+      ambientes,
+      ambientes_count: ambientes?.length ?? 0
+    },
+
+    // --- RESPOSTAS DO QUIZ (item principal) ---
+    quiz_answers: {
+      modelo,
+      tecido,
+      acionamento,
+      medidas: {
+        largura,
+        altura,
+        unidade: 'cm'
+      },
+      acabamento
+    },
+
+    // --- ITENS ADICIONAIS (outras persianas/cortinas) ---
+    itens_adicionais,
+    itens_adicionais_count: itens_adicionais?.length ?? 0,
+
+    // --- JORNADA (etapas percorridas, para análise) ---
+    journey: {
+      steps_completed: stepsHistory,
+      steps_count: stepsHistory?.length ?? 0
+    },
+
+    // --- DADOS BRUTOS (fallback para integrações que usam chaves planas) ---
+    _flat: {
+      form_id: formId || '',
+      quiz_version: quizVersion || '',
+      submitted_at: submittedAtISO,
+      session_started_at: sessionStartedAtISO,
+      duration_seconds: durationSeconds,
+      utm_source: leadData?.utm_source || '',
+      utm_medium: leadData?.utm_medium || '',
+      utm_campaign: leadData?.utm_campaign || '',
+      nome,
+      whatsapp,
+      email,
+      cidade,
+      bairro,
+      ambientes,
+      modelo,
+      tecido,
+      acionamento,
+      largura,
+      altura,
+      acabamento,
+      itens_adicionais
+    }
   };
 };
 
@@ -175,6 +246,7 @@ export default function QuizV1() {
       utm_campaign: params.get('utm_campaign') || ''
     };
   });
+  const [sessionStartedAt, setSessionStartedAt] = useState(null);
 
   const activeStep = STEPS[currentStepIndex];
 
@@ -264,14 +336,16 @@ export default function QuizV1() {
     }
 
     if (activeStep.isFinal) {
-      // Prepara os dados finais usando função padronizada
+      // Histórico de etapas percorridas (IDs) para o payload
+      const stepsHistory = history.map((stepIdx) => STEPS[stepIdx]?.id).filter(Boolean);
       const finalData = buildStandardizedPayload(
         formId,
         'v1',
         leadData,
         stepData,
         updatedCurrentItem,
-        items
+        items,
+        { sessionStartedAt, stepsHistory }
       );
 
       const WEBHOOK_URL = 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv1';
@@ -405,7 +479,10 @@ export default function QuizV1() {
   if (showWelcome) {
     return (
       <LayoutV1>
-        <WelcomeScreenV1 onStart={() => setShowWelcome(false)} />
+        <WelcomeScreenV1 onStart={() => {
+          setSessionStartedAt(Date.now());
+          setShowWelcome(false);
+        }} />
       </LayoutV1>
     );
   }
