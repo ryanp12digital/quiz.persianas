@@ -74,6 +74,9 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const { sessionStartedAt = null, stepsHistory = [] } = options;
   const submittedAt = new Date();
 
+  // Item principal: com múltiplos itens é o primeiro (items[0]); senão é o currentItem
+  const principalItem = Array.isArray(items) && items.length > 0 ? items[0] : currentItem;
+
   // Extrair campos do formulário final (captura)
   const nome = stepData?.nome || '';
   const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';
@@ -82,42 +85,42 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const bairro = stepData?.bairro || '';
   const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
 
-  // Extrair modelo do currentItem
+  // Extrair modelo do item principal
   let modelo = '';
-  if (currentItem?.passo_4_modelo) {
-    modelo = currentItem.passo_4_modelo;
-  } else if (currentItem?.passo_4_modelo_teto) {
-    modelo = currentItem.passo_4_modelo_teto;
+  if (principalItem?.passo_4_modelo) {
+    modelo = principalItem.passo_4_modelo;
+  } else if (principalItem?.passo_4_modelo_teto) {
+    modelo = principalItem.passo_4_modelo_teto;
   }
 
-  // Extrair tecido do currentItem (qualquer chave que comece com passo_4_tecido_)
+  // Extrair tecido do item principal (qualquer chave que comece com passo_4_tecido_)
   let tecido = '';
-  Object.keys(currentItem || {}).forEach(key => {
+  Object.keys(principalItem || {}).forEach(key => {
     if (key.startsWith('passo_4_tecido_')) {
-      tecido = currentItem[key] || '';
+      tecido = principalItem[key] || '';
     }
   });
 
   // Extrair acionamento
-  const acionamento = currentItem?.passo_3_acionamento || '';
+  const acionamento = principalItem?.passo_3_acionamento || '';
 
   // Extrair medidas (pode estar em passo_6_medidas como objeto ou achatado)
   let largura = '';
   let altura = '';
-  if (currentItem?.passo_6_medidas) {
-    if (typeof currentItem.passo_6_medidas === 'object') {
-      largura = currentItem.passo_6_medidas.largura || '';
-      altura = currentItem.passo_6_medidas.altura || '';
+  if (principalItem?.passo_6_medidas) {
+    if (typeof principalItem.passo_6_medidas === 'object') {
+      largura = principalItem.passo_6_medidas.largura || '';
+      altura = principalItem.passo_6_medidas.altura || '';
     }
   } else {
-    largura = currentItem?.largura || '';
-    altura = currentItem?.altura || '';
+    largura = principalItem?.largura || '';
+    altura = principalItem?.altura || '';
   }
 
   // Extrair acabamento (para cortina)
   let acabamento = '';
-  if (currentItem?.passo_4_acabamento_cortina) {
-    acabamento = currentItem.passo_4_acabamento_cortina;
+  if (principalItem?.passo_4_acabamento_cortina) {
+    acabamento = principalItem.passo_4_acabamento_cortina;
   }
 
   // Processar itens adicionais
@@ -509,7 +512,10 @@ export default function QuizV2() {
           onOptionSelect={(opt) => handleNext({ [activeStep.id]: opt.value })}
           onNext={(data) => {
             // Salvar dados de inputs no currentItem
-            const stepData = { [activeStep.id]: currentItem[activeStep.id] || null, ...data };
+            let stepData = { [activeStep.id]: currentItem[activeStep.id] || null, ...data };
+            if (activeStep.id === 'passo_6_medidas' && (data.largura != null || data.altura != null)) {
+              stepData = { ...stepData, passo_6_medidas: { largura: data.largura ?? '', altura: data.altura ?? '' } };
+            }
             handleNext(stepData);
           }}
           onBack={handleBack}
