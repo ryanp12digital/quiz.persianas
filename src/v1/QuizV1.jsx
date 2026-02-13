@@ -422,7 +422,7 @@ export default function QuizV1() {
 
   return (
     <LayoutV1>
-      <div className="max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16">
+      <div className="w-full min-w-0 max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16 box-border">
         {/* TrustBadges - visível em todas as etapas principais */}
         <TrustBadges />
         

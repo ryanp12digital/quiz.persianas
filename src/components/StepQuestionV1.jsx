@@ -205,7 +205,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
             )}
 
             {inputs.length > 0 && (
-                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full mx-auto mb-8 min-w-0 ${type === 'textarea' ? 'max-w-3xl' : 'max-w-lg'}`}>
+                <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full max-w-full mx-auto mb-8 min-w-0 box-border ${type === 'textarea' ? 'sm:max-w-3xl' : 'sm:max-w-lg'}`}>
                     <div className={type === 'textarea' ? 'flex flex-col gap-5' : 'flex flex-col gap-5'}>
                         {type === 'mixed' && inputs.some(i => i.id === 'nome') ? (
                             <>
@@ -260,7 +260,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                     </div>
                                 )}
                                 {inputs.filter(i => i.type === 'multi-select').map((input) => (
-                                    <div key={input.id} className="text-left w-full">
+                                    <div key={input.id} className="text-left w-full min-w-0">
                                         <label htmlFor={`${input.id}-select`} className="block text-sm font-semibold text-gray-800 mb-2">
                                             {input.label} {input.required !== false && <span className="text-red-500">*</span>}
                                         </label>

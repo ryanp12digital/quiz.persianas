@@ -154,7 +154,7 @@ export default function MeasurementsStepV1({ question, subtext, inputs = [], onN
             </div>
 
             {/* Campos de entrada */}
-            <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="w-full mx-auto max-w-md min-w-0">
+            <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className="w-full mx-auto max-w-md min-w-0 box-border">
                 <div className="flex flex-col gap-6">
                     {/* Campos de medida (largura e altura) */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

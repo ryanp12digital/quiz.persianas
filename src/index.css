@@ -64,6 +64,14 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  min-width: 0;
+  width: 100%;
+  max-width: 100vw;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -75,6 +83,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 h1,
@@ -98,12 +108,14 @@ button {
 .step-container {
   width: 100%;
   max-width: 605px;
+  min-width: 0; /* permite encolher em contexto flex no mobile */
   margin: 0 auto;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .step-title {
@@ -113,6 +125,8 @@ button {
   font-size: 1.4375rem;
   width: 100%;
   max-width: 450px;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 @media (min-width: 640px) {

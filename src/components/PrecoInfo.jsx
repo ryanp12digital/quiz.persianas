@@ -36,14 +36,14 @@ export default function PrecoInfo({ variant = 'accordion' }) {
   }
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-gray-50 mb-4 sm:mb-6">
+    <div className="border border-gray-200 rounded-lg bg-gray-50 mb-4 sm:mb-6 min-w-0 overflow-hidden">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-3 sm:p-4 text-left focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-offset-2 rounded-lg"
+        className="w-full min-w-0 flex items-center justify-between gap-2 p-3 sm:p-4 text-left focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-offset-2 rounded-lg"
         aria-expanded={isOpen}
       >
-        <span className="text-sm sm:text-base font-medium text-gray-800 flex items-center gap-2">
+        <span className="text-sm sm:text-base font-medium text-gray-800 flex items-center gap-2 min-w-0 break-words">
           <Info className="w-5 h-5 text-[#4CAF50]" strokeWidth={2} />
           Como funciona o pré-orçamento?
         </span>
