@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import QuizV1 from './v1/QuizV1';
 import QuizV2 from './v2/QuizV2';
+import QuizV3 from './v3/QuizV3';
 import ThankYouPage from './pages/ThankYouPage';
 import Dashboard from './pages/Dashboard';
 
@@ -15,6 +16,7 @@ function App() {
         {/* Rotas para as versões do quiz */}
         <Route path="/quiz/v1" element={<QuizV1 />} />
         <Route path="/quiz/v2" element={<QuizV2 />} />
+        <Route path="/quiz/v3" element={<QuizV3 />} />
         <Route path="/quiz/obrigado" element={<ThankYouPage />} />
         <Route path="/quiz/admin" element={<Dashboard />} />
         

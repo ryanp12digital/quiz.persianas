@@ -17,6 +17,13 @@ const getCurrentPhase = (stepId, steps) => {
     return null;
   }
 
+  if (stepId === 'passo_3v3_tecido') {
+    return 'tecido';
+  }
+  if (stepId === 'passo_3v3_modelo') {
+    return 'modelo';
+  }
+
   if (stepId === 'passo_4_modelo' || stepId === 'passo_4_modelo_teto') {
     return 'modelo';
   }
