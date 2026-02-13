@@ -44,10 +44,20 @@ export default function WelcomeScreenV1({ onStart }) {
         ✓ Mais de 10.000 ambientes transformados com perfeição
       </p>
 
-      <div id="trustindex-reviews-widget" style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+      <div
+        id="trustindex-reviews-widget"
+        style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto', padding: '20px' }}
+        onClickCapture={(e) => {
+          const link = e.target.closest('a[href*="trustindex"]');
+          if (link) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+      >
         <div id="trustindex-reviews-header" style={{ textAlign: 'center', marginBottom: '0px' }}>
         </div>
-        {/* Widget do Trustindex carregado via useEffect */}
+        {/* Widget do Trustindex carregado via useEffect - links desativados para não sair do quiz */}
         <div id="trustindex-widget" className="min-h-[80px] flex justify-center items-center" aria-label="Avaliações Google" />
       </div>
     </div>
