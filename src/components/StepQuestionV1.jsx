@@ -475,7 +475,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                 })}
             </div>
 
-            {(inputs.length > 0 || type === 'mixed') && !(type === 'textarea') && (
+            {(inputs.length > 0 || type === 'mixed') && !(type === 'textarea') && stepId !== 'passo_7_mais_itens' && (
                 <div className="mt-6 sm:mt-8">
                     <Button type="button" onClick={handleNext} size="lg" className="w-full sm:w-auto">
                         Continuar

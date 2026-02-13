@@ -90,7 +90,7 @@ export const STEPS = [
     inputs: [],
     options: [
       { label: 'Adicionar outra persiana/cortina', value: 'adicionar_outro', nextStep: 'passo_7_adicionar_item' },
-      { label: 'Finalizar com este pré-orçamento', value: 'finalizar', nextStep: 'passo_8_captura' }
+      { label: 'Finalizar', value: 'finalizar', nextStep: 'passo_8_captura' }
     ]
   },
   {
