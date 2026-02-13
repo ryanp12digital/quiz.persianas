@@ -324,7 +324,7 @@ export default function QuizV3() {
         {/* TrustBadges - visível em todas as etapas principais */}
         <TrustBadges />
         {/* QuizStepper - mostra progresso das 5 etapas principais */}
-        <QuizStepper currentStepId={activeStep.id} steps={STEPS} />
+        <QuizStepper currentStepId={activeStep.id} steps={STEPS} variant="v3" />
         <StepQuestionV1
           question={modifiedStep.question}
           subtext={modifiedStep.subtext}

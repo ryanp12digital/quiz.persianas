@@ -9,6 +9,15 @@ const STEPS_CONFIG = [
   { id: 'outras', label: 'Final', Icon: PlusCircle },
 ];
 
+// V3: ordem é Tecido → Modelo → Acionamento → Medidas → Final
+const STEPS_CONFIG_V3 = [
+  { id: 'tecido', label: 'Tecido', Icon: Palette },
+  { id: 'modelo', label: 'Modelo', Icon: LayoutGrid },
+  { id: 'acionamento', label: 'Acionamento', Icon: Settings },
+  { id: 'medidas', label: 'Medidas', Icon: Ruler },
+  { id: 'outras', label: 'Final', Icon: PlusCircle },
+];
+
 // Função para identificar a fase atual baseado no stepId
 const getCurrentPhase = (stepId, steps) => {
   if (!stepId) return null;
@@ -51,32 +60,35 @@ const getCurrentPhase = (stepId, steps) => {
   return null;
 };
 
-const getCompletedPhases = (currentPhase, history, steps) => {
+const getCompletedPhases = (currentPhase, history, steps, phaseOrder) => {
+  const order = phaseOrder || ['modelo', 'tecido', 'acionamento', 'medidas', 'outras'];
   const completed = [];
-  const phaseOrder = ['modelo', 'tecido', 'acionamento', 'medidas', 'outras'];
-
   if (!currentPhase) return completed;
-
-  const currentIndex = phaseOrder.indexOf(currentPhase);
+  const currentIndex = order.indexOf(currentPhase);
   if (currentIndex === -1) return completed;
-
-  return phaseOrder.slice(0, currentIndex);
+  return order.slice(0, currentIndex);
 };
 
-export default function QuizStepper({ currentStepId, steps = [] }) {
+const PHASE_ORDER_V1 = ['modelo', 'tecido', 'acionamento', 'medidas', 'outras'];
+const PHASE_ORDER_V3 = ['tecido', 'modelo', 'acionamento', 'medidas', 'outras'];
+
+export default function QuizStepper({ currentStepId, steps = [], variant }) {
   const currentPhase = getCurrentPhase(currentStepId, steps);
+  const isV3 = variant === 'v3';
+  const phaseOrder = isV3 ? PHASE_ORDER_V3 : PHASE_ORDER_V1;
+  const stepsConfig = isV3 ? STEPS_CONFIG_V3 : STEPS_CONFIG;
 
   if (!currentPhase) {
     return null;
   }
 
-  const completedPhases = getCompletedPhases(currentPhase, [], steps);
-  const currentPhaseIndex = STEPS_CONFIG.findIndex(s => s.id === currentPhase);
+  const completedPhases = getCompletedPhases(currentPhase, [], steps, phaseOrder);
+  const currentPhaseIndex = stepsConfig.findIndex(s => s.id === currentPhase);
 
   return (
     <div className="w-full mb-6 sm:mb-8 min-w-0 overflow-x-auto overflow-y-hidden -mx-1 px-1">
       <div className="flex items-center gap-1 sm:gap-4 min-w-0 sm:min-w-full">
-        {STEPS_CONFIG.map((step, index) => {
+        {stepsConfig.map((step, index) => {
           const isCompleted = completedPhases.includes(step.id);
           const isCurrent = step.id === currentPhase;
           const Icon = step.Icon;
@@ -113,7 +125,7 @@ export default function QuizStepper({ currentStepId, steps = [] }) {
                 </span>
               </div>
 
-              {index < STEPS_CONFIG.length - 1 && (
+              {index < stepsConfig.length - 1 && (
                 <div
                   className={`
                     flex-1 min-w-[6px] sm:min-w-0 h-0.5 sm:h-1 mx-0.5 sm:mx-1 shrink-0
