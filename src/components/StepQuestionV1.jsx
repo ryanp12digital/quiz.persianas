@@ -406,7 +406,11 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                     const isSelected = selectedValue === option.value;
                     const isModeloStep = stepId === 'passo_4_modelo';
                     const isTecidoOrAcabamento = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento');
-                    const layoutVertical = !!(isModeloStep || (isTecidoOrAcabamento && option.image));
+                    const isV3Step = stepId === 'passo_3v3_tecido' || stepId === 'passo_3v3_modelo';
+                    const layoutVertical = !!(isModeloStep || isV3Step || (isTecidoOrAcabamento && option.image));
+                    const imageContainerClass = isV3Step
+                        ? 'w-full h-40 sm:h-56 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0'
+                        : 'w-full h-24 sm:h-40 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0';
                     const isFeatured = option.featured === true;
                     const isIntencaoStep = stepId === 'passo_1_intencao';
                     const cardClassName = `group relative overflow-hidden transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99] h-full ${
@@ -425,14 +429,14 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                         <button
                             type="button"
                             onClick={() => { scrollToTop(); onOptionSelect(option); }}
-                            className={`w-full h-full min-h-[120px] sm:min-h-[140px] p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
+                            className={`w-full h-full ${isV3Step ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
                                 layoutVertical ? '' : isTecidoOrAcabamento ? '' : ''
                             } ${!isFeatured && isIntencaoStep ? 'text-gray-600' : 'text-gray-800'}`}
                         >
                             {layoutVertical ? (
                                 <>
                                     {layoutVertical && (
-                                        <div className="w-full h-24 sm:h-40 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0">
+                                        <div className={imageContainerClass}>
                                             {option.image ? (
                                                 <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                             ) : (
@@ -455,7 +459,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                             ) : (
                                 <>
                                     {option.image && (
-                                        <div className="w-full h-24 sm:h-40 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50">
+                                        <div className={imageContainerClass}>
                                             <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
                                         </div>
                                     )}
