@@ -364,19 +364,33 @@ export default function QuizV1() {
         body: JSON.stringify(finalData),
       })
       .then(() => {
-        if (window.fbq) {
-          window.fbq('track', 'Lead', {
-            content_name: 'Quiz Persianas V1',
-            content_category: 'Lead Generation'
-          });
+        // Tracking do Facebook Pixel com tratamento de erro
+        try {
+          if (window.fbq && typeof window.fbq === 'function') {
+            window.fbq('track', 'Lead', {
+              content_name: 'Quiz Persianas V1',
+              content_category: 'Lead Generation'
+            });
+          }
+        } catch (error) {
+          // Ignora erros de tracking (pode ser bloqueado por bloqueadores de anúncios)
+          console.warn('Facebook Pixel tracking error:', error);
         }
-        if (window.dataLayer) {
-          window.dataLayer.push({
-            event: 'form_submission',
-            form_id: formId,
-            version: 'v1'
-          });
+        
+        // Tracking do Google Tag Manager com tratamento de erro
+        try {
+          if (window.dataLayer && Array.isArray(window.dataLayer)) {
+            window.dataLayer.push({
+              event: 'form_submission',
+              form_id: formId,
+              version: 'v1'
+            });
+          }
+        } catch (error) {
+          // Ignora erros de tracking
+          console.warn('Google Tag Manager tracking error:', error);
         }
+        
         navigate('/quiz/obrigado');
       })
       .catch(() => navigate('/quiz/obrigado'));
