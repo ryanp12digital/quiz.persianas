@@ -104,6 +104,9 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   // Extrair acionamento
   const acionamento = principalItem?.passo_3_acionamento || '';
 
+  // Extrair etapa 1 (Orçamento de Persiana / Cortina): ver_opcoes | direto_atendente
+  const passo_1_intencao = principalItem?.passo_1_intencao ?? currentItem?.passo_1_intencao ?? '';
+
   // Extrair medidas (pode estar em passo_6_medidas como objeto ou achatado)
   let largura = '';
   let altura = '';
@@ -182,6 +185,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
 
     // --- RESPOSTAS DO QUIZ (item principal) ---
     quiz_answers: {
+      passo_1_intencao,
       modelo,
       tecido,
       acionamento,
@@ -219,6 +223,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       cidade,
       bairro,
       ambientes,
+      passo_1_intencao,
       modelo,
       tecido,
       acionamento,
