@@ -35,7 +35,7 @@ const scrollToTop = () => {
     }
 };
 
-export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null, verMaisNaoSeiUrl = '#' }) {
+export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null, tecidoExpandableLimit = 4 }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
         inputs.forEach(input => {
@@ -44,6 +44,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
         return initial;
     });
     const [errors, setErrors] = useState({});
+    const [tecidoExpanded, setTecidoExpanded] = useState(false);
 
     useEffect(() => {
         if (Object.keys(initialValues).length > 0) {
@@ -401,97 +402,98 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
             )}
 
             {/* Cards de opções */}
-            <div className="gap-3 sm:gap-4 w-full max-w-2xl mx-auto grid grid-cols-2">
-                {options.map((option, index) => {
-                    const isSelected = selectedValue === option.value;
-                    const isModeloStep = stepId === 'passo_4_modelo';
-                    const isTecidoOrAcabamento = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento');
-                    const isV3Step = stepId === 'passo_3v3_tecido' || stepId === 'passo_3v3_modelo';
-                    const layoutVertical = !!(isModeloStep || isV3Step || (isTecidoOrAcabamento && option.image));
-                    const imageContainerClass = isV3Step
-                        ? 'w-full h-40 sm:h-56 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0'
-                        : 'w-full h-24 sm:h-40 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0';
-                    const isFeatured = option.featured === true;
-                    const isIntencaoStep = stepId === 'passo_1_intencao';
-                    const cardClassName = `group relative overflow-hidden transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99] h-full ${
-                        isSelected
-                            ? 'border-2 border-[#4CAF50] bg-green-50 shadow-md ring-2 ring-[#4CAF50]/20'
-                            : isFeatured && isIntencaoStep
-                            ? 'border-2 border-[#4CAF50] bg-green-100 shadow-lg ring-2 ring-[#4CAF50]/30'
-                            : isFeatured
-                            ? 'border-2 border-[#4CAF50] bg-green-50/30 shadow-lg ring-2 ring-[#4CAF50]/30'
-                            : !isFeatured && isIntencaoStep
-                            ? 'border-2 border-gray-300 bg-gray-100 hover:border-gray-400 hover:shadow-md'
-                            : 'border-2 border-gray-300 bg-white hover:border-gray-400 hover:shadow-md'
-                    }`;
-                    const showVerMaisNaoSei = stepId === 'passo_3v3_tecido' && option.value === 'nao_sei';
-                    const cardEl = (
-                    <Card key={index} className={cardClassName}>
-                        <button
-                            type="button"
-                            onClick={() => { scrollToTop(); onOptionSelect(option); }}
-                            className={`w-full h-full ${isV3Step ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
-                                layoutVertical ? '' : isTecidoOrAcabamento ? '' : ''
-                            } ${!isFeatured && isIntencaoStep ? 'text-gray-600' : 'text-gray-800'}`}
-                        >
-                            {layoutVertical ? (
-                                <>
-                                    {layoutVertical && (
-                                        <div className={imageContainerClass}>
-                                            {option.image ? (
-                                                <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+            {(() => {
+                const isTecidoExpandable = stepId === 'passo_3v3_tecido' && typeof tecidoExpandableLimit === 'number' && options.length > tecidoExpandableLimit;
+                const visibleOptions = isTecidoExpandable && !tecidoExpanded ? options.slice(0, tecidoExpandableLimit) : options;
+                return (
+                    <>
+                        <div className="gap-3 sm:gap-4 w-full max-w-2xl mx-auto grid grid-cols-2">
+                            {visibleOptions.map((option, index) => {
+                                const isSelected = selectedValue === option.value;
+                                const isModeloStep = stepId === 'passo_4_modelo';
+                                const isTecidoOrAcabamento = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento');
+                                const isV3Step = stepId === 'passo_3v3_tecido' || stepId === 'passo_3v3_modelo';
+                                const layoutVertical = !!(isModeloStep || isV3Step || (isTecidoOrAcabamento && option.image));
+                                const imageContainerClass = isV3Step
+                                    ? 'w-full h-40 sm:h-56 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0'
+                                    : 'w-full h-24 sm:h-40 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0';
+                                const isFeatured = option.featured === true;
+                                const isIntencaoStep = stepId === 'passo_1_intencao';
+                                const cardClassName = `group relative overflow-hidden transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99] h-full ${
+                                    isSelected
+                                        ? 'border-2 border-[#4CAF50] bg-green-50 shadow-md ring-2 ring-[#4CAF50]/20'
+                                        : isFeatured && isIntencaoStep
+                                        ? 'border-2 border-[#4CAF50] bg-green-100 shadow-lg ring-2 ring-[#4CAF50]/30'
+                                        : isFeatured
+                                        ? 'border-2 border-[#4CAF50] bg-green-50/30 shadow-lg ring-2 ring-[#4CAF50]/30'
+                                        : !isFeatured && isIntencaoStep
+                                        ? 'border-2 border-gray-300 bg-gray-100 hover:border-gray-400 hover:shadow-md'
+                                        : 'border-2 border-gray-300 bg-white hover:border-gray-400 hover:shadow-md'
+                                }`;
+                                return (
+                                    <Card key={option.value ?? index} className={cardClassName}>
+                                        <button
+                                            type="button"
+                                            onClick={() => { scrollToTop(); onOptionSelect(option); }}
+                                            className={`w-full h-full ${isV3Step ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
+                                                layoutVertical ? '' : isTecidoOrAcabamento ? '' : ''
+                                            } ${!isFeatured && isIntencaoStep ? 'text-gray-600' : 'text-gray-800'}`}
+                                        >
+                                            {layoutVertical ? (
+                                                <>
+                                                    {layoutVertical && (
+                                                        <div className={imageContainerClass}>
+                                                            {option.image ? (
+                                                                <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                                            ) : (
+                                                                <div className="w-full h-full flex items-center justify-center text-gray-300 text-4xl" aria-hidden>—</div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                    <span className={`font-bold mb-1.5 leading-tight ${isFeatured ? 'text-[15px] sm:text-[16px]' : 'text-[14px] sm:text-[15px]'}`}>{option.label}</span>
+                                                    {option.description && (
+                                                        <span className="text-[13px] sm:text-[16px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                                    )}
+                                                </>
+                                            ) : isTecidoOrAcabamento ? (
+                                                <div className="flex flex-col justify-center gap-1 items-center text-center">
+                                                    <span className={`font-bold leading-tight ${isFeatured ? 'text-[15px] sm:text-[16px]' : 'text-[14px] sm:text-[15px]'}`}>{option.label}</span>
+                                                    {option.description && (
+                                                        <span className="text-[13px] sm:text-[16px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                                    )}
+                                                </div>
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-300 text-4xl" aria-hidden>—</div>
+                                                <>
+                                                    {option.image && (
+                                                        <div className={imageContainerClass}>
+                                                            <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
+                                                        </div>
+                                                    )}
+                                                    <span className={`font-bold mb-1.5 leading-tight ${isFeatured ? 'text-[15px] sm:text-[16px]' : 'text-[14px] sm:text-[15px]'}`}>{option.label}</span>
+                                                    {option.description && (
+                                                        <span className="text-[12px] sm:text-[13px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
+                                                    )}
+                                                </>
                                             )}
-                                        </div>
-                                    )}
-                                    <span className={`font-bold mb-1.5 leading-tight ${isFeatured ? 'text-[15px] sm:text-[16px]' : 'text-[14px] sm:text-[15px]'}`}>{option.label}</span>
-                                    {option.description && (
-                                        <span className="text-[13px] sm:text-[16px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
-                                    )}
-                                </>
-                            ) : isTecidoOrAcabamento ? (
-                                <div className="flex flex-col justify-center gap-1 items-center text-center">
-                                    <span className={`font-bold leading-tight ${isFeatured ? 'text-[15px] sm:text-[16px]' : 'text-[14px] sm:text-[15px]'}`}>{option.label}</span>
-                                    {option.description && (
-                                        <span className="text-[13px] sm:text-[16px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
-                                    )}
-                                </div>
-                            ) : (
-                                <>
-                                    {option.image && (
-                                        <div className={imageContainerClass}>
-                                            <img src={getImageSrc(option.image)} alt={option.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => e.target.style.display = 'none'} />
-                                        </div>
-                                    )}
-                                    <span className={`font-bold mb-1.5 leading-tight ${isFeatured ? 'text-[15px] sm:text-[16px]' : 'text-[14px] sm:text-[15px]'}`}>{option.label}</span>
-                                    {option.description && (
-                                        <span className="text-[12px] sm:text-[13px] text-gray-500 font-normal leading-tight" style={{ textWrap: 'balance' }}>{option.description}</span>
-                                    )}
-                                </>
-                            )}
-                        </button>
-                    </Card>
-                    );
-                    if (showVerMaisNaoSei) {
-                        return (
-                            <div key={index} className="flex flex-col items-center gap-2">
-                                {cardEl}
-                                <a
-                                    href={verMaisNaoSeiUrl}
-                                    target={verMaisNaoSeiUrl.startsWith('http') ? '_blank' : undefined}
-                                    rel={verMaisNaoSeiUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                        </button>
+                                    </Card>
+                                );
+                            })}
+                        </div>
+                        {isTecidoExpandable && (
+                            <div className="w-full max-w-2xl mx-auto mt-4 flex justify-center">
+                                <button
+                                    type="button"
+                                    onClick={() => setTecidoExpanded((e) => !e)}
                                     className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
-                                    onClick={(e) => { if (verMaisNaoSeiUrl === '#') e.preventDefault(); }}
                                 >
-                                    Ver mais
-                                </a>
+                                    {tecidoExpanded ? 'Ver menos' : 'Ver mais'}
+                                </button>
                             </div>
-                        );
-                    }
-                    return cardEl;
-                })}
-            </div>
+                        )}
+                    </>
+                );
+            })()}
 
             {(inputs.length > 0 || type === 'mixed') && !(type === 'textarea') && stepId !== 'passo_7_mais_itens' && (
                 <div className="mt-6 sm:mt-8">
