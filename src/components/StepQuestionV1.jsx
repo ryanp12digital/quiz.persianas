@@ -35,7 +35,7 @@ const scrollToTop = () => {
     }
 };
 
-export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null }) {
+export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null, verMaisNaoSeiUrl = '#' }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
         inputs.forEach(input => {
@@ -424,7 +424,8 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                             ? 'border-2 border-gray-300 bg-gray-100 hover:border-gray-400 hover:shadow-md'
                             : 'border-2 border-gray-300 bg-white hover:border-gray-400 hover:shadow-md'
                     }`;
-                    return (
+                    const showVerMaisNaoSei = stepId === 'passo_3v3_tecido' && option.value === 'nao_sei';
+                    const cardEl = (
                     <Card key={index} className={cardClassName}>
                         <button
                             type="button"
@@ -472,6 +473,23 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                         </button>
                     </Card>
                     );
+                    if (showVerMaisNaoSei) {
+                        return (
+                            <div key={index} className="flex flex-col items-center gap-2">
+                                {cardEl}
+                                <a
+                                    href={verMaisNaoSeiUrl}
+                                    target={verMaisNaoSeiUrl.startsWith('http') ? '_blank' : undefined}
+                                    rel={verMaisNaoSeiUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                    className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
+                                    onClick={(e) => { if (verMaisNaoSeiUrl === '#') e.preventDefault(); }}
+                                >
+                                    Ver mais
+                                </a>
+                            </div>
+                        );
+                    }
+                    return cardEl;
                 })}
             </div>
 

@@ -130,6 +130,19 @@ export default function QuizV3() {
       return;
     }
 
+    // --- V3: passo_3v3_modelo — "Não sei" → catálogo ---
+    if (activeStep.id === 'passo_3v3_modelo' && selectedOptionValue === 'nao_sei') {
+      updatedCurrentItem.passo_4_modelo = 'nao_sei';
+      setCurrentItem(updatedCurrentItem);
+      setFormId('FORMR5');
+      const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
+      if (nextIndex !== -1) {
+        setHistory([...history, nextIndex]);
+        setCurrentStepIndex(nextIndex);
+      }
+      return;
+    }
+
     // --- V3: passo_3v3_modelo — gravar formato V1 e decidir próximo passo ---
     if (activeStep.id === 'passo_3v3_modelo' && selectedOptionValue) {
       const tecidoValue = currentItem.passo_3v3_tecido;
@@ -310,10 +323,13 @@ export default function QuizV3() {
   if (activeStep.id === 'passo_3v3_modelo') {
     const tecidoValue = currentItem.passo_3v3_tecido;
     const pairs = TECIDO_TO_MODELS[tecidoValue] || [];
-    modifiedStep.options = pairs.map(({ modelKey }) => {
-      const info = MODEL_OPTIONS_BY_KEY[modelKey];
-      return info ? { label: info.label, value: modelKey, image: info.image, description: info.description } : { label: modelKey, value: modelKey };
-    });
+    modifiedStep.options = [
+      ...pairs.map(({ modelKey }) => {
+        const info = MODEL_OPTIONS_BY_KEY[modelKey];
+        return info ? { label: info.label, value: modelKey, image: info.image, description: info.description } : { label: modelKey, value: modelKey };
+      }),
+      { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei' }
+    ];
   }
 
   const canGoBackStep = history.length > 1;
