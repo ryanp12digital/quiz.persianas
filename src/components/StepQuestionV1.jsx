@@ -44,7 +44,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
         return initial;
     });
     const [errors, setErrors] = useState({});
-    const [tecidoExpanded, setTecidoExpanded] = useState(false);
+    const [tecidoVisibleCount, setTecidoVisibleCount] = useState(tecidoExpandableLimit);
 
     useEffect(() => {
         if (Object.keys(initialValues).length > 0) {
@@ -404,7 +404,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
             {/* Cards de opções */}
             {(() => {
                 const isTecidoExpandable = stepId === 'passo_3v3_tecido' && typeof tecidoExpandableLimit === 'number' && options.length > tecidoExpandableLimit;
-                const visibleOptions = isTecidoExpandable && !tecidoExpanded ? options.slice(0, tecidoExpandableLimit) : options;
+                const visibleOptions = isTecidoExpandable ? options.slice(0, tecidoVisibleCount) : options;
                 return (
                     <>
                         <div className="gap-3 sm:gap-4 w-full max-w-2xl mx-auto grid grid-cols-2">
@@ -482,13 +482,23 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                         </div>
                         {isTecidoExpandable && (
                             <div className="w-full max-w-2xl mx-auto mt-4 flex justify-center">
-                                <button
-                                    type="button"
-                                    onClick={() => setTecidoExpanded((e) => !e)}
-                                    className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
-                                >
-                                    {tecidoExpanded ? 'Ver menos' : 'Ver mais'}
-                                </button>
+                                {tecidoVisibleCount < options.length ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => setTecidoVisibleCount((prev) => Math.min(prev + 4, options.length))}
+                                        className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
+                                    >
+                                        Ver mais
+                                    </button>
+                                ) : tecidoVisibleCount > tecidoExpandableLimit ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => setTecidoVisibleCount(tecidoExpandableLimit)}
+                                        className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
+                                    >
+                                        Ver menos
+                                    </button>
+                                ) : null}
                             </div>
                         )}
                     </>

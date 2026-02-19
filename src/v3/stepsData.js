@@ -45,13 +45,16 @@ V1_STEPS.forEach((step) => {
   });
 });
 
-// Lista unificada de tecidos (para o passo passo_3v3_tecido), sem nextStep
-export const FABRIC_OPTIONS_UNIFIED = Object.values(FABRIC_OPTIONS_MAP).map(({ label, value, image, description }) => ({
+// Lista unificada de tecidos (para o passo passo_3v3_tecido), sem nextStep; "Não sei" sempre por último
+const allFabricOptions = Object.values(FABRIC_OPTIONS_MAP).map(({ label, value, image, description }) => ({
   label,
   value,
   image: image || undefined,
   description: description || undefined,
 }));
+const semNaoSei = allFabricOptions.filter((o) => o.value !== 'nao_sei');
+const naoSei = allFabricOptions.find((o) => o.value === 'nao_sei');
+export const FABRIC_OPTIONS_UNIFIED = naoSei ? [...semNaoSei, naoSei] : semNaoSei;
 
 export { TECIDO_TO_MODELS };
 
