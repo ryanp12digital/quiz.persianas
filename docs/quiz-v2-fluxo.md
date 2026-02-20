@@ -8,7 +8,19 @@ Documento de referência para análise e correção do fluxo do Quiz V2.
 
 - **Etapa inicial:** `passo_4_modelo` (quiz **não** exibe `passo_1_intencao`; começa direto na escolha do modelo)
 - **Rota:** `/quiz/v2`
+- **Webhook (envio final):** `https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv2`
 - **A/B:** usa `src/v2/ab_test.js` (variante pode afetar comportamento; steps são os mesmos do array)
+
+---
+
+## Formulários (form_id)
+
+**Total: 2 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel).
+
+| ID | Quando é usado |
+|----|----------------|
+| **FORMR20** | Uma persiana com medidas (pré-orçamento) |
+| **FORMR30** | Mais de uma persiana com medidas (adicionou item extra) |
 
 ---
 

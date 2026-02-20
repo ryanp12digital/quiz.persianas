@@ -8,6 +8,21 @@ Documento de referência para análise e correção do fluxo do Quiz V1.
 
 - **Etapa inicial:** `passo_1_intencao`
 - **Rota:** `/quiz/v1`
+- **Webhook (envio final):** `https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv1`
+
+---
+
+## Formulários (form_id)
+
+**Total: 5 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel).
+
+| ID | Quando é usado |
+|----|----------------|
+| **quizv1** | Valor inicial do quiz |
+| **FORMR5** | Catálogo — usuário escolheu "Não sei" antes do estágio ou não tem medidas |
+| **FORMR10** | Já sabe o que quer e quer falar direto com atendente (passo_1_intencao → direto_atendente) |
+| **FORMR20** | Uma persiana com medidas (pré-orçamento) |
+| **FORMR30** | Mais de uma persiana com medidas (adicionou item extra) |
 
 ---
 
@@ -127,7 +142,7 @@ flowchart TD
 
 ---
 
-## Arquivo de definição
+## Arquivos de definição
 
 - Steps: `src/v1/steps.js`
 - Lógica de navegação e regras (ex.: `nao_sei` → catálogo): `src/v1/QuizV1.jsx`

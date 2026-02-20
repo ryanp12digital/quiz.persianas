@@ -50,6 +50,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     altura = principalItem?.altura || '';
   }
   const acabamento = principalItem?.passo_4_acabamento_cortina || '';
+  const passo_1_intencao = currentItem?.passo_1_intencao ?? '';
 
   const itens_adicionais = Array.isArray(items) && items.length > 0
     ? items.map((item, idx) => ({
@@ -72,11 +73,11 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     timestamps: { submitted_at: submittedAtISO, submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }), session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, duration_readable: durationSeconds != null ? `${Math.floor(durationSeconds / 60)}m ${durationSeconds % 60}s` : null },
     utm: { utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', referrer: typeof document !== 'undefined' ? (document.referrer || '') : '' },
     contact: { nome, whatsapp, email, cidade, bairro, ambientes, ambientes_count: ambientes?.length ?? 0 },
-    quiz_answers: { modelo, tecido, acionamento, medidas: { largura, altura, unidade: 'cm' }, acabamento },
+    quiz_answers: { passo_1_intencao, modelo, tecido, acionamento, medidas: { largura, altura, unidade: 'cm' }, acabamento },
     itens_adicionais,
     itens_adicionais_count: itens_adicionais?.length ?? 0,
     journey: { steps_completed: stepsHistory, steps_count: stepsHistory?.length ?? 0 },
-    _flat: { form_id: formId || '', quiz_version: quizVersion || '', submitted_at: submittedAtISO, session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', nome, whatsapp, email, cidade, bairro, ambientes, modelo, tecido, acionamento, largura, altura, acabamento, itens_adicionais }
+    _flat: { form_id: formId || '', quiz_version: quizVersion || '', submitted_at: submittedAtISO, session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', passo_1_intencao, nome, whatsapp, email, cidade, bairro, ambientes, modelo, tecido, acionamento, largura, altura, acabamento, itens_adicionais }
   };
 };
 
