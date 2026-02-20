@@ -357,12 +357,12 @@ export default function QuizV1() {
       );
 
       const WEBHOOK_URL = 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv1';
-      
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(finalData),
-      })
+      const WEBHOOK_LEADCONNECTOR_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
+      const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) };
+      Promise.all([
+        fetch(WEBHOOK_URL, webhookPayload),
+        fetch(WEBHOOK_LEADCONNECTOR_URL, webhookPayload),
+      ])
       .then(() => {
         // Tracking do Facebook Pixel com tratamento de erro
         try {
