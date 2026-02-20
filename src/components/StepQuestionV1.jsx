@@ -35,7 +35,7 @@ const scrollToTop = () => {
     }
 };
 
-export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null, tecidoExpandableLimit = 4 }) {
+export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null, tecidoExpandableLimit = 6 }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
         inputs.forEach(input => {
@@ -480,25 +480,15 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                 );
                             })}
                         </div>
-                        {isTecidoExpandable && (
+                        {isTecidoExpandable && tecidoVisibleCount < options.length && (
                             <div className="w-full max-w-2xl mx-auto mt-4 flex justify-center">
-                                {tecidoVisibleCount < options.length ? (
-                                    <button
-                                        type="button"
-                                        onClick={() => setTecidoVisibleCount((prev) => Math.min(prev + 4, options.length))}
-                                        className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
-                                    >
-                                        Ver mais
-                                    </button>
-                                ) : tecidoVisibleCount > tecidoExpandableLimit ? (
-                                    <button
-                                        type="button"
-                                        onClick={() => setTecidoVisibleCount(tecidoExpandableLimit)}
-                                        className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
-                                    >
-                                        Ver menos
-                                    </button>
-                                ) : null}
+                                <button
+                                    type="button"
+                                    onClick={() => setTecidoVisibleCount((prev) => Math.min(prev + 6, options.length))}
+                                    className="text-sm font-medium text-[#4CAF50] hover:text-green-600 border border-[#4CAF50] hover:border-green-600 px-4 py-2 rounded-xl transition-colors"
+                                >
+                                    Ver mais
+                                </button>
                             </div>
                         )}
                     </>
