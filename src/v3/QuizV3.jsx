@@ -50,7 +50,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     altura = principalItem?.altura || '';
   }
   const acabamento = principalItem?.passo_4_acabamento_cortina || '';
-  const passo_1_intencao = currentItem?.passo_1_intencao ?? '';
+  const passo_1_intencao = principalItem?.passo_1_intencao ?? currentItem?.passo_1_intencao ?? '';
 
   const itens_adicionais = Array.isArray(items) && items.length > 0
     ? items.map((item, idx) => ({
