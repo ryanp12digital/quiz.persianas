@@ -77,7 +77,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     itens_adicionais,
     itens_adicionais_count: itens_adicionais?.length ?? 0,
     journey: { steps_completed: stepsHistory, steps_count: stepsHistory?.length ?? 0 },
-    _flat: { form_id: formId || '', quiz_version: quizVersion || '', submitted_at: submittedAtISO, session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', passo_1_intencao, nome, whatsapp, email, cidade, bairro, ambientes, modelo, tecido, acionamento, largura, altura, acabamento, itens_adicionais }
+    _flat: { form_id: formId || '', quiz_version: quizVersion || '', submitted_at: submittedAtISO, session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', nome, whatsapp, email, cidade, bairro, ambientes, modelo, tecido, acionamento, largura, altura, acabamento, itens_adicionais }
   };
 };
 
