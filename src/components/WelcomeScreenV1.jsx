@@ -1,23 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import TrustBadges from './TrustBadges';
 import { Button } from './ui/button';
 
-const TRUSTINDEX_SCRIPT_URL = 'https://cdn.trustindex.io/loader.js?1cb013764e5e791d3196ebcc355';
-
 export default function WelcomeScreenV1({ onStart }) {
-  useEffect(() => {
-    const container = document.getElementById('trustindex-widget');
-    if (!container) return;
-    const script = document.createElement('script');
-    script.src = TRUSTINDEX_SCRIPT_URL;
-    script.defer = true;
-    script.async = true;
-    container.appendChild(script);
-    return () => {
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-  }, []);
-
   return (
     <div className="flex flex-col items-center text-center max-w-2xl mx-auto px-4 py-4 sm:py-6 animate-fadeIn space-y-4 sm:space-y-6">
       <TrustBadges />
@@ -43,23 +28,6 @@ export default function WelcomeScreenV1({ onStart }) {
       <p className="text-sm text-[#666666] mt-4" style={{ fontSize: '14px' }}>
         ✓ Mais de 10.000 ambientes transformados com perfeição
       </p>
-
-      <div
-        id="trustindex-reviews-widget"
-        style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto', padding: '20px' }}
-        onClickCapture={(e) => {
-          const link = e.target.closest('a[href*="trustindex"]');
-          if (link) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        }}
-      >
-        <div id="trustindex-reviews-header" style={{ textAlign: 'center', marginBottom: '0px' }}>
-        </div>
-        {/* Widget do Trustindex carregado via useEffect - links desativados para não sair do quiz */}
-        <div id="trustindex-widget" className="min-h-[80px] flex justify-center items-center" aria-label="Avaliações Google" />
-      </div>
     </div>
   );
 }

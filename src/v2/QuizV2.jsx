@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../components/Layout';
-import StepQuestion from '../components/StepQuestion';
-import WelcomeScreen from '../components/WelcomeScreen';
-import { Progress } from '../components/ui/progress';
+import LayoutV1 from '../components/LayoutV1';
+import StepQuestionV1 from '../components/StepQuestionV1';
+import WelcomeScreenV1 from '../components/WelcomeScreenV1';
+import QuizStepper from '../components/QuizStepper';
+import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 import { AB_CONFIG, getVariant } from './ab_test';
 
@@ -480,16 +481,14 @@ export default function QuizV2() {
 
   if (showWelcome) {
     return (
-      <Layout>
-        <WelcomeScreen onStart={() => {
+      <LayoutV1>
+        <WelcomeScreenV1 onStart={() => {
           setSessionStartedAt(Date.now());
           setShowWelcome(false);
         }} />
-      </Layout>
+      </LayoutV1>
     );
   }
-
-  const progress = ((currentStepIndex + 1) / STEPS.length) * 100;
 
   const modifiedStep = { ...activeStep };
   if (activeStep.id === 'passo_4_acabamento_cortina' && activeStep.optionsByTecido) {
@@ -506,18 +505,11 @@ export default function QuizV2() {
   const canGoBackStep = history.length > 1;
 
   return (
-    <Layout>
-      <div className="max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16">
-        <div className="mb-6 sm:mb-12">
-          <Progress value={progress} className="h-2 bg-gray-100" />
-          <div className="flex justify-between mt-2 text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wider">
-            <span>Início</span>
-            <span>Progresso: {Math.round(progress)}%</span>
-            <span>Final</span>
-          </div>
-        </div>
-
-        <StepQuestion
+    <LayoutV1>
+      <div className="w-full min-w-0 max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16 box-border">
+        <TrustBadges />
+        <QuizStepper currentStepId={activeStep.id} steps={STEPS} />
+        <StepQuestionV1
           question={modifiedStep.question}
           subtext={modifiedStep.subtext}
           type={modifiedStep.type}
@@ -525,7 +517,6 @@ export default function QuizV2() {
           inputs={modifiedStep.inputs}
           onOptionSelect={(opt) => handleNext({ [activeStep.id]: opt.value })}
           onNext={(data) => {
-            // Salvar dados de inputs no currentItem
             let stepData = { [activeStep.id]: currentItem[activeStep.id] || null, ...data };
             if (activeStep.id === 'passo_6_medidas' && (data.largura != null || data.altura != null)) {
               stepData = { ...stepData, passo_6_medidas: { largura: data.largura ?? '', altura: data.altura ?? '' } };
@@ -540,6 +531,6 @@ export default function QuizV2() {
           stepId={activeStep.id}
         />
       </div>
-    </Layout>
+    </LayoutV1>
   );
 }
