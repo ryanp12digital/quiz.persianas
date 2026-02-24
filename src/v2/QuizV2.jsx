@@ -70,15 +70,58 @@ const flattenItems = (items, stepData) => {
   return flattened;
 };
 
-// Função para construir payload padronizado do webhook (detalhado e organizado)
+// Deriva produto (tipo, modelo, tecido, acabamento) de um item para o payload padrão da automação.
+// Teto: modelo = segundo modelo (romana_teto/celular_teto/plissada_teto), tecido = valor do passo de tecido.
+// Cortina: modelo = cortina, acabamento = valor; tecido omitido no bloco principal.
+const getProdutoFromItem = (item) => {
+  if (!item) return { tipo: '', modelo: '', tecido: '', acabamento: '', acionamento: '', medidas: { largura: '', altura: '', unidade: 'cm' } };
+  let tipo = '';
+  let modelo = '';
+  let tecido = '';
+  let acabamento = item?.passo_4_acabamento_cortina || '';
+  const acionamento = item?.passo_3_acionamento || '';
+  let largura = '';
+  let altura = '';
+  if (typeof item?.passo_6_medidas === 'object') {
+    largura = item.passo_6_medidas?.largura || '';
+    altura = item.passo_6_medidas?.altura || '';
+  } else {
+    largura = item?.largura || '';
+    altura = item?.altura || '';
+  }
+  const medidas = { largura, altura, unidade: 'cm' };
+
+  if (item.passo_4_modelo === 'teto') {
+    tipo = 'persiana_teto';
+    modelo = item.passo_4_modelo_teto || '';
+    Object.keys(item).forEach((key) => {
+      if (key.startsWith('passo_4_tecido_teto_')) tecido = item[key] || tecido;
+    });
+    return { tipo, modelo, tecido, acabamento: '', acionamento, medidas };
+  }
+  if (item.passo_4_modelo === 'cortina') {
+    tipo = 'cortina';
+    const tecidoCortina = item?.passo_4_tecido_cortina || '';
+    modelo = tecidoCortina ? `cortina ${tecidoCortina}` : 'cortina';  // prefixo para identificar cortina
+    tecido = item?.passo_4_acabamento_cortina || '';  // no lugar do tecido: acabamento
+    return { tipo, modelo, tecido, acabamento, acionamento, medidas };
+  }
+  tipo = item.passo_4_modelo || item.passo_4_modelo_teto || '';
+  modelo = item.passo_4_modelo || item.passo_4_modelo_teto || '';
+  Object.keys(item).forEach((key) => {
+    if (key.startsWith('passo_4_tecido_')) tecido = item[key] || tecido;
+  });
+  return { tipo, modelo, tecido, acabamento, acionamento, medidas };
+};
+
+// Função para construir payload padronizado do webhook (detalhado e organizado, sem repetição)
 const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, currentItem, items, options = {}) => {
   const { sessionStartedAt = null, stepsHistory = [] } = options;
   const submittedAt = new Date();
 
-  // Item principal: com múltiplos itens é o primeiro (items[0]); senão é o currentItem
   const principalItem = Array.isArray(items) && items.length > 0 ? items[0] : currentItem;
+  const produto = getProdutoFromItem(principalItem);
 
-  // Extrair campos do formulário final (captura)
   const nome = stepData?.nome || '';
   const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';
   const email = stepData?.email || '';
@@ -86,55 +129,22 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const bairro = stepData?.bairro || '';
   const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
 
-  // Extrair modelo do item principal
-  let modelo = '';
-  if (principalItem?.passo_4_modelo) {
-    modelo = principalItem.passo_4_modelo;
-  } else if (principalItem?.passo_4_modelo_teto) {
-    modelo = principalItem.passo_4_modelo_teto;
-  }
-
-  // Extrair tecido do item principal (qualquer chave que comece com passo_4_tecido_)
-  let tecido = '';
-  Object.keys(principalItem || {}).forEach(key => {
-    if (key.startsWith('passo_4_tecido_')) {
-      tecido = principalItem[key] || '';
-    }
-  });
-
-  // Extrair acionamento
-  const acionamento = principalItem?.passo_3_acionamento || '';
-
-  // Extrair medidas (pode estar em passo_6_medidas como objeto ou achatado)
-  let largura = '';
-  let altura = '';
-  if (principalItem?.passo_6_medidas) {
-    if (typeof principalItem.passo_6_medidas === 'object') {
-      largura = principalItem.passo_6_medidas.largura || '';
-      altura = principalItem.passo_6_medidas.altura || '';
-    }
-  } else {
-    largura = principalItem?.largura || '';
-    altura = principalItem?.altura || '';
-  }
-
-  // Extrair acabamento (para cortina)
-  let acabamento = '';
-  if (principalItem?.passo_4_acabamento_cortina) {
-    acabamento = principalItem.passo_4_acabamento_cortina;
-  }
-
-  // Processar itens adicionais
-  const itens_adicionais = Array.isArray(items) && items.length > 0
-    ? items.map((item, idx) => ({
-        ordem: idx + 1,
-        descricao_livre: item?.descricao_livre || '',
-        modelo: item?.passo_4_modelo || item?.passo_4_modelo_teto || '',
-        tecido: item?.passo_4_tecido_rolo || item?.passo_4_tecido_cortina || item?.passo_4_tecido_vertical || item?.passo_4_tecido_painel || item?.passo_4_tecido_romana || item?.passo_4_tecido_double_vision || item?.passo_4_tecido_horizontal_madeira || item?.passo_4_tecido_horizontal_aluminio || item?.passo_4_tecido_teto || item?.passo_4_acabamento_cortina || '',
-        acionamento: item?.passo_3_acionamento || '',
-        largura: typeof item?.passo_6_medidas === 'object' ? item.passo_6_medidas?.largura : item?.largura,
-        altura: typeof item?.passo_6_medidas === 'object' ? item.passo_6_medidas?.altura : item?.altura
-      }))
+  // Apenas itens extras: o primeiro já está em produto/quiz_answers, evita duplicação
+  const itens_adicionais = Array.isArray(items) && items.length > 1
+    ? items.slice(1).map((item, idx) => {
+        const p = getProdutoFromItem(item);
+        return {
+          ordem: idx + 1,
+          descricao_livre: item?.descricao_livre || '',
+          tipo: p.tipo,
+          modelo: p.modelo,
+          tecido: p.tecido,
+          acabamento: p.acabamento,
+          acionamento: p.acionamento,
+          largura: p.medidas.largura,
+          altura: p.medidas.altura
+        };
+      })
     : [];
 
   const sessionStartedAtISO = sessionStartedAt ? new Date(sessionStartedAt).toISOString() : null;
@@ -174,16 +184,15 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       ambientes,
       ambientes_count: ambientes?.length ?? 0
     },
-    quiz_answers: {
-      modelo,
-      tecido,
-      acionamento,
-      medidas: {
-        largura,
-        altura,
-        unidade: 'cm'
-      },
-      acabamento
+    produto: {
+      passo_1_intencao: '', // V2 não tem passo_1_intencao no fluxo
+      descricao_livre: principalItem?.descricao_livre || '',
+      tipo: produto.tipo,
+      modelo: produto.modelo,
+      tecido: produto.tecido,
+      acabamento: produto.acabamento,
+      acionamento: produto.acionamento,
+      medidas: produto.medidas
     },
     itens_adicionais,
     itens_adicionais_count: itens_adicionais?.length ?? 0,
@@ -192,27 +201,22 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       steps_count: stepsHistory?.length ?? 0
     },
     _flat: {
-      form_id: formId || '',
-      quiz_version: quizVersion || '',
-      submitted_at: submittedAtISO,
-      session_started_at: sessionStartedAtISO,
-      duration_seconds: durationSeconds,
-      utm_source: leadData?.utm_source || '',
-      utm_medium: leadData?.utm_medium || '',
-      utm_campaign: leadData?.utm_campaign || '',
-      ab_variant: leadData?.ab_variant || '',
       nome,
       whatsapp,
       email,
       cidade,
       bairro,
       ambientes,
-      modelo,
-      tecido,
-      acionamento,
-      largura,
-      altura,
-      acabamento,
+      ambientes_count: ambientes?.length ?? 0,
+      passo_1_intencao: '',
+      descricao_livre: principalItem?.descricao_livre || '',
+      tipo: produto.tipo,
+      modelo: produto.modelo,
+      tecido: produto.tecido,
+      acabamento: produto.acabamento,
+      acionamento: produto.acionamento,
+      largura: produto.medidas.largura,
+      altura: produto.medidas.altura,
       itens_adicionais
     }
   };

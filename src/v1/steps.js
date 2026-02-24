@@ -187,8 +187,8 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Celular de Teto:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio', image: '/tecidos/celular-teto-01-blackout.png' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio', image: '/tecidos/celular-teto-02-translucida.png' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/celular-teto-01-blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/celular-teto-02-translucida.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -200,8 +200,8 @@ export const STEPS = [
         question: 'Escolha o tecido para sua Plissada de Teto:',
         type: 'radio',
         options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_5_estagio', image: '/tecidos/plissada-teto-01-blackout.png' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_5_estagio', image: '/tecidos/plissada-teto-02-translucida.png' },
+            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/plissada-teto-01-blackout.png' },
+            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/plissada-teto-02-translucida.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },

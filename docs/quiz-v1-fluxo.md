@@ -12,6 +12,29 @@ Documento de referência para análise e correção do fluxo do Quiz V1.
 
 ---
 
+## Payload do webhook (estrutura)
+
+O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição). A automação pode usar o bloco **produto** como referência padrão.
+
+| Bloco | Conteúdo |
+|-------|----------|
+| **metadata** | form_id, quiz_version, source, submitted_at |
+| **timestamps** | submitted_at, session_started_at, duration_seconds |
+| **utm** | utm_source, utm_medium, utm_campaign, referrer |
+| **contact** | nome, whatsapp, email, cidade, bairro, ambientes, ambientes_count |
+| **produto** | tipo, modelo, tecido, acabamento, acionamento, medidas (largura, altura, unidade) |
+| **quiz_answers** | passo_1_intencao, modelo, tecido, acionamento, medidas, acabamento (espelho de produto) |
+| **itens_adicionais** | array de { ordem, descricao_livre, tipo, modelo, tecido, acabamento, acionamento, largura, altura } |
+| **journey** | steps_completed, steps_count |
+| **_flat** | Campos planos para integrações que precisam (mesmos valores que contact + produto) |
+
+**Regras de produto (automação):**  
+- **Persiana de teto:** `produto.modelo` = `romana_teto` \| `celular_teto` \| `plissada_teto` (nunca `teto`); `produto.tecido` = valor do passo de tecido.  
+- **Cortina:** `produto.modelo` = `cortina`; `produto.acabamento` = valor; tecido omitido no bloco principal.  
+- Demais modelos: `produto.modelo` e `produto.tecido` conforme escolha.
+
+---
+
 ## Formulários (form_id)
 
 **Total: 5 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel).

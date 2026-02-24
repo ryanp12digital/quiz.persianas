@@ -51,9 +51,18 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   }
   const acabamento = principalItem?.passo_4_acabamento_cortina || '';
   const passo_1_intencao = principalItem?.passo_1_intencao ?? currentItem?.passo_1_intencao ?? '';
+  const TETO_KEYS = ['romana_teto', 'celular_teto', 'plissada_teto'];
+  const tipo = modelo === 'cortina' ? 'cortina' : TETO_KEYS.includes(modelo) ? 'persiana_teto' : modelo;
+  // Cortina: modelo com prefixo "cortina " + tecido; no lugar do tecido vai o acabamento
+  if (tipo === 'cortina') {
+    const tecidoCortina = principalItem?.passo_4_tecido_cortina || '';
+    modelo = tecidoCortina ? `cortina ${tecidoCortina}` : 'cortina';
+    tecido = principalItem?.passo_4_acabamento_cortina || '';
+  }
 
-  const itens_adicionais = Array.isArray(items) && items.length > 0
-    ? items.map((item, idx) => ({
+  // Apenas itens extras: o primeiro já está em produto, evita duplicação
+  const itens_adicionais = Array.isArray(items) && items.length > 1
+    ? items.slice(1).map((item, idx) => ({
         ordem: idx + 1,
         descricao_livre: item?.descricao_livre || '',
         modelo: item?.passo_4_modelo || item?.passo_4_modelo_teto || '',
@@ -73,11 +82,38 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     timestamps: { submitted_at: submittedAtISO, submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }), session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, duration_readable: durationSeconds != null ? `${Math.floor(durationSeconds / 60)}m ${durationSeconds % 60}s` : null },
     utm: { utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', referrer: typeof document !== 'undefined' ? (document.referrer || '') : '' },
     contact: { nome, whatsapp, email, cidade, bairro, ambientes, ambientes_count: ambientes?.length ?? 0 },
-    quiz_answers: { passo_1_intencao, modelo, tecido, acionamento, medidas: { largura, altura, unidade: 'cm' }, acabamento },
+    produto: {
+      passo_1_intencao,
+      descricao_livre: principalItem?.descricao_livre || '',
+      tipo,
+      modelo,
+      tecido,
+      acabamento,
+      acionamento,
+      medidas: { largura, altura, unidade: 'cm' }
+    },
     itens_adicionais,
     itens_adicionais_count: itens_adicionais?.length ?? 0,
     journey: { steps_completed: stepsHistory, steps_count: stepsHistory?.length ?? 0 },
-    _flat: { form_id: formId || '', quiz_version: quizVersion || '', submitted_at: submittedAtISO, session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', nome, whatsapp, email, cidade, bairro, ambientes, modelo, tecido, acionamento, largura, altura, acabamento, itens_adicionais }
+    _flat: {
+      nome,
+      whatsapp,
+      email,
+      cidade,
+      bairro,
+      ambientes,
+      ambientes_count: ambientes?.length ?? 0,
+      passo_1_intencao,
+      descricao_livre: principalItem?.descricao_livre || '',
+      tipo,
+      modelo,
+      tecido,
+      acabamento,
+      acionamento,
+      largura,
+      altura,
+      itens_adicionais
+    }
   };
 };
 

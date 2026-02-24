@@ -24,6 +24,9 @@ const TECIDO_STEP_TO_MODEL = {
 const TECIDO_TO_MODELS = {};
 const FABRIC_OPTIONS_MAP = {}; // value -> { label, value, image, description } (primeira ocorrência)
 
+// Semi-blackout e Semi-blackout 70% tratados como a mesma opção; exibir apenas "Semi-blackout 70%"
+const UNIFIED_SEMI_BLACKOUT_KEY = 'semi_blackout_70';
+
 V1_STEPS.forEach((step) => {
   if (!step.id || !step.id.startsWith('passo_4_tecido_') || step.id === 'passo_4_acabamento_cortina') return;
   const tecidoStepId = step.id;
@@ -32,8 +35,11 @@ V1_STEPS.forEach((step) => {
 
   (step.options || []).forEach((opt) => {
     const v = opt.value;
-    if (!TECIDO_TO_MODELS[v]) TECIDO_TO_MODELS[v] = [];
-    TECIDO_TO_MODELS[v].push({ modelKey, tecidoStepId });
+    const keyForModels = v === 'semi_blackout' ? UNIFIED_SEMI_BLACKOUT_KEY : v;
+    if (!TECIDO_TO_MODELS[keyForModels]) TECIDO_TO_MODELS[keyForModels] = [];
+    TECIDO_TO_MODELS[keyForModels].push({ modelKey, tecidoStepId });
+    // Não adicionar entrada "Semi-blackout" ao mapa; só "Semi-blackout 70%" aparece na lista
+    if (v === 'semi_blackout') return;
     if (!FABRIC_OPTIONS_MAP[v]) {
       FABRIC_OPTIONS_MAP[v] = {
         label: opt.label,
@@ -45,7 +51,7 @@ V1_STEPS.forEach((step) => {
   });
 });
 
-// Lista unificada de tecidos (para o passo passo_3v3_tecido), sem nextStep; "Não sei" sempre por último
+// Lista unificada de tecidos: "Não sei" no final do primeiro grupo (6ª posição), antes do botão "Ver mais"
 const allFabricOptions = Object.values(FABRIC_OPTIONS_MAP).map(({ label, value, image, description }) => ({
   label,
   value,
@@ -54,7 +60,10 @@ const allFabricOptions = Object.values(FABRIC_OPTIONS_MAP).map(({ label, value, 
 }));
 const semNaoSei = allFabricOptions.filter((o) => o.value !== 'nao_sei');
 const naoSei = allFabricOptions.find((o) => o.value === 'nao_sei');
-export const FABRIC_OPTIONS_UNIFIED = naoSei ? [...semNaoSei, naoSei] : semNaoSei;
+const FIRST_GROUP_SIZE = 5; // primeiras 5 opções + "não sei" = 6 itens no primeiro bloco
+export const FABRIC_OPTIONS_UNIFIED = naoSei
+  ? [...semNaoSei.slice(0, FIRST_GROUP_SIZE), naoSei, ...semNaoSei.slice(FIRST_GROUP_SIZE)]
+  : semNaoSei;
 
 export { TECIDO_TO_MODELS };
 
