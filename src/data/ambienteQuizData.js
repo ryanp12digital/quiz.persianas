@@ -18,6 +18,13 @@ export const AMBIENTES = [
   { value: 'outros', label: 'Outros' },
 ];
 
+/** Opção "Não sei" para uso nas perguntas de modelo e tecido (V4, V5, V6). */
+export const NAO_SEI_OPTION = {
+  value: 'nao_sei',
+  label: 'Não sei — Quero recomendação',
+  description: 'Para quem prefere receber uma recomendação personalizada.',
+};
+
 // --- IMAGENS MODELOS (paths V1) ---
 const IMG = {
   rolo: '/modelos/persiana-rolo.webp',

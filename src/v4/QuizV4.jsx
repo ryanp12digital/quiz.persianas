@@ -10,6 +10,7 @@ import {
   AMBIENTES,
   getModelosPorAmbiente,
   getTecidosPorAmbienteModelo,
+  NAO_SEI_OPTION,
   ACABAMENTO_CORTINA_OPTIONS,
   ACIONAMENTO_OPTIONS,
   MODELOS_SEM_MOTORIZADA,
@@ -128,7 +129,8 @@ export default function QuizV4() {
     const ambiente = currentItem.passo_1_ambiente;
     if (!ambiente) return [];
     const modelos = getModelosPorAmbiente(ambiente);
-    return modelos.map((m) => ({ ...m, nextStep: 'passo_3_tecido' }));
+    const opts = modelos.map((m) => ({ ...m, nextStep: 'passo_3_tecido' }));
+    return [...opts, { ...NAO_SEI_OPTION, nextStep: 'passo_3_tecido' }];
   }, [currentItem.passo_1_ambiente]);
 
   const optionsPasso3 = useMemo(() => {
@@ -137,7 +139,8 @@ export default function QuizV4() {
     if (!ambiente || !modelo) return [];
     const tecidos = getTecidosPorAmbienteModelo(ambiente, modelo);
     const nextStep = modelo === 'cortina' ? 'passo_4_acabamento' : 'passo_5_acionamento';
-    return tecidos.map((t) => ({ ...t, nextStep }));
+    const opts = tecidos.map((t) => ({ ...t, nextStep }));
+    return [...opts, { ...NAO_SEI_OPTION, nextStep }];
   }, [currentItem.passo_1_ambiente, currentItem.passo_2_modelo]);
 
   const optionsPasso4 = useMemo(
