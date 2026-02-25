@@ -262,9 +262,9 @@ export default function QuizV1() {
     if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
       const selectedOptionValue = Object.values(stepData)[0];
       
-      // Regra: qualquer "nao_sei" antes do passo_5_estagio pula a etapa de fase
-      // e vai direto para "Não tenho medidas e quero um pré orçamento" (catálogo)
-      if (selectedOptionValue === 'nao_sei' && activeStep.id !== 'passo_5_estagio') {
+      // Regra: "não sei" só redireciona para catálogo quando for no passo de MODELO (não no de tecido)
+      const isModeloStep = activeStep.id === 'passo_4_modelo' || activeStep.id === 'passo_4_modelo_teto';
+      if (selectedOptionValue === 'nao_sei' && isModeloStep) {
         setFormId('FORMR5');
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
         if (nextIndex !== -1) {

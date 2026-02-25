@@ -148,17 +148,8 @@ export default function QuizV3() {
 
     const selectedOptionValue = stepData && typeof stepData === 'object' && !Array.isArray(stepData) ? Object.values(stepData)[0] : undefined;
 
-    // --- V3: passo_3v3_tecido ---
+    // --- V3: passo_3v3_tecido — "não sei" em tecido continua o fluxo (vai para modelos); só redireciona no passo de modelo
     if (activeStep.id === 'passo_3v3_tecido') {
-      if (selectedOptionValue === 'nao_sei') {
-        setFormId('FORMR5');
-        const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
-        if (nextIndex !== -1) {
-          setHistory([...history, nextIndex]);
-          setCurrentStepIndex(nextIndex);
-        }
-        return;
-      }
       const nextIndex = STEPS.findIndex(s => s.id === 'passo_3v3_modelo');
       if (nextIndex !== -1) {
         setHistory([...history, nextIndex]);
@@ -212,7 +203,9 @@ export default function QuizV3() {
     }
 
     if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
-      if (selectedOptionValue === 'nao_sei' && activeStep.id !== 'passo_5_estagio') {
+      // "Não sei" só redireciona para catálogo no passo de modelo (passo_3v3_modelo já tratado acima; aqui outros passos)
+      const isModeloStepNaoSei = (activeStep.id === 'passo_4_modelo' || activeStep.id === 'passo_4_modelo_teto') && selectedOptionValue === 'nao_sei';
+      if (isModeloStepNaoSei) {
         setFormId('FORMR5');
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
         if (nextIndex !== -1) {
