@@ -118,7 +118,7 @@ export default function QuizV6() {
     const ambiente = currentItem.passo_1_ambiente;
     if (!ambiente) return [];
     const combos = getCombinacoesModeloTecido(ambiente);
-    return combos.map((c) => ({ value: c.value, label: c.label, nextStep: c.modelKey === 'cortina' ? 'passo_3_acabamento' : 'passo_4_acionamento', modelKey: c.modelKey, tecidoValue: c.tecidoValue }));
+    return combos.map((c) => ({ value: c.value, label: c.label, image: c.image, nextStep: c.modelKey === 'cortina' ? 'passo_3_acabamento' : 'passo_4_acionamento', modelKey: c.modelKey, tecidoValue: c.tecidoValue }));
   }, [currentItem.passo_1_ambiente]);
 
   const optionsPasso3 = useMemo(
