@@ -123,12 +123,14 @@ export const STEPS = [
         question: 'Escolha o acabamento para sua Persiana de Madeira:',
         type: 'radio',
         options: [
-            { label: 'Madeira natural 50 mm com cadarço', description: 'Persiana clássica de lâminas largas com cadarço aparente, une beleza natural e controle eficiente da luz.', value: 'natural_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-01-madeira-natural-50mm-cadarco.png' },
-            { label: 'Madeira natural 50 mm com fita', description: 'Versão com fitas têxteis largas que cobrem os furos, oferecendo acabamento sofisticado e mais privacidade.', value: 'natural_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-02-madeira-natural-50mm-fita.png' },
+            { label: 'Madeira natural com cadarço', description: 'Persiana clássica de lâminas largas com cadarço aparente, une beleza natural e controle eficiente da luz.', value: 'natural_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-01-madeira-natural-50mm-cadarco.png' },
+            { label: 'Madeira natural com fita', description: 'Versão com fitas têxteis largas que cobrem os furos, oferecendo acabamento sofisticado e mais privacidade.', value: 'natural_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-02-madeira-natural-50mm-fita.png' },
             { label: 'Eco wood com cadarço', description: 'Persiana sustentável feita com composto sintético e fibras recicláveis, resistente à umidade e fácil de limpar.', value: 'eco_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-03-eco-wood-cadarco.png' },
             { label: 'Eco wood com fita', description: 'Versão com fitas têxteis que aumentam a privacidade e o apelo decorativo, mantendo o caráter ecológico.', value: 'eco_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-04-eco-wood-fita.png' },
             { label: 'Bambu com cadarço', description: 'Persiana natural de bambu trançado, com cadarços aparentes e textura leve e tropical.', value: 'bambu_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-05-bambu-cadarco.png' },
             { label: 'Bambu com fita', description: 'Modelo com fitas de tecido decorativas, que trazem toque artesanal e sofisticação ao estilo natural do bambu.', value: 'bambu_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-06-bambu-fita.png' },
+            { label: 'PVC com cadarço', description: 'Persiana em PVC com cadarço aparente, resistente à umidade e fácil de limpar.', value: 'pvc_cadarco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-07-pvc-cadarco.png' },
+            { label: 'PVC com fita', description: 'Versão em PVC com fitas têxteis, acabamento discreto e maior privacidade.', value: 'pvc_fita', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-madeira-08-pvc-fita.png' },
             { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
         ]
     },
@@ -142,7 +144,7 @@ export const STEPS = [
         options: [
             { label: 'Lâmina 16 mm (micro)', description: 'Lâminas finas e delicadas, ideais para janelas pequenas ou portas de vidro.', value: 'lamina_16', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-01-lamina-16mm-micro.png' },
             { label: 'Lâmina 25 mm (padrão)', description: 'Modelo mais comum, permite bom controle da luz e ventilação.', value: 'lamina_25', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-02-lamina-25mm-padrao.png' },
-            { label: 'Lâmina 50 mm (larga)', description: 'Visual moderno e robusto, com maior espaçamento entre as lâminas.', value: 'lamina_50', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-03-lamina-50mm-larga.png' },
+            { label: 'Lâmina (larga)', description: 'Visual moderno e robusto, com maior espaçamento entre as lâminas.', value: 'lamina_50', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-03-lamina-50mm-larga.png' },
             { label: 'Perfurada (micro furos)', description: 'Lâminas com microperfurações que suavizam a entrada de luz e calor.', value: 'perfurada', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-04-perfurada-micro-furos.png' },
             { label: 'Acabamento brilhante ou metálico', description: 'Efeito decorativo, com brilho e reflexão de luz.', value: 'brilhante', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-05-acabamento-brilhante-metalico.png' },
             { label: 'Acabamento fosco ou acetinado', description: 'Visual discreto e sofisticado, reduz reflexos.', value: 'fosco', nextStep: 'passo_3_acionamento', image: '/tecidos/horizontal-aluminio-06-acabamento-fosco-acetinado.png' },
