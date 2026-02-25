@@ -5,6 +5,7 @@ import TrustBadges from './TrustBadges';
 import PrecoInfo from './PrecoInfo';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 
 const formatPhoneNumber = (value) => {
     if (!value) return value;
@@ -413,8 +414,9 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                 const isModeloStep = stepId === 'passo_4_modelo';
                                 const isTecidoOrAcabamento = stepId && (stepId.startsWith('passo_4_tecido') || stepId === 'passo_4_acabamento_cortina' || stepId === 'passo_3_acionamento');
                                 const isV3Step = stepId === 'passo_3v3_tecido' || stepId === 'passo_3v3_modelo';
-                                const layoutVertical = !!(isModeloStep || isV3Step || (isTecidoOrAcabamento && option.image));
-                                const imageContainerClass = isV3Step
+                                const isV6ModeloTecidoStep = stepId === 'passo_2_modelo_tecido';
+                                const layoutVertical = !!(isModeloStep || isV3Step || isV6ModeloTecidoStep || (isTecidoOrAcabamento && option.image));
+                                const imageContainerClass = (isV3Step || isV6ModeloTecidoStep)
                                     ? 'w-full h-40 sm:h-56 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0'
                                     : 'w-full h-24 sm:h-40 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0';
                                 const isFeatured = option.featured === true;
@@ -432,10 +434,15 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                 }`;
                                 return (
                                     <Card key={option.value ?? index} className={cardClassName}>
+                                        {option.recommended && (
+                                            <div className="absolute top-2 right-2 z-10">
+                                                <Badge variant="green">Recomendado</Badge>
+                                            </div>
+                                        )}
                                         <button
                                             type="button"
                                             onClick={() => { scrollToTop(); onOptionSelect(option); }}
-                                            className={`w-full h-full ${isV3Step ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
+                                            className={`w-full h-full ${(isV3Step || isV6ModeloTecidoStep) ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
                                                 layoutVertical ? '' : isTecidoOrAcabamento ? '' : ''
                                             } ${!isFeatured && isIntencaoStep ? 'text-gray-600' : 'text-gray-800'}`}
                                         >
