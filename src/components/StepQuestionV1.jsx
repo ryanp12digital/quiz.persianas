@@ -416,8 +416,9 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                 const isV3Step = stepId === 'passo_3v3_tecido' || stepId === 'passo_3v3_modelo';
                                 const isV6ModeloTecidoStep = stepId === 'passo_2_modelo_tecido';
                                 const isPasso3TecidoV4V5 = stepId === 'passo_3_tecido';
-                                const layoutVertical = !!(isModeloStep || isV3Step || isV6ModeloTecidoStep || (isPasso3TecidoV4V5 && option.image) || (isTecidoOrAcabamento && option.image));
-                                const imageContainerClass = (isV3Step || isV6ModeloTecidoStep || (isPasso3TecidoV4V5 && option.image))
+                                const isPasso1Ambiente = stepId === 'passo_1_ambiente';
+                                const layoutVertical = !!(isModeloStep || isV3Step || isV6ModeloTecidoStep || (isPasso1Ambiente && option.image) || (isPasso3TecidoV4V5 && option.image) || (isTecidoOrAcabamento && option.image));
+                                const imageContainerClass = (isV3Step || isV6ModeloTecidoStep || (isPasso1Ambiente && option.image) || (isPasso3TecidoV4V5 && option.image))
                                     ? 'w-full h-40 sm:h-56 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0'
                                     : 'w-full h-24 sm:h-40 mb-3 sm:mb-4 overflow-hidden rounded-xl bg-gray-50 shrink-0';
                                 const isFeatured = option.featured === true;
@@ -443,7 +444,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                         <button
                                             type="button"
                                             onClick={() => { scrollToTop(); onOptionSelect(option); }}
-                                            className={`w-full h-full ${(isV3Step || isV6ModeloTecidoStep || (isPasso3TecidoV4V5 && option.image)) ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
+                                            className={`w-full h-full ${(isV3Step || isV6ModeloTecidoStep || (isPasso1Ambiente && option.image) || (isPasso3TecidoV4V5 && option.image)) ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
                                                 layoutVertical ? '' : isTecidoOrAcabamento ? '' : ''
                                             } ${!isFeatured && isIntencaoStep ? 'text-gray-600' : 'text-gray-800'}`}
                                         >
