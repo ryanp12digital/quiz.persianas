@@ -22,40 +22,39 @@ const STEPS_CONFIG_V3 = [
 const getCurrentPhase = (stepId, steps) => {
   if (!stepId) return null;
 
-  if (stepId === 'passo_1_intencao') {
+  // Tela inicial (não mostra timeline)
+  if (stepId === 'passo_1_intencao' || stepId === 'passo_1_ambiente') {
     return null;
   }
 
-  if (stepId === 'passo_3v3_tecido') {
-    return 'tecido';
-  }
-  if (stepId === 'passo_3v3_modelo') {
-    return 'modelo';
-  }
+  // V3
+  if (stepId === 'passo_3v3_tecido') return 'tecido';
+  if (stepId === 'passo_3v3_modelo') return 'modelo';
 
-  if (stepId === 'passo_4_modelo' || stepId === 'passo_4_modelo_teto') {
-    return 'modelo';
-  }
+  // V1
+  if (stepId === 'passo_4_modelo' || stepId === 'passo_4_modelo_teto') return 'modelo';
+  if (stepId.startsWith('passo_4_tecido_') || stepId === 'passo_4_acabamento_cortina') return 'tecido';
+  if (stepId === 'passo_3_acionamento') return 'acionamento';
+  if (stepId === 'passo_6_medidas') return 'medidas';
+  if (stepId === 'passo_7_mais_itens' || stepId === 'passo_7_adicionar_item') return 'outras';
+  if (stepId === 'passo_8_captura' || stepId === 'passo_8_captura_catalogo') return null;
 
-  if (stepId.startsWith('passo_4_tecido_') || stepId === 'passo_4_acabamento_cortina') {
-    return 'tecido';
-  }
+  // V4 / V5 (ambiente → modelo → tecido → acabamento → acionamento → medidas → observações → captura)
+  if (stepId === 'passo_2_modelo') return 'modelo';
+  if (stepId === 'passo_3_tecido') return 'tecido';
+  if (stepId === 'passo_4_acabamento') return 'tecido';
+  if (stepId === 'passo_5_acionamento') return 'acionamento';
+  if (stepId === 'passo_6_medidas') return 'medidas';
+  if (stepId === 'passo_7_observacoes') return 'outras';
+  if (stepId === 'passo_8_captura') return null;
 
-  if (stepId === 'passo_3_acionamento') {
-    return 'acionamento';
-  }
-
-  if (stepId === 'passo_6_medidas') {
-    return 'medidas';
-  }
-
-  if (stepId === 'passo_7_mais_itens' || stepId === 'passo_7_adicionar_item') {
-    return 'outras';
-  }
-
-  if (stepId === 'passo_8_captura' || stepId === 'passo_8_captura_catalogo') {
-    return null;
-  }
+  // V6 (ambiente → modelo+tecido → acabamento → acionamento → medidas → observações → captura)
+  if (stepId === 'passo_2_modelo_tecido') return 'modelo';
+  if (stepId === 'passo_3_acabamento') return 'tecido';
+  if (stepId === 'passo_4_acionamento') return 'acionamento';
+  if (stepId === 'passo_5_medidas') return 'medidas';
+  if (stepId === 'passo_6_observacoes') return 'outras';
+  if (stepId === 'passo_7_captura') return null;
 
   return null;
 };
