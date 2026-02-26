@@ -10,6 +10,7 @@ import {
   AMBIENTES,
   getModelosPorAmbiente,
   getTecidosPorAmbienteModelo,
+  getImageForModeloTecido,
   NAO_SEI_OPTION,
   ACABAMENTO_CORTINA_OPTIONS,
   ACIONAMENTO_OPTIONS,
@@ -139,7 +140,7 @@ export default function QuizV4() {
     if (!ambiente || !modelo) return [];
     const tecidos = getTecidosPorAmbienteModelo(ambiente, modelo);
     const nextStep = modelo === 'cortina' ? 'passo_4_acabamento' : 'passo_5_acionamento';
-    const opts = tecidos.map((t) => ({ ...t, nextStep }));
+    const opts = tecidos.map((t) => ({ ...t, image: t.image || getImageForModeloTecido(modelo, t.value), nextStep }));
     return [...opts, { ...NAO_SEI_OPTION, nextStep }];
   }, [currentItem.passo_1_ambiente, currentItem.passo_2_modelo]);
 
@@ -150,7 +151,8 @@ export default function QuizV4() {
 
   const optionsPasso5 = useMemo(() => {
     const modelo = currentItem.passo_2_modelo;
-    const semMotorizada = MODELOS_SEM_MOTORIZADA.includes(modelo);
+    // Motorizada só é ocultada para Painel e Vertical; demais modelos (Rolo, Cortina, etc.) mostram Manual + Motorizada
+    const semMotorizada = modelo && MODELOS_SEM_MOTORIZADA.includes(modelo);
     if (semMotorizada) return ACIONAMENTO_OPTIONS.filter((o) => o.value !== 'motorizada').map((o) => ({ ...o, nextStep: 'passo_6_medidas' }));
     return ACIONAMENTO_OPTIONS.map((o) => ({ ...o, nextStep: 'passo_6_medidas' }));
   }, [currentItem.passo_2_modelo]);

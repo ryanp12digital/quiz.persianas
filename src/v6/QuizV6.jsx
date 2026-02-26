@@ -130,7 +130,8 @@ export default function QuizV6() {
 
   const optionsPasso4 = useMemo(() => {
     const modelo = currentItem.passo_2_modelo;
-    const semMotorizada = MODELOS_SEM_MOTORIZADA.includes(modelo);
+    // Motorizada só é ocultada para Painel e Vertical; demais modelos mostram Manual + Motorizada
+    const semMotorizada = modelo && MODELOS_SEM_MOTORIZADA.includes(modelo);
     if (semMotorizada) return ACIONAMENTO_OPTIONS.filter((o) => o.value !== 'motorizada').map((o) => ({ ...o, nextStep: 'passo_5_medidas' }));
     return ACIONAMENTO_OPTIONS.map((o) => ({ ...o, nextStep: 'passo_5_medidas' }));
   }, [currentItem.passo_2_modelo]);

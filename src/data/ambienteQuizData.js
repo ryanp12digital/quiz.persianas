@@ -140,7 +140,7 @@ Object.keys(MODELO_TO_TECIDO_STEP_ID).forEach((modelKey) => {
   });
 });
 
-function getImageForModeloTecido(modelKey, tecidoValue) {
+export function getImageForModeloTecido(modelKey, tecidoValue) {
   return MODELO_TECIDO_IMAGE[`${modelKey}|${tecidoValue}`] || undefined;
 }
 
