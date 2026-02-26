@@ -375,7 +375,7 @@ export const ACIONAMENTO_OPTIONS = [
 export const MODELOS_SEM_MOTORIZADA = ['painel', 'vertical'];
 
 // --- V6: combinações modelo + tecido (uma opção por par recomendado) ---
-/** Para V6: retorna lista de opções combinadas (modelo + tecido) para o ambiente. Cada item: { value, label, modelKey, tecidoValue, image? }. */
+/** Para V6: retorna lista de opções combinadas (modelo + tecido) para o ambiente. Cada item: { value, label, description?, modelKey, tecidoValue, image? }. */
 export function getCombinacoesModeloTecido(ambiente) {
   if (ambiente === 'outros') return getCombinacoesModeloTecidoOutros();
   const list = [];
@@ -385,7 +385,7 @@ export function getCombinacoesModeloTecido(ambiente) {
     for (const t of tecidos) {
       const label = formatComboLabel(m.label, t.label);
       const image = t.image || getImageForModeloTecido(m.value, t.value);
-      list.push({ value: `${m.value}|${t.value}`, label, modelKey: m.value, tecidoValue: t.value, image });
+      list.push({ value: `${m.value}|${t.value}`, label, description: t.description, modelKey: m.value, tecidoValue: t.value, image });
     }
   }
   return list;
@@ -406,7 +406,7 @@ function getCombinacoesModeloTecidoOutros() {
     for (const t of tecidos) {
       const label = formatComboLabel(m.label, t.label);
       const image = t.image || getImageForModeloTecido(m.value, t.value);
-      list.push({ value: `${m.value}|${t.value}`, label, modelKey: m.value, tecidoValue: t.value, image });
+      list.push({ value: `${m.value}|${t.value}`, label, description: t.description, modelKey: m.value, tecidoValue: t.value, image });
     }
   }
   return list;

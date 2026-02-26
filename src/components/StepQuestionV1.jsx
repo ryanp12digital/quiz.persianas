@@ -187,16 +187,16 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
             )}
 
             {subtext && stepId !== 'passo_1_intencao' && (
-                <div className={`step-subtext mb-4 sm:mb-6 ${subtext.startsWith('*') ? 'text-amber-600 font-medium italic text-sm bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left' : type === 'textarea' ? 'text-left mb-4' : 'text-center text-gray-600'}`}>
+                <div className={`step-subtext mb-4 sm:mb-6 text-[13px] ${subtext.startsWith('*') ? 'text-amber-600 font-medium italic bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left' : type === 'textarea' ? 'text-left mb-4' : 'text-center text-gray-600'}`}>
                     {type === 'textarea' && subtext.includes('Ex:') ? (
-                        <div className="text-gray-600 text-sm flex flex-col justify-start items-center">
+                        <div className="text-gray-600 text-[13px] flex flex-col justify-start items-center">
                             <span className="font-medium">Ex:</span>
                             {subtext.split('\n').filter(line => line.trim()).map((line, idx) => (
                                 <div key={idx} className="mt-1">{line.replace('Ex:', '').trim()}</div>
                             ))}
                         </div>
                     ) : (
-                        <p>{subtext}</p>
+                        <p className="text-[15px]">{subtext}</p>
                     )}
                 </div>
             )}

@@ -119,7 +119,7 @@ export default function QuizV6() {
     const ambiente = currentItem.passo_1_ambiente;
     if (!ambiente) return [];
     const combos = getCombinacoesModeloTecido(ambiente);
-    const opts = combos.map((c) => ({ value: c.value, label: c.label, image: c.image, nextStep: c.modelKey === 'cortina' ? 'passo_3_acabamento' : 'passo_4_acionamento', modelKey: c.modelKey, tecidoValue: c.tecidoValue }));
+    const opts = combos.map((c) => ({ value: c.value, label: c.label, description: c.description, image: c.image, nextStep: c.modelKey === 'cortina' ? 'passo_3_acabamento' : 'passo_4_acionamento', modelKey: c.modelKey, tecidoValue: c.tecidoValue }));
     return [...opts, { value: 'nao_sei|nao_sei', label: NAO_SEI_OPTION.label, description: NAO_SEI_OPTION.description, nextStep: 'passo_4_acionamento' }];
   }, [currentItem.passo_1_ambiente]);
 
