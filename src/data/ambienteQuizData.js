@@ -6,15 +6,15 @@
 
 import { STEPS as V1_STEPS } from '../v1/steps.js';
 
-// --- AMBIENTES (imagens em public/ambientes/) ---
+// --- AMBIENTES (imagens em public/ambientes/ — nomes dos ficheiros como estão na pasta) ---
 export const AMBIENTES = [
-  { value: 'varanda_sacada', label: 'Varanda e Sacada', image: '/ambientes/varanda_sacada.png' },
-  { value: 'sala_estar', label: 'Sala de Estar / Home Theater', image: '/ambientes/sala_estar.png' },
-  { value: 'quarto', label: 'Quarto', image: '/ambientes/quarto.png' },
-  { value: 'cozinha_lavanderia', label: 'Cozinha e Lavanderia', image: '/ambientes/cozinha_lavanderia.png' },
-  { value: 'banheiro_lavabo', label: 'Banheiro e Lavabo', image: '/ambientes/banheiro_lavabo.png' },
-  { value: 'escritorio_homeoffice', label: 'Escritório e Home Office', image: '/ambientes/escritorio_homeoffice.png' },
-  { value: 'teto_vidro_claraboia', label: 'Teto de Vidro e Claraboia', image: '/ambientes/teto_vidro_claraboia.png' },
+  { value: 'varanda_sacada', label: 'Varanda e Sacada', image: '/ambientes/Varanda e Sacada.png' },
+  { value: 'sala_estar', label: 'Sala de Estar / Home Theater', image: '/ambientes/Sala de Estar.Home Theater.png' },
+  { value: 'quarto', label: 'Quarto', image: '/ambientes/Quarto.png' },
+  { value: 'cozinha_lavanderia', label: 'Cozinha e Lavanderia', image: '/ambientes/Cozinha e Lavanderia.png' },
+  { value: 'banheiro_lavabo', label: 'Banheiro e Lavabo', image: '/ambientes/Banheiro e Lavabo.png' },
+  { value: 'escritorio_homeoffice', label: 'Escritório e Home Office', image: '/ambientes/Escritório e Home Office.png' },
+  { value: 'teto_vidro_claraboia', label: 'Teto de Vidro e Claraboia', image: '/ambientes/Teto de Vidro e Claraboia.png' },
   { value: 'outros', label: 'Outros' },
 ];
 
