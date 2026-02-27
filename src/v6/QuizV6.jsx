@@ -10,7 +10,7 @@ import {
   AMBIENTES,
   getCombinacoesModeloTecido,
   NAO_SEI_OPTION,
-  ACABAMENTO_CORTINA_OPTIONS,
+  ACABAMENTO_CORTINA_OPTIONS_BY_TECIDO,
   ACIONAMENTO_OPTIONS,
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
@@ -123,10 +123,11 @@ export default function QuizV6() {
     return [...opts, { value: 'nao_sei|nao_sei', label: NAO_SEI_OPTION.label, description: NAO_SEI_OPTION.description, nextStep: 'passo_4_acionamento' }];
   }, [currentItem.passo_1_ambiente]);
 
-  const optionsPasso3 = useMemo(
-    () => ACABAMENTO_CORTINA_OPTIONS.map((o) => ({ ...o, nextStep: 'passo_4_acionamento' })),
-    []
-  );
+  const optionsPasso3 = useMemo(() => {
+    const tecido = currentItem.passo_2_tecido;
+    const opts = (ACABAMENTO_CORTINA_OPTIONS_BY_TECIDO[tecido] || ACABAMENTO_CORTINA_OPTIONS_BY_TECIDO.blackout) || [];
+    return opts.map((o) => ({ ...o, nextStep: 'passo_4_acionamento' }));
+  }, [currentItem.passo_2_tecido]);
 
   const optionsPasso4 = useMemo(() => {
     const modelo = currentItem.passo_2_modelo;

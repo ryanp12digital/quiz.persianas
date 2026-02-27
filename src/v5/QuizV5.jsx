@@ -11,8 +11,9 @@ import {
   getModelosParaV5,
   getTecidosParaV5,
   getImageForModeloTecido,
+  getTodosTecidosParaNaoSei,
   NAO_SEI_OPTION,
-  ACABAMENTO_CORTINA_OPTIONS,
+  ACABAMENTO_CORTINA_OPTIONS_BY_TECIDO,
   ACIONAMENTO_OPTIONS,
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
@@ -109,8 +110,10 @@ export default function QuizV5() {
 
   const STEPS = useMemo(() => {
     const model = currentItem.passo_2_modelo;
-    if (model && model !== 'cortina') return STEPS_BASE.filter((s) => s.id !== 'passo_4_acabamento');
-    return STEPS_BASE;
+    let steps = STEPS_BASE;
+    if (model && model !== 'cortina') steps = steps.filter((s) => s.id !== 'passo_4_acabamento');
+    if (model && (model === 'vertical' || model === 'painel')) steps = steps.filter((s) => s.id !== 'passo_5_acionamento');
+    return steps;
   }, [currentItem.passo_2_modelo]);
 
   const activeStep = STEPS[currentStepIndex];
@@ -128,16 +131,18 @@ export default function QuizV5() {
     const ambiente = currentItem.passo_1_ambiente;
     const modelo = currentItem.passo_2_modelo;
     if (!ambiente || !modelo) return [];
+    if (modelo === 'nao_sei') return getTodosTecidosParaNaoSei();
+    const nextStep = modelo === 'cortina' ? 'passo_4_acabamento' : (modelo === 'vertical' || modelo === 'painel') ? 'passo_6_medidas' : 'passo_5_acionamento';
     const tecidos = getTecidosParaV5(ambiente, modelo);
-    const nextStep = modelo === 'cortina' ? 'passo_4_acabamento' : 'passo_5_acionamento';
     const opts = tecidos.map((t) => ({ ...t, image: t.image || getImageForModeloTecido(modelo, t.value), nextStep }));
     return [...opts, { ...NAO_SEI_OPTION, nextStep }];
   }, [currentItem.passo_1_ambiente, currentItem.passo_2_modelo]);
 
-  const optionsPasso4 = useMemo(
-    () => ACABAMENTO_CORTINA_OPTIONS.map((o) => ({ ...o, nextStep: 'passo_5_acionamento' })),
-    []
-  );
+  const optionsPasso4 = useMemo(() => {
+    const tecido = currentItem.passo_3_tecido;
+    const opts = (ACABAMENTO_CORTINA_OPTIONS_BY_TECIDO[tecido] || ACABAMENTO_CORTINA_OPTIONS_BY_TECIDO.blackout) || [];
+    return opts.map((o) => ({ ...o, nextStep: 'passo_5_acionamento' }));
+  }, [currentItem.passo_3_tecido]);
 
   const optionsPasso5 = useMemo(() => {
     const modelo = currentItem.passo_2_modelo;
@@ -249,6 +254,7 @@ export default function QuizV5() {
           initialValues={initialValues}
           selectedValue={selectedValue}
           stepId={activeStep.id}
+          tecidoExpandableLimit={activeStep.id === 'passo_3_tecido' && currentItem.passo_2_modelo === 'nao_sei' ? 6 : undefined}
         />
       </div>
     </LayoutV1>

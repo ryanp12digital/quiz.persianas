@@ -51,14 +51,26 @@ V1_STEPS.forEach((step) => {
   });
 });
 
-// Lista unificada de tecidos: "Não sei" no final do primeiro grupo (6ª posição), antes do botão "Ver mais"
+// Ordem de exibição: Blackout → Semi Blackout → Translúcido → Tela Solar 1/3/5% → Não sei → Resto
+const TECIDO_DISPLAY_ORDER = {
+  blackout: 0, fr_blackout: 0,
+  semi_blackout_70: 1,
+  translucida: 2, voil: 2, linho: 2, fr_translucido: 2,
+  tela_1: 3, tela_3: 3, tela_5: 3, metalizado_1: 3, metalizado_3: 3, metalizado_5: 3,
+  nao_sei: 4,
+};
+function tecidoSortPriority(value) {
+  if (TECIDO_DISPLAY_ORDER[value] !== undefined) return TECIDO_DISPLAY_ORDER[value];
+  return 5; // resto
+}
+
 const allFabricOptions = Object.values(FABRIC_OPTIONS_MAP).map(({ label, value, image, description }) => ({
   label,
   value,
   image: image || undefined,
   description: description || undefined,
 }));
-const semNaoSei = allFabricOptions.filter((o) => o.value !== 'nao_sei');
+const semNaoSei = allFabricOptions.filter((o) => o.value !== 'nao_sei').sort((a, b) => tecidoSortPriority(a.value) - tecidoSortPriority(b.value));
 const naoSei = allFabricOptions.find((o) => o.value === 'nao_sei');
 const FIRST_GROUP_SIZE = 5; // primeiras 5 opções + "não sei" = 6 itens no primeiro bloco
 export const FABRIC_OPTIONS_UNIFIED = naoSei

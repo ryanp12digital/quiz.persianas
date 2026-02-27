@@ -73,8 +73,8 @@ export const STEPS = [
   {
     id: 'passo_7_adicionar_item',
     phase: 7,
-    question: 'Informe sobre as próximas persianas e cortinas que deseja',
-    subtext: 'Ex: Persiana rolô Blackout 1,50 larg x 3,00 Alt\nEx: Persiana Double Vision Translúcida 1,30 x 2,50',
+    question: 'Observações ou Outras Persianas/Cortinas para orçar:',
+    subtext: 'Campo opcional para informações adicionais. ex: Persiana Rolo Blackout 160x170 para Sala.\nEx: Persiana rolô Blackout 1,50 larg x 3,00 Alt\nEx: Persiana Double Vision Translúcida 1,30 x 2,50',
     type: 'textarea',
     inputs: [
       { id: 'descricao_item', label: '', placeholder: 'Descreva o que você deseja...', type: 'textarea' }
@@ -105,21 +105,6 @@ export const STEPS = [
       { id: 'email', label: 'E-mail', placeholder: 'seu@email.com' },
       { id: 'cidade', label: 'Cidade', placeholder: 'São Paulo' },
       { id: 'bairro', label: 'Bairro', placeholder: 'Centro' },
-      {
-        id: 'ambientes',
-        label: 'Qual(is) ambiente(s) deseja?',
-        placeholder: 'Selecione os ambientes',
-        type: 'multi-select',
-        options: [
-          'Varanda / Sacada / Área externa Envidraçada',
-          'Quarto',
-          'Sala de Estar / Jantar',
-          'Cozinha / Área Gourmet',
-          'Banheiro / Lavabo',
-          'Escritório / Home Office',
-          'Outro'
-        ]
-      }
     ],
     isFinal: true
   },
@@ -132,21 +117,6 @@ export const STEPS = [
     inputs: [
       { id: 'nome', label: 'Nome', placeholder: 'Seu nome' },
       { id: 'whatsapp', label: 'DDD+Whatsapp', placeholder: '(11) 99999-9999', mask: 'phone' },
-      {
-        id: 'ambientes',
-        label: 'Qual(is) ambiente(s) deseja?',
-        placeholder: 'Selecione os ambientes',
-        type: 'multi-select',
-        options: [
-          'Varanda / Sacada / Área externa Envidraçada',
-          'Quarto',
-          'Sala de Estar / Jantar',
-          'Cozinha / Área Gourmet',
-          'Banheiro / Lavabo',
-          'Escritório / Home Office',
-          'Outro'
-        ]
-      }
     ],
     isFinal: true
   }

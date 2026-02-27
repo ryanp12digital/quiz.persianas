@@ -59,8 +59,8 @@ export const STEPS = [
   {
     id: 'passo_7_observacoes',
     phase: 7,
-    question: 'Observações ou outros ambientes para orçar:',
-    subtext: 'Campo opcional para informações adicionais.',
+    question: 'Observações ou Outras Persianas/Cortinas para orçar:',
+    subtext: 'Campo opcional para informações adicionais. ex: Persiana Rolo Blackout 160x170 para Sala.',
     type: 'textarea',
     inputs: [
       { id: 'observacoes', label: '', placeholder: 'Ex: outro ambiente, preferências...', type: 'textarea' },
@@ -79,21 +79,6 @@ export const STEPS = [
       { id: 'email', label: 'E-mail', placeholder: 'seu@email.com' },
       { id: 'cidade', label: 'Cidade', placeholder: 'São Paulo' },
       { id: 'bairro', label: 'Bairro', placeholder: 'Centro' },
-      {
-        id: 'ambientes',
-        label: 'Qual(is) ambiente(s) deseja?',
-        placeholder: 'Selecione os ambientes',
-        type: 'multi-select',
-        options: [
-          'Varanda / Sacada / Área externa Envidraçada',
-          'Quarto',
-          'Sala de Estar / Jantar',
-          'Cozinha / Área Gourmet',
-          'Banheiro / Lavabo',
-          'Escritório / Home Office',
-          'Outro',
-        ],
-      },
     ],
     isFinal: true,
   },
