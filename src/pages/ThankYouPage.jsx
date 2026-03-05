@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../components/Layout';
 
 export default function ThankYouPage() {
+  // PageView específico da página de obrigado
+  useEffect(() => {
+    try {
+      if (window.fbq && typeof window.fbq === 'function') {
+        window.fbq('track', 'PageView', { page_type: 'thank_you' });
+      }
+    } catch (error) {
+      console.warn('Facebook Pixel PageView error (thank_you):', error);
+    }
+  }, []);
+
   return (
     <Layout>
       <div className="step-container animate-fadeIn" style={{ marginTop: '60px' }}>

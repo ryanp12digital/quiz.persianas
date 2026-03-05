@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LayoutV1 from '../components/LayoutV1';
 import StepQuestionV1 from '../components/StepQuestionV1';
@@ -242,21 +242,32 @@ export default function QuizV1() {
   });
   const [sessionStartedAt, setSessionStartedAt] = useState(null);
 
+  // PageView específico do Quiz V1
+  useEffect(() => {
+    try {
+      if (window.fbq && typeof window.fbq === 'function') {
+        window.fbq('track', 'PageView', { page_type: 'quiz_v1' });
+      }
+    } catch (error) {
+      console.warn('Facebook Pixel PageView error (quiz_v1):', error);
+    }
+  }, []);
+
   const activeStep = STEPS[currentStepIndex];
 
   const handleNext = (stepData) => {
     const updatedCurrentItem = { ...currentItem, ...stepData };
     setCurrentItem(updatedCurrentItem);
 
-    // Rastreamento de etapa para o Dashboard/GTM (comentado - usar apenas Meta)
-    // if (window.dataLayer) {
-    //   window.dataLayer.push({
-    //     event: 'quiz_step_complete',
-    //     quiz_version: 'v1',
-    //     step_id: activeStep.id,
-    //     step_question: activeStep.question
-    //   });
-    // }
+    // Rastreamento de etapa para o Dashboard/GTM
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'quiz_step_complete',
+        quiz_version: 'v1',
+        step_id: activeStep.id,
+        step_question: activeStep.question
+      });
+    }
 
     // Lógica para determinar o formId baseado nas escolhas do usuário
     if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
@@ -362,18 +373,18 @@ export default function QuizV1() {
           console.warn('Facebook Pixel tracking error:', error);
         }
 
-        // Tracking do Google Tag Manager (comentado - usar apenas Meta)
-        // try {
-        //   if (window.dataLayer && Array.isArray(window.dataLayer)) {
-        //     window.dataLayer.push({
-        //       event: 'form_submission',
-        //       form_id: formId,
-        //       version: 'v1'
-        //     });
-        //   }
-        // } catch (error) {
-        //   console.warn('Google Tag Manager tracking error:', error);
-        // }
+        // Tracking do Google Tag Manager para envio de formulário
+        try {
+          if (window.dataLayer && Array.isArray(window.dataLayer)) {
+            window.dataLayer.push({
+              event: 'form_submission',
+              form_id: formId,
+              version: 'v1'
+            });
+          }
+        } catch (error) {
+          console.warn('Google Tag Manager tracking error:', error);
+        }
 
         navigate('/quiz/obrigado');
       })
