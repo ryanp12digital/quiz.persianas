@@ -142,9 +142,10 @@ export default function QuizV3() {
     const updatedCurrentItem = { ...currentItem, ...stepData };
     setCurrentItem(updatedCurrentItem);
 
-    if (window.dataLayer) {
-      window.dataLayer.push({ event: 'quiz_step_complete', quiz_version: 'v3', step_id: activeStep.id, step_question: activeStep.question });
-    }
+    // dataLayer/GTM comentado - usar apenas Meta
+    // if (window.dataLayer) {
+    //   window.dataLayer.push({ event: 'quiz_step_complete', quiz_version: 'v3', step_id: activeStep.id, step_question: activeStep.question });
+    // }
 
     const selectedOptionValue = stepData && typeof stepData === 'object' && !Array.isArray(stepData) ? Object.values(stepData)[0] : undefined;
 
@@ -261,8 +262,9 @@ export default function QuizV3() {
         fetch(WEBHOOK_LEADCONNECTOR_URL, webhookPayload),
       ])
         .then(() => {
-          if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Quiz Persianas V3', content_category: 'Lead Generation' });
-          if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v3' });
+          // Lead apenas no formulário de orçamento (passo_8_captura), não no de catálogo
+          if (activeStep.id === 'passo_8_captura' && window.fbq) window.fbq('track', 'Lead', { content_name: 'Quiz Persianas V3', content_category: 'Lead Generation' });
+          // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v3' });
           navigate('/quiz/obrigado');
         })
         .catch(() => navigate('/quiz/obrigado'));

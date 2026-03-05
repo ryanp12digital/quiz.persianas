@@ -254,15 +254,15 @@ export default function QuizV2() {
     const updatedCurrentItem = { ...currentItem, ...stepData };
     setCurrentItem(updatedCurrentItem);
 
-    // Rastreamento de etapa para o Dashboard/GTM
-    if (window.dataLayer) {
-      window.dataLayer.push({
-        event: 'quiz_step_complete',
-        quiz_version: 'v2',
-        step_id: activeStep.id,
-        step_question: activeStep.question
-      });
-    }
+    // Rastreamento de etapa para o Dashboard/GTM (comentado - usar apenas Meta)
+    // if (window.dataLayer) {
+    //   window.dataLayer.push({
+    //     event: 'quiz_step_complete',
+    //     quiz_version: 'v2',
+    //     step_id: activeStep.id,
+    //     step_question: activeStep.question
+    //   });
+    // }
 
     // Lógica para determinar o formId baseado nas escolhas do usuário
     if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
@@ -367,33 +367,31 @@ export default function QuizV2() {
         fetch(WEBHOOK_LEADCONNECTOR_URL, webhookPayload),
       ])
       .then(() => {
-        // Tracking do Facebook Pixel com tratamento de erro
+        // Lead apenas no formulário de orçamento (passo_8_captura), não no de catálogo
         try {
-          if (window.fbq && typeof window.fbq === 'function') {
+          if (activeStep.id === 'passo_8_captura' && window.fbq && typeof window.fbq === 'function') {
             window.fbq('track', 'Lead', {
               content_name: 'Quiz Persianas V2',
               content_category: 'Lead Generation'
             });
           }
         } catch (error) {
-          // Ignora erros de tracking (pode ser bloqueado por bloqueadores de anúncios)
           console.warn('Facebook Pixel tracking error:', error);
         }
-        
-        // Tracking do Google Tag Manager com tratamento de erro
-        try {
-          if (window.dataLayer && Array.isArray(window.dataLayer)) {
-            window.dataLayer.push({
-              event: 'form_submission',
-              form_id: formId,
-              version: 'v2'
-            });
-          }
-        } catch (error) {
-          // Ignora erros de tracking
-          console.warn('Google Tag Manager tracking error:', error);
-        }
-        
+
+        // Tracking do Google Tag Manager (comentado - usar apenas Meta)
+        // try {
+        //   if (window.dataLayer && Array.isArray(window.dataLayer)) {
+        //     window.dataLayer.push({
+        //       event: 'form_submission',
+        //       form_id: formId,
+        //       version: 'v2'
+        //     });
+        //   }
+        // } catch (error) {
+        //   console.warn('Google Tag Manager tracking error:', error);
+        // }
+
         navigate('/quiz/obrigado');
       })
       .catch(() => navigate('/quiz/obrigado'));

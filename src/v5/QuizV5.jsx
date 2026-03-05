@@ -168,7 +168,8 @@ export default function QuizV5() {
     const updatedCurrentItem = { ...currentItem, ...stepData };
     setCurrentItem(updatedCurrentItem);
 
-    if (window.dataLayer) window.dataLayer.push({ event: 'quiz_step_complete', quiz_version: 'v5', step_id: activeStep.id, step_question: activeStep.question });
+    // dataLayer/GTM comentado - usar apenas Meta
+    // if (window.dataLayer) window.dataLayer.push({ event: 'quiz_step_complete', quiz_version: 'v5', step_id: activeStep.id, step_question: activeStep.question });
 
     if (activeStep.isFinal) {
       const stepsHistory = history.map((i) => STEPS[i]?.id).filter(Boolean);
@@ -178,7 +179,7 @@ export default function QuizV5() {
       if (WEBHOOK_QUIZ_V5_URL) promises.push(fetch(WEBHOOK_QUIZ_V5_URL, webhookPayload));
       Promise.all(promises)
         .then(() => {
-          if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v5' });
+          // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v5' });
           navigate('/quiz/obrigado');
         })
         .catch(() => navigate('/quiz/obrigado'));
