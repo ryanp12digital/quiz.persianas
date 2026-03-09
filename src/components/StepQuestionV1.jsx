@@ -373,10 +373,10 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                             <button type="button" onClick={handleNext} className="w-full sm:w-auto bg-[#4CAF50] text-white font-bold py-4 px-10 rounded-2xl shadow-md hover:bg-green-600 hover:shadow-lg active:scale-[0.98] transition-all text-base focus:outline-none focus:ring-4 focus:ring-green-300">
                                 Continuar
                             </button>
-                            {(stepId === 'passo_6_observacoes' || stepId === 'passo_7_observacoes') && (
+                            {(stepId === 'passo_6_observacoes' || stepId === 'passo_7_observacoes' || stepId === 'passo_7_adicionar_item') && (
                                 <button
                                     type="button"
-                                    onClick={() => { scrollToTop(); onNext?.({ observacoes: '' }); }}
+                                    onClick={() => { scrollToTop(); onNext?.({ [inputs[0]?.id || 'observacoes']: '' }); }}
                                     className="w-full sm:w-auto font-bold py-4 px-10 rounded-2xl border-2 border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 active:scale-[0.98] transition-all text-base focus:outline-none focus:ring-4 focus:ring-gray-200"
                                 >
                                     Pular

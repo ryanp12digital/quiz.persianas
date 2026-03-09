@@ -38,12 +38,12 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 
 ## Formulários (form_id)
 
-**Total: 2 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel).
+**Total: 4 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel).
 
 | ID | Quando é usado |
 |----|----------------|
-| **FORMR20** | Uma persiana com medidas (pré-orçamento) |
-| **FORMR30** | Mais de uma persiana com medidas (adicionou item extra) |
+| **FORMR20** | Padrão — Uma persiana com medidas (pré-orçamento) |
+| **FORMR30** | Mais de uma persiana com medidas (adicionou item extra no passo_7_adicionar_item) |
 
 ---
 
@@ -68,10 +68,8 @@ flowchart TD
     F --> H[passo_5_estagio]
     G -->|orcamento| I[passo_6_medidas]
     G -->|catalogo| E
-    I --> J[passo_7_mais_itens]
-    J -->|adicionar_outro| K[passo_7_adicionar_item]
-    J -->|finalizar| C[passo_8_captura]
-    K --> J
+    I --> K[passo_7_adicionar_item]
+    K --> C[passo_8_captura]
 ```
 
 ---
@@ -80,7 +78,7 @@ flowchart TD
 
 - Em qualquer etapa **antes** de `passo_5_estagio`, se o usuário escolher **"Não sei — Quero recomendação"** (`nao_sei`):
   - O fluxo vai direto para **`passo_8_captura_catalogo`**
-  - `formId` é definido como `FORMR5`
+  - `formId` permanece na lógica simplificada ou não se altera (atualmente mantém o padrão).
 
 ---
 
@@ -140,7 +138,7 @@ flowchart TD
 
 | ID | Próximo passo |
 |----|----------------|
-| **passo_6_medidas** | passo_7_mais_itens |
+| **passo_6_medidas** | passo_7_adicionar_item |
 
 ---
 
@@ -148,8 +146,7 @@ flowchart TD
 
 | ID | Opções | Próximo passo |
 |----|--------|----------------|
-| **passo_7_mais_itens** | Adicionar outro → passo_7_adicionar_item / Finalizar → passo_8_captura | passo_7_adicionar_item ou passo_8_captura |
-| **passo_7_adicionar_item** | (textarea) | passo_7_mais_itens |
+| **passo_7_adicionar_item** | (textarea ou "Pular") | passo_8_captura |
 
 ---
 

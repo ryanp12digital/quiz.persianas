@@ -18,7 +18,7 @@ import {
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
 
-const WEBHOOK_QUIZ_V5_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V5_URL || '';
+const WEBHOOK_QUIZ_V5_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V5_URL || 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv5';
 
 const formatWhatsAppForGHL = (whatsapp) => {
   if (!whatsapp) return whatsapp;

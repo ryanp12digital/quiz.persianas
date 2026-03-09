@@ -19,7 +19,7 @@ import {
 } from '../data/ambienteQuizData';
 
 // Webhook URL configurável (variável de ambiente ou constante)
-const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || '';
+const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv4';
 
 const formatWhatsAppForGHL = (whatsapp) => {
   if (!whatsapp) return whatsapp;

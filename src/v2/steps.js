@@ -327,7 +327,7 @@ export const STEPS = [
             { id: 'largura', label: 'Largura', placeholder: 'Ex: 120', suffix: 'cm', required: true },
             { id: 'altura', label: 'Altura', placeholder: 'Ex: 140', suffix: 'cm', required: true }
         ],
-        nextStep: 'passo_7_mais_itens'
+        nextStep: 'passo_7_adicionar_item'
     },
 
     // [FASE 7] ADICIONAR NOVO ITEM (TEXTO LIVRE)
@@ -345,22 +345,9 @@ export const STEPS = [
                 type: 'textarea'
             }
         ],
-        nextStep: 'passo_7_mais_itens'
+        nextStep: 'passo_8_captura'
     },
 
-    // [FASE 7] MAIS ITENS
-    {
-        id: 'passo_7_mais_itens',
-        phase: 7,
-        question: 'Caso deseje, pode escolher uma nova persiana/cortina ou pode prosseguir para próxima etapa!',
-        subtext: 'Escolha como prosseguir.',
-        type: 'mixed',
-        inputs: [],
-        options: [
-            { label: 'Informar sobre outra persiana (Adicionar novo item)', value: 'adicionar_outro', nextStep: 'passo_7_adicionar_item' },
-            { label: 'Seguir somente com este orçamento', value: 'finalizar', nextStep: 'passo_8_captura' }
-        ]
-    },
 
     // [FASE 8] CAPTURA FINAL
     {

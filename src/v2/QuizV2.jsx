@@ -28,47 +28,7 @@ const formatWhatsAppForGHL = (whatsapp) => {
   return `+55${phoneNumber}`;
 };
 
-// Função para achatamento de items e remoção de duplicatas
-const flattenItems = (items, stepData) => {
-  if (!items || items.length === 0) return {};
-  
-  const flattened = {};
-  const stepDataKeys = new Set(Object.keys(stepData || {}));
-  
-  // Itera sobre todos os items
-  items.forEach(item => {
-    Object.keys(item).forEach(key => {
-      // Ignora campos que já existem no stepData (stepData tem prioridade)
-      if (stepDataKeys.has(key)) {
-        return;
-      }
-      
-      const value = item[key];
-      
-      // Se o valor já existe no flattened e é um array, concatena valores únicos
-      if (Array.isArray(value)) {
-        if (Array.isArray(flattened[key])) {
-          // Concatena arrays e remove duplicatas
-          flattened[key] = [...new Set([...flattened[key], ...value])];
-        } else {
-          flattened[key] = [...new Set(value)];
-        }
-      } else if (value !== null && value !== undefined && value !== '') {
-        // Para valores não-array, sobrescreve (último item tem prioridade)
-        flattened[key] = value;
-      }
-    });
-  });
-  
-  // Concatena arrays do stepData também (ex: ambientes)
-  Object.keys(stepData || {}).forEach(key => {
-    if (Array.isArray(stepData[key]) && Array.isArray(flattened[key])) {
-      flattened[key] = [...new Set([...flattened[key], ...stepData[key]])];
-    }
-  });
-  
-  return flattened;
-};
+
 
 // Deriva produto (tipo, modelo, tecido, acabamento) de um item para o payload padrão da automação.
 // Teto: modelo = segundo modelo (romana_teto/celular_teto/plissada_teto), tecido = valor do passo de tecido.
@@ -233,11 +193,8 @@ export default function QuizV2() {
   const [history, setHistory] = useState([initialStepIndex >= 0 ? initialStepIndex : 0]);
   const [items, setItems] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
-  const [formId, setFormId] = useState('quizv2'); // FormId padrão
-  const [hasAddedExtraItem, setHasAddedExtraItem] = useState(false); // Controla se já adicionou item extra (FORMR30)
-  const [hasSeenMaisItens, setHasSeenMaisItens] = useState(false); // Controla se já viu a etapa passo_7_mais_itens
-  const [disableBackAfterAddItem, setDisableBackAfterAddItem] = useState(false); // Desabilita voltar após escolher adicionar item
-  const [leadData, setLeadData] = useState(() => {
+  const [formId, setFormId] = useState('FORMR20'); // FormId padrão agora é FORMR20
+  const [leadData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return {
       utm_source: params.get('utm_source') || '',
@@ -282,7 +239,6 @@ export default function QuizV2() {
       // Regra: "não sei" só redireciona para catálogo quando for no passo de MODELO (não no de tecido)
       const isModeloStep = activeStep.id === 'passo_4_modelo' || activeStep.id === 'passo_4_modelo_teto';
       if (selectedOptionValue === 'nao_sei' && isModeloStep) {
-        setFormId('FORMR5');
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
         if (nextIndex !== -1) {
           setHistory([...history, nextIndex]);
@@ -290,72 +246,18 @@ export default function QuizV2() {
           return;
         }
       }
-      
-      // FORMR10: "Já sabe o que quer e quer falar direto com atendente"
-      // Quando escolhe "direto_atendente" na etapa inicial (passo_1_intencao)
-      if (activeStep.id === 'passo_1_intencao' && selectedOptionValue === 'direto_atendente') {
-        setFormId('FORMR10');
-      }
-      
-      // FORMR5: "Escolheu o que quer sem medidas" — catálogo
-      if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'catalogo') {
-        setFormId('FORMR5');
-      }
-      
-      // FORMR20: "Escolheu uma Persiana Com Medidas"
-      if (activeStep.id === 'passo_5_estagio' && selectedOptionValue === 'orcamento') {
-        setFormId('FORMR20');
-      }
-      
-      // FORMR30: "Escolhe mais de 1 Persiana com Medidas"
-      // Quando escolhe "adicionar_outro" na etapa passo_7_mais_itens (e ainda não adicionou item extra)
-      if (activeStep.id === 'passo_7_mais_itens' && selectedOptionValue === 'adicionar_outro' && !hasAddedExtraItem) {
-        setFormId('FORMR30');
-        setHasAddedExtraItem(true);
-        setDisableBackAfterAddItem(true); // Desabilita voltar após escolher adicionar item
-      }
-    }
-
-    // Marca que já viu a etapa passo_7_mais_itens quando chega nela pela primeira vez
-    if (activeStep.id === 'passo_7_mais_itens' && !hasSeenMaisItens) {
-      setHasSeenMaisItens(true);
     }
 
     // Lógica especial para salvar item descrito em texto livre
     if (activeStep.id === 'passo_7_adicionar_item') {
-      const descricaoItem = stepData.descricao_item || '';
+      const descricaoItem = stepData.descricao_item || stepData.observacoes || '';
       if (descricaoItem.trim()) {
         setItems([...items, { descricao_livre: descricaoItem.trim() }]);
         setCurrentItem({});
-        
-        // Se já adicionou item extra (FORMR30), vai direto para o formulário final
-        // Não volta para passo_7_mais_itens
-        if (hasAddedExtraItem) {
-          const finalIndex = STEPS.findIndex(s => s.id === 'passo_8_captura');
-          if (finalIndex !== -1) {
-            // Remove passo_7_adicionar_item do histórico e vai direto para o formulário final
-            const newHistory = history.filter((_, idx) => {
-              const stepIdx = history[idx];
-              return STEPS[stepIdx]?.id !== 'passo_7_adicionar_item';
-            });
-            setHistory([...newHistory, finalIndex]);
-            setCurrentStepIndex(finalIndex);
-            return;
-          }
-        } else {
-          // Se ainda não adicionou item extra, vai para passo_7_mais_itens normalmente
-          const nextIndex = STEPS.findIndex(s => s.id === 'passo_7_mais_itens');
-          if (nextIndex !== -1) {
-            const newHistory = history.filter((_, idx) => {
-              const stepIdx = history[idx];
-              return STEPS[stepIdx]?.id !== 'passo_7_adicionar_item';
-            });
-            setHistory([...newHistory, nextIndex]);
-            setCurrentStepIndex(nextIndex);
-            return;
-          }
-        }
+        // Define o Form ID como FORMR30, pois o usuário adicionou um item extra
+        setFormId('FORMR30');
       }
+      // O fluxo normal prosseguirá para passo_8_captura gerado pelo nextStep Id
     }
 
     if (activeStep.isFinal) {
@@ -436,7 +338,6 @@ export default function QuizV2() {
         
         if (modeloNaoSei && tecidoNaoSei) {
           // Não sei modelo + não sei tecido → direto para "Não tenho medidas" (catálogo)
-          setFormId('FORMR5');
           const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
           if (nextIndex !== -1) {
             setHistory([...history, nextIndex]);
@@ -446,29 +347,26 @@ export default function QuizV2() {
         }
         if (!modeloNaoSei && !tecidoNaoSei && nextStepId === 'passo_5_estagio') {
           // Qualquer modelo + qualquer tecido → direto para "Já tenho medidas"
-          setFormId('FORMR20');
           nextStepId = 'passo_6_medidas';
         }
       }
 
-      // Regra 2 (continuação): Ao sair do acionamento, se modelo+tecido específicos, pular passo_5_estagio → passo_6_medidas
       if (activeStep.id === 'passo_3_acionamento' && nextStepId === 'passo_5_estagio') {
         const modeloNaoSei = updatedCurrentItem.passo_4_modelo === 'nao_sei';
         const temTecidoEspecifico = Object.entries(updatedCurrentItem).some(
           ([k, v]) => (k.startsWith('passo_4_tecido_') || k === 'passo_4_acabamento_cortina') && v && v !== 'nao_sei'
         );
         if (!modeloNaoSei && temTecidoEspecifico) {
-          setFormId('FORMR20');
           nextStepId = 'passo_6_medidas';
         }
       }
       
       // Lógica especial para "Adicionar mais um item"
       if (selectedOptionValue === 'adicionar_outro') {
-        // Só permite adicionar item extra uma vez (para FORMR30)
-        // A verificação de hasAddedExtraItem já foi feita acima na linha 71
         setItems([...items, updatedCurrentItem]);
         setCurrentItem({});
+        // Define formulário para FORMR30 já que está adicionando itens extras
+        setFormId('FORMR30');
         nextStepId = 'passo_7_adicionar_item';
       }
     }
