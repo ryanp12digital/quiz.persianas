@@ -30,6 +30,7 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 | **_flat** | Campos planos para integrações (mesmos valores que contact + produto) |
 
 **Regras de produto (automação):**  
+
 - **Persiana de teto:** `produto.modelo` = `romana_teto` \| `celular_teto` \| `plissada_teto`; `produto.tecido` = valor do passo de tecido.  
 - **Cortina:** `produto.modelo` = `cortina`; `produto.acabamento` = valor; tecido omitido no bloco principal.  
 - Demais modelos: `produto.modelo` e `produto.tecido` conforme escolha.
@@ -42,6 +43,7 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 
 | ID | Quando é usado |
 |----|----------------|
+| **FORMR5** | Catálogo — usuário escolheu "Não sei" (tecido ou modelo) ou não tem medidas |
 | **FORMR20** | Padrão — Uma persiana com medidas (pré-orçamento) |
 | **FORMR30** | Mais de uma persiana com medidas (adicionou item extra no passo_7_adicionar_item) |
 
@@ -116,7 +118,7 @@ flowchart TD
 - **passo_4_tecido_vertical** → passo_5_estagio (todas)
 - **passo_4_tecido_madeira** → passo_3_acionamento (ou "Não sei" → passo_5_estagio)
 - **passo_4_tecido_aluminio** → passo_3_acionamento (ou "Não sei" → passo_5_estagio)
-- **passo_4_modelo_teto** → passo_4_tecido_teto_romana / _celular / _plissada (ou "Não sei" → passo_5_estagio)
+- **passo_4_modelo_teto** → passo_4_tecido_teto_romana / _celular /_plissada (ou "Não sei" → passo_5_estagio)
 - **passo_4_tecido_teto_romana** → passo_3_acionamento (ou "Não sei" → passo_5_estagio)
 - **passo_4_tecido_teto_celular** → passo_5_estagio
 - **passo_4_tecido_teto_plissada** → passo_5_estagio
