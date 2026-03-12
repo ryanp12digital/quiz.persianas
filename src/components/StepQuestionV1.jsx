@@ -196,7 +196,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                             ))}
                         </div>
                     ) : (
-                        <p className="text-[15px]">{subtext}</p>
+                        <p className="text-[15px]" dangerouslySetInnerHTML={{ __html: subtext }}></p>
                     )}
                 </div>
             )}

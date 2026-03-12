@@ -50,8 +50,8 @@ export const STEPS = [
   {
     id: 'passo_6_observacoes',
     phase: 6,
-    question: 'Observações ou outros ambientes para orçar:',
-    subtext: 'Campo opcional para informações adicionais.',
+    question: 'Observações ou Outras Persianas/Cortinas para orçar:',
+    subtext: 'Campo opcional para informações adicionais.<br/><i>ex: Persiana Rolo Blackout 160x170 para Sala.</i>',
     type: 'textarea',
     inputs: [{ id: 'observacoes', label: '', placeholder: 'Ex: outro ambiente, preferências...', type: 'textarea' }],
     nextStep: 'passo_7_captura',
