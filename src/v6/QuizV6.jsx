@@ -62,7 +62,6 @@ function buildPayloadV6(formId, leadData, stepData, currentItem, options = {}) {
   const email = stepData?.email || '';
   const cidade = stepData?.cidade || '';
   const bairro = stepData?.bairro || '';
-  const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
   const sessionStartedAtISO = sessionStartedAt ? new Date(sessionStartedAt).toISOString() : null;
   const submittedAtISO = submittedAt.toISOString();
   const durationSeconds = sessionStartedAt ? Math.round((submittedAt - new Date(sessionStartedAt)) / 1000) : null;
@@ -77,7 +76,7 @@ function buildPayloadV6(formId, leadData, stepData, currentItem, options = {}) {
     },
     timestamps: { submitted_at: submittedAtISO, session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds },
     utm: { utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '' },
-    contact: { nome, whatsapp, email, cidade, bairro, ambientes },
+    contact: { nome, whatsapp, email, cidade, bairro },
     produto: {
       ambiente: produto.ambiente,
       tipo: produto.tipo,
