@@ -66,7 +66,7 @@ function buildPayloadV5(formId, leadData, stepData, currentItem, options = {}) {
   const email = stepData?.email || '';
   const cidade = stepData?.cidade || '';
   const bairro = stepData?.bairro || '';
-  const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
+  const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes.join(', ') : (currentItem?.passo_1_ambiente || stepData?.passo_1_ambiente || '');
   const sessionStartedAtISO = sessionStartedAt ? new Date(sessionStartedAt).toISOString() : null;
   const submittedAtISO = submittedAt.toISOString();
   const durationSeconds = sessionStartedAt ? Math.round((submittedAt - new Date(sessionStartedAt)) / 1000) : null;
@@ -79,10 +79,23 @@ function buildPayloadV5(formId, leadData, stepData, currentItem, options = {}) {
       submitted_at: submittedAtISO,
       submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
     },
-    timestamps: { submitted_at: submittedAtISO, session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds },
-    utm: { utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '' },
+    timestamps: {
+      submitted_at: submittedAtISO,
+      submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+      session_started_at: sessionStartedAtISO,
+      duration_seconds: durationSeconds,
+      duration_readable: durationSeconds != null ? `${Math.floor(durationSeconds / 60)}m ${durationSeconds % 60}s` : null,
+    },
+    utm: {
+      utm_source: leadData?.utm_source || '',
+      utm_medium: leadData?.utm_medium || '',
+      utm_campaign: leadData?.utm_campaign || '',
+      referrer: typeof document !== 'undefined' ? (document.referrer || '') : '',
+    },
     contact: { nome, whatsapp, email, cidade, bairro, ambientes },
     produto: {
+      passo_1_intencao: '',
+      descricao_livre: '',
       ambiente: produto.ambiente,
       tipo: produto.tipo,
       modelo: produto.modelo,
@@ -92,7 +105,29 @@ function buildPayloadV5(formId, leadData, stepData, currentItem, options = {}) {
       medidas: produto.medidas,
       observacoes: produto.observacoes,
     },
+    itens_adicionais: [],
+    itens_adicionais_count: 0,
     journey: { steps_completed: stepsHistory, steps_count: stepsHistory?.length ?? 0 },
+    _flat: {
+      nome,
+      whatsapp,
+      email,
+      cidade,
+      bairro,
+      ambientes,
+      passo_1_intencao: '',
+      descricao_livre: '',
+      ambiente: produto.ambiente,
+      tipo: produto.tipo,
+      modelo: produto.modelo,
+      tecido: produto.tecido,
+      acabamento: produto.acabamento,
+      acionamento: produto.acionamento,
+      largura: produto.medidas.largura,
+      altura: produto.medidas.altura,
+      observacoes: produto.observacoes,
+      itens_adicionais: [],
+    },
   };
 }
 

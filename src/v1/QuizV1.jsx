@@ -126,7 +126,8 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const email = stepData?.email || '';
   const cidade = stepData?.cidade || '';
   const bairro = stepData?.bairro || '';
-  const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
+  const ambientesArr = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
+  const ambientes = ambientesArr.join(', ');
   const passo_1_intencao = principalItem?.passo_1_intencao ?? currentItem?.passo_1_intencao ?? '';
 
   // Apenas itens extras: o primeiro já está em produto/quiz_answers, evita duplicação
@@ -181,7 +182,6 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       cidade,
       bairro,
       ambientes,
-      ambientes_count: ambientes?.length ?? 0
     },
     produto: {
       passo_1_intencao,
@@ -206,7 +206,6 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       cidade,
       bairro,
       ambientes,
-      ambientes_count: ambientes?.length ?? 0,
       passo_1_intencao,
       descricao_livre: principalItem?.descricao_livre || '',
       tipo: produto.tipo,

@@ -29,7 +29,8 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const email = stepData?.email || '';
   const cidade = stepData?.cidade || '';
   const bairro = stepData?.bairro || '';
-  const ambientes = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
+  const ambientesArr = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
+  const ambientes = ambientesArr.join(', ');
 
   let modelo = '';
   if (principalItem?.passo_4_modelo) modelo = principalItem.passo_4_modelo;
@@ -81,7 +82,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     metadata: { form_id: formId || '', quiz_version: quizVersion || '', source: 'quiz_web', submitted_at: submittedAtISO, submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }) },
     timestamps: { submitted_at: submittedAtISO, submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }), session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, duration_readable: durationSeconds != null ? `${Math.floor(durationSeconds / 60)}m ${durationSeconds % 60}s` : null },
     utm: { utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', referrer: typeof document !== 'undefined' ? (document.referrer || '') : '' },
-    contact: { nome, whatsapp, email, cidade, bairro, ambientes, ambientes_count: ambientes?.length ?? 0 },
+    contact: { nome, whatsapp, email, cidade, bairro, ambientes },
     produto: {
       passo_1_intencao,
       descricao_livre: principalItem?.descricao_livre || '',
@@ -102,7 +103,6 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       cidade,
       bairro,
       ambientes,
-      ambientes_count: ambientes?.length ?? 0,
       passo_1_intencao,
       descricao_livre: principalItem?.descricao_livre || '',
       tipo,
