@@ -169,7 +169,11 @@ export default function QuizV4() {
     const ambiente = currentItem.passo_1_ambiente;
     const modelo = currentItem.passo_2_modelo;
     if (!ambiente || !modelo) return [];
-    if (modelo === 'nao_sei') return getTodosTecidosParaNaoSei();
+    // Com "Não sei" no modelo, passo_4_acabamento é removido de STEPS; todos os tecidos vão para passo_5_acionamento
+    if (modelo === 'nao_sei') {
+      const opts = getTodosTecidosParaNaoSei();
+      return opts.map((o) => ({ ...o, nextStep: 'passo_5_acionamento' }));
+    }
     const nextStep = modelo === 'cortina' ? 'passo_4_acabamento' : (modelo === 'vertical' || modelo === 'painel') ? 'passo_6_medidas' : 'passo_5_acionamento';
     const tecidos = getTecidosPorAmbienteModelo(ambiente, modelo);
     const opts = tecidos.map((t) => ({ ...t, image: t.image || getImageForModeloTecido(modelo, t.value), nextStep }));
