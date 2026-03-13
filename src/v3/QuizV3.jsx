@@ -230,7 +230,14 @@ export default function QuizV3() {
     if (activeStep.id === 'passo_7_adicionar_item') {
       const descricaoItem = stepData?.descricao_item || '';
       if (descricaoItem.trim()) {
-        setItems([...items, { descricao_livre: descricaoItem.trim() }]);
+        const newItems = [...items];
+        // Em V3, o modelo pode estar em passo_4_modelo ou passo_4_modelo_teto
+        const hasModelo = updatedCurrentItem.passo_4_modelo || updatedCurrentItem.passo_4_modelo_teto || currentItem.passo_4_modelo || currentItem.passo_4_modelo_teto;
+        if (newItems.length === 0 && hasModelo) {
+          newItems.push(updatedCurrentItem);
+        }
+        
+        setItems([...newItems, { descricao_livre: descricaoItem.trim() }]);
         setCurrentItem({});
         if (hasAddedExtraItem) {
           const finalIndex = STEPS.findIndex(s => s.id === 'passo_8_captura');

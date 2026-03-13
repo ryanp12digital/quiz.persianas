@@ -318,7 +318,14 @@ export default function QuizV1() {
     if (activeStep.id === 'passo_7_adicionar_item') {
       const descricaoItem = stepData.descricao_item || '';
       if (descricaoItem.trim()) {
-        setItems([...items, { descricao_livre: descricaoItem.trim() }]);
+        const newItems = [...items];
+        // Se ainda não salvou o item principal (que foi configurado nos passos anteriores), salva agora
+        const hasModelo = updatedCurrentItem.passo_4_modelo || updatedCurrentItem.passo_4_modelo_teto || currentItem.passo_4_modelo || currentItem.passo_4_modelo_teto;
+        if (newItems.length === 0 && hasModelo) {
+          newItems.push(updatedCurrentItem);
+        }
+        
+        setItems([...newItems, { descricao_livre: descricaoItem.trim() }]);
         setCurrentItem({});
         if (hasAddedExtraItem) {
           const finalIndex = STEPS.findIndex(s => s.id === 'passo_8_captura');

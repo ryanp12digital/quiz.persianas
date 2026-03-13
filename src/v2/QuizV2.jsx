@@ -251,7 +251,14 @@ export default function QuizV2() {
     if (activeStep.id === 'passo_7_adicionar_item') {
       const descricaoItem = stepData.descricao_item || stepData.observacoes || '';
       if (descricaoItem.trim()) {
-        setItems([...items, { descricao_livre: descricaoItem.trim() }]);
+        const newItems = [...items];
+        // Se ainda não salvou o item principal (que foi configurado nos passos anteriores), salva agora
+        const hasModelo = updatedCurrentItem.passo_4_modelo || updatedCurrentItem.passo_4_modelo_teto || currentItem.passo_4_modelo || currentItem.passo_4_modelo_teto;
+        if (newItems.length === 0 && hasModelo) {
+          newItems.push(updatedCurrentItem);
+        }
+        
+        setItems([...newItems, { descricao_livre: descricaoItem.trim() }]);
         setCurrentItem({});
         // Define o Form ID como FORMR30, pois o usuário adicionou um item extra
         setFormId('FORMR30');
