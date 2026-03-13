@@ -55,7 +55,6 @@ export const STEPS = [
         options: [
             { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-01-blackout.png' },
             { label: 'FR Blackout', description: 'Blackout com proteção anti-chama certificada.', value: 'fr_blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-02-fr-blackout.png' },
-            { label: 'Semi-blackout', description: 'Nível intermediário de luz, com leve escurecimento.', value: 'semi_blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-03-semi-blackout.png' },
             { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-04-tela-solar-1pct.png' },
             { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-05-tela-solar-3pct.png' },
             { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-06-tela-solar-5pct.png' },
@@ -78,7 +77,6 @@ export const STEPS = [
         type: 'radio',
         options: [
             { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-01-blackout.png' },
-            { label: 'Semi-blackout', description: 'Nível intermediário de luz, com leve escurecimento.', value: 'semi_blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-02-semi-blackout.png' },
             { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-06-translucida.png' },
             { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-03-tela-solar-1pct.png' },
             { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-04-tela-solar-3pct.png' },

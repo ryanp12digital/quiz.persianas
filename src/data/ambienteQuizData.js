@@ -224,7 +224,6 @@ const AMBIENTE_MODELO_TECIDOS_MAP = {
     T('tela_3', 'Tela solar 3%', 'Equilíbrio ideal entre conforto térmico e visibilidade externa na sacada.'),
     T('tela_5', 'Tela solar 5%', 'Deixa entrar mais luz, mantendo proteção solar e sensação de amplitude.'),
     T('translucida', 'Translúcida', 'Luz suave e privacidade com o ambiente sempre claro e agradável.'),
-    T('semi_blackout', 'Semi-blackout', 'Reduz bem a claridade para varandas com sol forte, sem escurecer totalmente.'),
   ],
   'varanda_sacada|double_vision': [
     T('semi_blackout_translucido', 'Semi-Blackout com translúcido', 'Diminui o brilho e o calor, mantendo luminosidade confortável.'),
@@ -263,7 +262,6 @@ const AMBIENTE_MODELO_TECIDOS_MAP = {
   // --- QUARTO ---
   'quarto|rolo': [
     T('blackout', 'Blackout', 'Bloqueio total da luz externa para um sono profundo e reparador a qualquer hora.'),
-    T('semi_blackout', 'Semi-blackout', 'Reduz a claridade de forma suave, ideal para quem não gosta de escuridão total.'),
     T('hospitalar', 'Hospitalar Antimicrobiano', 'Perfeito para quartos infantis, facilitando a higiene e protegendo contra alergias.'),
   ],
   'quarto|cortina': [
