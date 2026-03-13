@@ -51,8 +51,34 @@ function buildPayload(version, scenario) {
       ambientes_count: 1,
     },
     produto,
-    itens_adicionais: scenario.itens_adicionais || [],
-    itens_adicionais_count: scenario.itens_adicionais?.length ?? 0,
+    itens_adicionais: Array.isArray(scenario.itens_adicionais)
+      ? scenario.itens_adicionais
+          .map((item) => {
+            if (item.descricao_livre && item.descricao_livre.trim()) {
+              return item.descricao_livre.trim();
+            }
+            const partes = [];
+            if (item.tipo) partes.push(item.tipo);
+            if (item.modelo) partes.push(item.modelo);
+            if (item.tecido) partes.push(item.tecido);
+            if (item.acabamento) partes.push(item.acabamento);
+            let medidas = '';
+            if (item.largura || item.altura) {
+              const largura = item.largura || '';
+              const altura = item.altura || '';
+              if (largura && altura) {
+                medidas = `${largura} x ${altura}`;
+              } else {
+                medidas = largura || altura;
+              }
+            }
+            if (medidas) partes.push(medidas);
+            return partes.join(' ').trim();
+          })
+          .filter(Boolean)
+          .join('; ')
+      : '',
+    itens_adicionais_count: Array.isArray(scenario.itens_adicionais) ? scenario.itens_adicionais.length : 0,
     journey: {
       steps_completed: scenario.steps_completed || [],
       steps_count: (scenario.steps_completed || []).length,
@@ -60,7 +86,33 @@ function buildPayload(version, scenario) {
     _flat: {
       ...scenario.contactFlat,
       ...produtoFlat,
-      itens_adicionais: scenario.itens_adicionais || [],
+      itens_adicionais: Array.isArray(scenario.itens_adicionais)
+        ? scenario.itens_adicionais
+            .map((item) => {
+              if (item.descricao_livre && item.descricao_livre.trim()) {
+                return item.descricao_livre.trim();
+              }
+              const partes = [];
+              if (item.tipo) partes.push(item.tipo);
+              if (item.modelo) partes.push(item.modelo);
+              if (item.tecido) partes.push(item.tecido);
+              if (item.acabamento) partes.push(item.acabamento);
+              let medidas = '';
+              if (item.largura || item.altura) {
+                const largura = item.largura || '';
+                const altura = item.altura || '';
+                if (largura && altura) {
+                  medidas = `${largura} x ${altura}`;
+                } else {
+                  medidas = largura || altura;
+                }
+              }
+              if (medidas) partes.push(medidas);
+              return partes.join(' ').trim();
+            })
+            .filter(Boolean)
+            .join('; ')
+        : '',
     },
   };
   if (version === 'v2') {

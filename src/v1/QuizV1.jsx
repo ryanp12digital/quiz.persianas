@@ -148,6 +148,39 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       })
     : [];
 
+  // Constrói representação em string dos itens adicionais, ignorando itens totalmente vazios
+  const itensAdicionaisValidos = itens_adicionais.filter((item) => {
+    const temDescricao = item.descricao_livre && item.descricao_livre.trim();
+    const temOutrosCampos = item.tipo || item.modelo || item.tecido || item.acabamento || item.acionamento || item.largura || item.altura;
+    return temDescricao || temOutrosCampos;
+  });
+
+  const itensAdicionaisDescricao = itensAdicionaisValidos
+    .map((item) => {
+      if (item.descricao_livre && item.descricao_livre.trim()) {
+        return item.descricao_livre.trim();
+      }
+      const partes = [];
+      if (item.tipo) partes.push(item.tipo);
+      if (item.modelo) partes.push(item.modelo);
+      if (item.tecido) partes.push(item.tecido);
+      if (item.acabamento) partes.push(item.acabamento);
+      let medidas = '';
+      if (item.largura || item.altura) {
+        const largura = item.largura || '';
+        const altura = item.altura || '';
+        if (largura && altura) {
+          medidas = `${largura} x ${altura}`;
+        } else {
+          medidas = largura || altura;
+        }
+      }
+      if (medidas) partes.push(medidas);
+      return partes.join(' ').trim();
+    })
+    .filter(Boolean)
+    .join('; ');
+
   const sessionStartedAtISO = sessionStartedAt ? new Date(sessionStartedAt).toISOString() : null;
   const submittedAtISO = submittedAt.toISOString();
   const durationSeconds = sessionStartedAt
@@ -193,8 +226,8 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       acionamento: produto.acionamento,
       medidas: produto.medidas
     },
-    itens_adicionais,
-    itens_adicionais_count: itens_adicionais?.length ?? 0,
+    itens_adicionais: itensAdicionaisDescricao,
+    itens_adicionais_count: itensAdicionaisValidos.length,
     journey: {
       steps_completed: stepsHistory,
       steps_count: stepsHistory?.length ?? 0
@@ -215,7 +248,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       acionamento: produto.acionamento,
       largura: produto.medidas.largura,
       altura: produto.medidas.altura,
-      itens_adicionais
+      itens_adicionais: itensAdicionaisDescricao
     }
   };
 };
@@ -341,6 +374,16 @@ export default function QuizV1() {
           const newHistory = history.filter((stepIdx) => STEPS[stepIdx]?.id !== 'passo_7_adicionar_item');
           setHistory([...newHistory, nextIndex]);
           setCurrentStepIndex(nextIndex);
+          return;
+        }
+      } else if (hasAddedExtraItem || items.length > 0) {
+        // Se já está no fluxo de itens extras e o usuário clicou em "Pular" sem descrição,
+        // ir direto para o formulário final de captura em vez de voltar para "mais itens"
+        const finalIndex = STEPS.findIndex(s => s.id === 'passo_8_captura');
+        if (finalIndex !== -1) {
+          const newHistory = history.filter((stepIdx) => STEPS[stepIdx]?.id !== 'passo_7_adicionar_item');
+          setHistory([...newHistory, finalIndex]);
+          setCurrentStepIndex(finalIndex);
           return;
         }
       }

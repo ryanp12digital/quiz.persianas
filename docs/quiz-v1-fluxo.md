@@ -24,7 +24,7 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 | **contact** | nome, whatsapp, email, cidade, bairro, ambientes, ambientes_count |
 | **produto** | tipo, modelo, tecido, acabamento, acionamento, medidas (largura, altura, unidade) |
 | **quiz_answers** | passo_1_intencao, modelo, tecido, acionamento, medidas, acabamento (espelho de produto) |
-| **itens_adicionais** | array de { ordem, descricao_livre, tipo, modelo, tecido, acabamento, acionamento, largura, altura } |
+| **itens_adicionais** | string única com descrições dos itens adicionais separadas por `;` (ex.: `\"Persiana Rolô Blackout 120 x 140; Persiana Double Vision Translúcida 130 x 250\"`) |
 | **journey** | steps_completed, steps_count |
 | **_flat** | Campos planos para integrações que precisam (mesmos valores que contact + produto) |
 

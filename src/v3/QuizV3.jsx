@@ -74,6 +74,38 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       }))
     : [];
 
+  // Constrói representação em string dos itens adicionais, ignorando itens totalmente vazios
+  const itensAdicionaisValidos = itens_adicionais.filter((item) => {
+    const temDescricao = item.descricao_livre && item.descricao_livre.trim();
+    const temOutrosCampos = item.modelo || item.tecido || item.acionamento || item.largura || item.altura;
+    return temDescricao || temOutrosCampos;
+  });
+
+  const itensAdicionaisDescricao = itensAdicionaisValidos
+    .map((item) => {
+      if (item.descricao_livre && item.descricao_livre.trim()) {
+        return item.descricao_livre.trim();
+      }
+      const partes = [];
+      if (item.modelo) partes.push(item.modelo);
+      if (item.tecido) partes.push(item.tecido);
+      if (item.acionamento) partes.push(item.acionamento);
+      let medidas = '';
+      if (item.largura || item.altura) {
+        const largura = item.largura || '';
+        const altura = item.altura || '';
+        if (largura && altura) {
+          medidas = `${largura} x ${altura}`;
+        } else {
+          medidas = largura || altura;
+        }
+      }
+      if (medidas) partes.push(medidas);
+      return partes.join(' ').trim();
+    })
+    .filter(Boolean)
+    .join('; ');
+
   const sessionStartedAtISO = sessionStartedAt ? new Date(sessionStartedAt).toISOString() : null;
   const submittedAtISO = submittedAt.toISOString();
   const durationSeconds = sessionStartedAt ? Math.round((submittedAt - new Date(sessionStartedAt)) / 1000) : null;
@@ -93,8 +125,8 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       acionamento,
       medidas: { largura, altura, unidade: 'cm' }
     },
-    itens_adicionais,
-    itens_adicionais_count: itens_adicionais?.length ?? 0,
+    itens_adicionais: itensAdicionaisDescricao,
+    itens_adicionais_count: itensAdicionaisValidos.length,
     journey: { steps_completed: stepsHistory, steps_count: stepsHistory?.length ?? 0 },
     _flat: {
       nome,
@@ -112,7 +144,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       acionamento,
       largura,
       altura,
-      itens_adicionais
+      itens_adicionais: itensAdicionaisDescricao
     }
   };
 };

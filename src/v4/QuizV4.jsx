@@ -106,7 +106,7 @@ function buildPayloadV4(formId, leadData, stepData, currentItem, options = {}) {
       medidas: produto.medidas,
       observacoes: produto.observacoes,
     },
-    itens_adicionais: [],
+    itens_adicionais: '',
     itens_adicionais_count: 0,
     journey: { steps_completed: stepsHistory, steps_count: stepsHistory?.length ?? 0 },
     _flat: {
@@ -127,7 +127,7 @@ function buildPayloadV4(formId, leadData, stepData, currentItem, options = {}) {
       largura: produto.medidas.largura,
       altura: produto.medidas.altura,
       observacoes: produto.observacoes,
-      itens_adicionais: [],
+      itens_adicionais: '',
     },
   };
 }
