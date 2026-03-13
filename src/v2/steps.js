@@ -379,7 +379,7 @@ export const STEPS = [
         isFinal: true
     },
 
-    // [FASE 8 Alternate] CAPTURA CATÁLOGO
+    // [FASE 8 Alternate] CAPTURA CATÁLOGO (Opção 5 — Não sei - Quero recomendação)
     {
         id: 'passo_8_captura_catalogo',
         phase: 8,
@@ -390,6 +390,8 @@ export const STEPS = [
             { id: 'nome', label: 'Nome', placeholder: 'Seu nome' },
             { id: 'whatsapp', label: 'DDD+Whatsapp', placeholder: '(11) 99999-9999', mask: 'phone' },
             { id: 'email', label: 'E-mail', placeholder: 'seu@email.com' },
+            { id: 'cidade', label: 'Cidade', placeholder: 'São Paulo' },
+            { id: 'bairro', label: 'Bairro', placeholder: 'Centro' },
             {
                 id: 'ambientes',
                 label: 'Qual(is) ambiente(s) deseja?',

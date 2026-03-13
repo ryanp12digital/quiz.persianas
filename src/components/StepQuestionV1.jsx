@@ -261,6 +261,35 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                         ))}
                                     </div>
                                 )}
+                                {inputs.filter(i => i.type === 'radio' && i.options).length > 0 && (
+                                    <div className="grid grid-cols-1 gap-5">
+                                        {inputs.filter(i => i.type === 'radio' && i.options).map((input) => (
+                                            <div key={input.id} className="text-left w-full min-w-0">
+                                                {input.label && (
+                                                    <label className="block text-sm font-semibold text-gray-800 mb-2">
+                                                        {input.label} {input.required !== false && <span className="text-red-500">*</span>}
+                                                    </label>
+                                                )}
+                                                <div className="flex flex-wrap gap-3">
+                                                    {(input.options || []).map((opt) => (
+                                                        <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name={input.id}
+                                                                value={opt.value}
+                                                                checked={(inputValues[input.id] || '') === opt.value}
+                                                                onChange={(e) => setInputValues(prev => ({ ...prev, [input.id]: e.target.value }))}
+                                                                className="w-4 h-4 text-[#4CAF50] border-gray-300 focus:ring-[#4CAF50]"
+                                                            />
+                                                            <span className="text-sm font-medium text-gray-800">{opt.label}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                                {errors[input.id] && <p className="text-red-500 text-xs mt-2 font-medium">{errors[input.id]}</p>}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                                 {inputs.filter(i => i.type === 'multi-select').map((input) => (
                                     <div key={input.id} className="text-left w-full min-w-0">
                                         <label htmlFor={`${input.id}-select`} className="block text-sm font-semibold text-gray-800 mb-2">

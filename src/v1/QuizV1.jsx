@@ -119,7 +119,12 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const submittedAt = new Date();
 
   const principalItem = Array.isArray(items) && items.length > 0 ? items[0] : currentItem;
-  const produto = getProdutoFromItem(principalItem);
+  const produtoFromItem = getProdutoFromItem(principalItem);
+  // Catálogo (passo_8_captura_catalogo) coleta acionamento no próprio formulário
+  const produto = {
+    ...produtoFromItem,
+    acionamento: stepData?.acionamento !== undefined && stepData.acionamento !== '' ? stepData.acionamento : produtoFromItem.acionamento
+  };
 
   const nome = stepData?.nome || '';
   const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';

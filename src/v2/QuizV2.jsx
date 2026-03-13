@@ -268,9 +268,10 @@ export default function QuizV2() {
     if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
       const selectedOptionValue = Object.values(stepData)[0];
       
-      // Regra: "não sei" só redireciona para catálogo quando for no passo de MODELO (não no de tecido)
+      // FORMR5: "Não sei - Quero recomendação" — catálogo
       const isModeloStep = activeStep.id === 'passo_4_modelo' || activeStep.id === 'passo_4_modelo_teto';
       if (selectedOptionValue === 'nao_sei' && isModeloStep) {
+        setFormId('FORMR5');
         const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
         if (nextIndex !== -1) {
           setHistory([...history, nextIndex]);
@@ -376,7 +377,8 @@ export default function QuizV2() {
         const tecidoNaoSei = selectedOptionValue === 'nao_sei';
         
         if (modeloNaoSei && tecidoNaoSei) {
-          // Não sei modelo + não sei tecido → direto para "Não tenho medidas" (catálogo)
+          // Não sei modelo + não sei tecido → direto para catálogo (FORMR5)
+          setFormId('FORMR5');
           const nextIndex = STEPS.findIndex(s => s.id === 'passo_8_captura_catalogo');
           if (nextIndex !== -1) {
             setHistory([...history, nextIndex]);
@@ -408,6 +410,11 @@ export default function QuizV2() {
         setFormId('FORMR30');
         nextStepId = 'passo_7_adicionar_item';
       }
+    }
+
+    // FORMR5 quando qualquer caminho leva ao formulário de catálogo (ex.: passo_5_estagio → catalogo)
+    if (nextStepId === 'passo_8_captura_catalogo') {
+      setFormId('FORMR5');
     }
 
     if (nextStepId) {

@@ -25,7 +25,7 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 | **contact** | nome, whatsapp, email, cidade, bairro, ambientes, ambientes_count |
 | **produto** | tipo, modelo, tecido, acabamento, acionamento, medidas (largura, altura, unidade) |
 | **quiz_answers** | modelo, tecido, acionamento, medidas, acabamento (espelho de produto) |
-| **itens_adicionais** | array de { ordem, descricao_livre, tipo, modelo, tecido, acabamento, acionamento, largura, altura } |
+| **itens_adicionais** | string única com descrições dos itens adicionais separadas por `;` (ex.: `"Persiana Rolô Blackout 120 x 140; Persiana Double Vision Translúcida 130 x 250"`) |
 | **journey** | steps_completed, steps_count |
 | **_flat** | Campos planos para integrações (mesmos valores que contact + produto) |
 
@@ -39,13 +39,25 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 
 ## Formulários (form_id)
 
-**Total: 4 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel).
+**Total: 3 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel). (V2 não possui a opção "Já sabe o que quer e quer falar direto com atendente".)
 
-| ID | Quando é usado |
-|----|----------------|
-| **FORMR5** | Catálogo — usuário escolheu "Não sei" (tecido ou modelo) ou não tem medidas |
-| **FORMR20** | Padrão — Uma persiana com medidas (pré-orçamento) |
-| **FORMR30** | Mais de uma persiana com medidas (adicionou item extra no passo_7_adicionar_item) |
+| ID | Valor | Quando é usado |
+|----|-------|----------------|
+| **FORMR5** | 5 | Não sei - Quero recomendação (catálogo; "Não sei" no modelo/tecido ou não tem medidas) |
+| **FORMR20** | 20 | Escolheu uma Persiana (pré-orçamento com medidas, sem itens extras) |
+| **FORMR30** | 30 | Escolhe mais de 1 Persiana (pré-orçamento com medidas + itens adicionais) |
+
+---
+
+## Organização dos formulários (V2)
+
+Conforme documento "Organização dos Formulários - Persi.md". Campos técnicos (modelo, tecido, acionamento, largura, altura, outras persianas) só são coletados nas opções de maior valor.
+
+| Opção | Valor | form_id | Campos de contato | Opções coletadas do quiz |
+|-------|-------|---------|-------------------|---------------------------|
+| Escolhe mais de 1 Persiana | 30 | FORMR30 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | Modelo, Tecido, Manual ou Motorizada, Largura, Altura, Outras Persianas / Cortinas |
+| Escolheu uma Persiana | 20 | FORMR20 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | Modelo, Tecido, Manual ou Motorizada, Largura, Altura |
+| Não sei - Quero recomendação | 5 | FORMR5 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | — |
 
 ---
 
@@ -78,9 +90,8 @@ flowchart TD
 
 ## Regra especial (código)
 
-- Em qualquer etapa **antes** de `passo_5_estagio`, se o usuário escolher **"Não sei — Quero recomendação"** (`nao_sei`):
-  - O fluxo vai direto para **`passo_8_captura_catalogo`**
-  - `formId` permanece na lógica simplificada ou não se altera (atualmente mantém o padrão).
+- Quando o fluxo leva a **`passo_8_captura_catalogo`** (escolheu "Não sei" no modelo, ou modelo+tecido "Não sei", ou no estágio escolheu não ter medidas):
+  - `formId` é definido como **FORMR5**
 
 ---
 
@@ -157,7 +168,7 @@ flowchart TD
 | ID | Uso no V2 |
 |----|-----------|
 | **passo_8_captura** | Pré-orçamento (nome, whatsapp, email, cidade, bairro, ambientes). isFinal: true |
-| **passo_8_captura_catalogo** | Catálogo (nome, whatsapp, email, ambientes). isFinal: true. **Nota:** no V2 este passo tem título "Perfeito! Para te enviar este pré orçamento" e subtexto "Preencha seus dados para receber as sugestões." (igual ao passo_8_captura), mas com menos campos (sem cidade/bairro). |
+| **passo_8_captura_catalogo** | Catálogo (nome, whatsapp, email, cidade, bairro, ambientes). isFinal: true. FORMR5. |
 
 ---
 
@@ -168,8 +179,19 @@ flowchart TD
 
 ---
 
+## Cenários de validação (form_id e campos)
+
+| Cenário | form_id | Tela final | Campos esperados no payload |
+|---------|---------|------------|-----------------------------|
+| Escolhe "Não sei" no modelo (ou modelo+tecido "Não sei", ou no estágio "Não tenho medidas") | FORMR5 | passo_8_captura_catalogo | contact: nome, whatsapp, email, cidade, bairro, ambientes; produto vazio ou parcial |
+| Escolhe modelo+tecido+acionamento, "Já tenho medidas", preenche medidas, envia (sem adicionar outro) | FORMR20 | passo_8_captura | contact + produto (modelo, tecido, acionamento, medidas); itens_adicionais vazio |
+| Idem acima mas escolhe "Adicionar mais um item", descreve e envia | FORMR30 | passo_8_captura | contact + produto + itens_adicionais (string com descrições) |
+
+---
+
 ## Arquivos de definição
 
 - Steps: `src/v2/steps.js`
 - Lógica de navegação e regras: `src/v2/QuizV2.jsx`
 - A/B: `src/v2/ab_test.js`
+- Referência: `Organização dos Formulários - Persi.md`

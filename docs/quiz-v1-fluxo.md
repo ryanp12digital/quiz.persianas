@@ -39,13 +39,26 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 
 **Total: 5 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel).
 
-| ID | Quando é usado |
-|----|----------------|
-| **quizv1** | Valor inicial do quiz |
-| **FORMR5** | Catálogo — usuário escolheu "Não sei" antes do estágio ou não tem medidas |
-| **FORMR10** | Já sabe o que quer e quer falar direto com atendente (passo_1_intencao → direto_atendente) |
-| **FORMR20** | Uma persiana com medidas (pré-orçamento) |
-| **FORMR30** | Mais de uma persiana com medidas (adicionou item extra) |
+| ID | Valor | Quando é usado |
+|----|-------|----------------|
+| **quizv1** | — | Valor inicial do quiz |
+| **FORMR5** | 5 | Não sei - Quero Recomendação (catálogo; "Não sei" antes do estágio ou não tem medidas) |
+| **FORMR10** | 10 | Já sabe o que quer e quer falar direto com atendente (passo_1_intencao → direto_atendente) |
+| **FORMR20** | 20 | Escolheu uma Persiana (pré-orçamento com medidas, sem itens extras) |
+| **FORMR30** | 30 | Escolhe mais de 1 Persiana (pré-orçamento com medidas + itens adicionais) |
+
+---
+
+## Organização dos formulários (V1)
+
+Conforme documento "Organização dos Formulários - Persi.md". Campos técnicos (modelo, tecido, acionamento, largura, altura, outras persianas) só são coletados nas opções de maior valor.
+
+| Opção | Valor | form_id | Campos de contato | Opções coletadas do quiz |
+|-------|-------|---------|-------------------|---------------------------|
+| Escolhe mais de 1 Persiana | 30 | FORMR30 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | Modelo, Tecido, Manual ou Motorizada, Largura, Altura, Outras Persianas / Cortinas |
+| Escolheu uma Persiana | 20 | FORMR20 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | Modelo, Tecido, Manual ou Motorizada, Largura, Altura |
+| Já sabe o que quer e quer falar direto com atendente | 10 | FORMR10 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | — |
+| Não sei - Quero Recomendação | 5 | FORMR5 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | Manual ou Motorizada (no próprio formulário de catálogo) |
 
 ---
 
@@ -153,8 +166,8 @@ flowchart TD
 
 | ID | Pergunta | Tipo | Observação |
 |----|----------|------|------------|
-| **passo_8_captura** | Perfeito! Para te enviar este pré orçamento | mixed: nome, whatsapp, email, cidade, bairro, ambientes (multi-select) | isFinal: true |
-| **passo_8_captura_catalogo** | Receber Catálogo — Preencha para receber o catálogo | mixed: nome, whatsapp, ambientes | isFinal: true; menos campos que passo_8_captura |
+| **passo_8_captura** | Perfeito! Para te enviar este pré orçamento | mixed: nome, whatsapp, email, cidade, bairro, ambientes (multi-select) | isFinal: true; usado para FORMR20 e FORMR30 |
+| **passo_8_captura_catalogo** | Receber Catálogo | mixed: nome, whatsapp, email, cidade, bairro, acionamento (manual/motorizada/nao_sei), ambientes (multi-select) | isFinal: true; FORMR5; coleta Manual ou Motorizada no formulário |
 
 ---
 
@@ -165,7 +178,19 @@ flowchart TD
 
 ---
 
+## Cenários de validação (form_id e campos)
+
+| Cenário | form_id | Tela final | Campos esperados no payload |
+|---------|---------|------------|-----------------------------|
+| Escolhe "Já sei e quero falar com atendente" na primeira pergunta | FORMR10 | passo_8_captura | contact: nome, whatsapp, email, cidade, bairro, ambientes; produto vazio ou parcial |
+| Escolhe "Não sei" no modelo (ou modelo+tecido "Não sei") | FORMR5 | passo_8_captura_catalogo | contact completo; produto.acionamento do formulário; sem modelo/tecido/medidas |
+| Escolhe modelo+tecido+acionamento, "Já tenho medidas", preenche medidas, Finalizar | FORMR20 | passo_8_captura | contact + produto (modelo, tecido, acionamento, medidas); itens_adicionais vazio |
+| Idem acima mas "Adicionar outra persiana", descreve item, depois Finalizar | FORMR30 | passo_8_captura | contact + produto + itens_adicionais (string com descrições) |
+
+---
+
 ## Arquivos de definição
 
 - Steps: `src/v1/steps.js`
 - Lógica de navegação e regras (ex.: `nao_sei` → catálogo): `src/v1/QuizV1.jsx`
+- Referência: `Organização dos Formulários - Persi.md`
