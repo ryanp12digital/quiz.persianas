@@ -18,8 +18,9 @@ import {
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
 
-// Webhook URL configurável (variável de ambiente ou constante)
+// Webhook URLs configuráveis (variável de ambiente ou constante)
 const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv4';
+const WEBHOOK_GHL_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
 
 const formatWhatsAppForGHL = (whatsapp) => {
   if (!whatsapp) return whatsapp;
@@ -191,6 +192,7 @@ export default function QuizV4() {
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
       const promises = [];
       if (WEBHOOK_QUIZ_V4_URL) promises.push(fetch(WEBHOOK_QUIZ_V4_URL, webhookPayload));
+      promises.push(fetch(WEBHOOK_GHL_URL, webhookPayload));
       Promise.all(promises)
         .then(() => {
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v4' });
