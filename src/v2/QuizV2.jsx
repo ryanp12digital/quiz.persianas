@@ -320,12 +320,21 @@ export default function QuizV2() {
         fetch(WEBHOOK_LEADCONNECTOR_URL, webhookPayload),
       ])
       .then(() => {
-        // Lead apenas no formulário de orçamento (passo_8_captura), não no de catálogo
         try {
-          if (activeStep.id === 'passo_8_captura' && window.fbq && typeof window.fbq === 'function') {
+          if (window.fbq && typeof window.fbq === 'function') {
+            const leadValuesByForm = {
+              FORMR5: 5,
+              FORMR20: 20,
+              FORMR30: 30,
+            };
+            const leadValue = leadValuesByForm[formId] ?? 0;
+
             window.fbq('track', 'Lead', {
               content_name: 'Quiz Persianas V2',
-              content_category: 'Lead Generation'
+              content_category: 'Lead Generation',
+              form_id: formId,
+              value: leadValue,
+              currency: 'BRL',
             });
           }
         } catch (error) {
