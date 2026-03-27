@@ -15,7 +15,7 @@ import {
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
 
-const WEBHOOK_QUIZ_V6_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V6_URL || 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv6';
+const WEBHOOK_QUIZ_V6_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V6_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv6';
 const WEBHOOK_GHL_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
 
 const formatWhatsAppForGHL = (whatsapp) => {

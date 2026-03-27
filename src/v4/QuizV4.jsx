@@ -19,7 +19,7 @@ import {
 } from '../data/ambienteQuizData';
 
 // Webhook URLs configuráveis (variável de ambiente ou constante)
-const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://fluxo-n8n.axmxa0.easypanel.host/webhook/quizv4';
+const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv4';
 const WEBHOOK_GHL_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
 
 const formatWhatsAppForGHL = (whatsapp) => {
