@@ -1,3 +1,9 @@
+import {
+  PASSO_4_TECIDO_ROLO_OPTIONS,
+  PASSO_4_TECIDO_ROMANA_OPTIONS,
+  PASSO_4_TECIDO_DOUBLE_OPTIONS,
+} from '../data/passo4RoloRomanaDoubleFabricOptions.js';
+
 export const STEPS = [
     // [FASE 1] INTENÇÃO DO USUÁRIO
     {
@@ -52,21 +58,7 @@ export const STEPS = [
         phase: 4,
         question: 'Escolha o tecido para sua Persiana Rolô:',
         type: 'radio',
-        options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-01-blackout.png' },
-            { label: 'FR Blackout', description: 'Blackout com proteção anti-chama certificada.', value: 'fr_blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-02-fr-blackout.png' },
-            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-04-tela-solar-1pct.png' },
-            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-05-tela-solar-3pct.png' },
-            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-06-tela-solar-5pct.png' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-07-translucida.png' },
-            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-08-decorativo.png' },
-            { label: 'FR Translúcido', description: 'Translúcido com retardante de chama para maior segurança.', value: 'fr_translucido', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-09-fr-translucido.png' },
-            { label: 'Hospitalar Antimicrobiano', description: 'Superfície higiênica, alta privacidade e bloqueio de luz.', value: 'hospitalar', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-10-hospitalar-antimicrobiano.png' },
-            { label: 'Screen Metalizado 1%', description: 'Máximo controle de luz e calor para áreas muito ensolaradas.', value: 'metalizado_1', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-11-screen-metalizado-1pct.png' },
-            { label: 'Screen Metalizado 3%', description: 'Reduz ofuscamento e calor, mantendo parte da vista externa.', value: 'metalizado_3', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-12-screen-metalizado-3pct.png' },
-            { label: 'Screen Metalizado 5%', description: 'Combina controle solar com maior transparência e conforto visual.', value: 'metalizado_5', nextStep: 'passo_3_acionamento', image: '/tecidos/rolo-13-screen-metalizado-5pct.png' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
-        ]
+        options: PASSO_4_TECIDO_ROLO_OPTIONS
     },
 
     // [FASE 4.2] TECIDOS ROMANA
@@ -75,15 +67,7 @@ export const STEPS = [
         phase: 4,
         question: 'Escolha o tecido para sua Persiana Romana:',
         type: 'radio',
-        options: [
-            { label: 'Blackout', description: 'Bloqueio total da luz e máxima privacidade.', value: 'blackout', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-01-blackout.png' },
-            { label: 'Translúcida', description: 'Difunde a luz, garantindo privacidade com ambiente iluminado.', value: 'translucida', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-06-translucida.png' },
-            { label: 'Tela solar 1%', description: 'Visibilidade externa mínima e forte bloqueio de luminosidade.', value: 'tela_1', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-03-tela-solar-1pct.png' },
-            { label: 'Tela solar 3%', description: 'Equilíbrio entre visibilidade externa e bloqueio de luz.', value: 'tela_3', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-04-tela-solar-3pct.png' },
-            { label: 'Tela solar 5%', description: 'Maior entrada de luz, mantendo visão externa com proteção solar.', value: 'tela_5', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-05-tela-solar-5pct.png' },
-            { label: 'Decorativo', description: 'Foco estético, com leve filtragem de luz e acabamento visual.', value: 'decorativo', nextStep: 'passo_3_acionamento', image: '/tecidos/romana-07-decorativo.png' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
-        ]
+        options: PASSO_4_TECIDO_ROMANA_OPTIONS
     },
 
     // [FASE 4.3] TECIDOS DOUBLE VISION
@@ -92,11 +76,7 @@ export const STEPS = [
         phase: 4,
         question: 'Escolha o tecido para sua Double Vision:',
         type: 'radio',
-        options: [
-            { label: 'Blackout com translucido', description: 'Combina faixas blackout e transparentes em sistema duplo, permitindo alternar entre escuro total, luz parcial e visão externa.', value: 'blackout_translucido', nextStep: 'passo_3_acionamento', image: '/tecidos/double-vision-01-blackout-translucido.png' },
-            { label: 'Semi-Blackout com translucido', description: 'Faixas opacas mais densas, reduzem bem a luminosidade.', value: 'semi_blackout_translucido', nextStep: 'passo_3_acionamento', image: '/tecidos/double-vision-02-semi-blackout-translucido.png' },
-            { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: 'passo_5_estagio' }
-        ]
+        options: PASSO_4_TECIDO_DOUBLE_OPTIONS
     },
 
     // [FASE 4.4] TECIDOS VERTICAL

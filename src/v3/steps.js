@@ -1,5 +1,6 @@
 /**
  * Steps do Quiz V3: fluxo Tecido → Modelo → Acionamento → (resto igual V1).
+ * Lista unificada de tecidos (FABRIC_OPTIONS_UNIFIED) deriva de V1, incluindo rolô/romana/double em passo4RoloRomanaDoubleFabricOptions.js.
  */
 
 import { FABRIC_OPTIONS_UNIFIED } from './stepsData.js';

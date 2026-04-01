@@ -1,6 +1,7 @@
 /**
  * Definições de steps do Quiz V4 (por ambiente - só recomendados).
- * Opções dos passos passo_2_modelo e passo_3_tecido são preenchidas em runtime a partir de ambienteQuizData.
+ * Opções dos passos passo_2_modelo e passo_3_tecido são preenchidas em runtime a partir de ambienteQuizData
+ * (rolô/romana/double alinhados a V1 via `passo4RoloRomanaDoubleFabricOptions.js`).
  */
 
 export const STEPS = [

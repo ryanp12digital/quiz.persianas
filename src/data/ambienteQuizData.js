@@ -4,6 +4,7 @@
  * Para "outros", modelos e tecidos vêm do V1 (todos disponíveis).
  */
 
+// V1 importa rolô/romana/double de passo4RoloRomanaDoubleFabricOptions.js (mesma lista no V2)
 import { STEPS as V1_STEPS } from '../v1/steps.js';
 
 // --- AMBIENTES (imagens em public/ambientes/ — nomes dos ficheiros como estão na pasta) ---
@@ -203,9 +204,9 @@ const T = (value, label, description, image = undefined) => ({ value, label, des
 const AMBIENTE_MODELO_TECIDOS_MAP = {
   // --- VARANDA E SACADA ---
   'varanda_sacada|rolo': [
-    T('tela_5', 'Tela Solar 5%', 'Protege o mobiliário e reduz o calor, mantendo a melhor visibilidade da paisagem externa.'),
+    T('tela_1', 'Tela Solar 1%', 'Visibilidade externa mínima e forte bloqueio de luminosidade para sacadas muito expostas.'),
     T('tela_3', 'Tela Solar 3%', 'Equilíbrio ideal entre conforto térmico e visão, perfeita para varandas muito ensolaradas.'),
-    T('metalizado_5', 'Screen Metalizado 5%', 'Reflete o calor de forma superior, garantindo frescor mesmo em sacadas envidraçadas.'),
+    T('tela_5', 'Tela Solar 5%', 'Protege o mobiliário e reduz o calor, mantendo a melhor visibilidade da paisagem externa.'),
   ],
   'varanda_sacada|painel': [
     T('tela_3', 'Tela Solar 3%', 'Painéis largos que deslizam suavemente, oferecendo proteção solar com visual limpo.'),
@@ -221,19 +222,19 @@ const AMBIENTE_MODELO_TECIDOS_MAP = {
     T('voil', 'Translúcido Voil', 'Leveza máxima para quem busca apenas suavizar a luz e garantir um caimento elegante.'),
   ],
   'varanda_sacada|romana': [
-    T('tela_3', 'Tela solar 3%', 'Equilíbrio ideal entre conforto térmico e visibilidade externa na sacada.'),
-    T('tela_5', 'Tela solar 5%', 'Deixa entrar mais luz, mantendo proteção solar e sensação de amplitude.'),
+    T('tela_3', 'Tela Solar 3%', 'Equilíbrio ideal entre conforto térmico e visibilidade externa na sacada.'),
+    T('tela_5', 'Tela Solar 5%', 'Deixa entrar mais luz, mantendo proteção solar e sensação de amplitude.'),
     T('translucida', 'Translúcida', 'Luz suave e privacidade com o ambiente sempre claro e agradável.'),
   ],
   'varanda_sacada|double_vision': [
-    T('semi_blackout_translucido', 'Semi-Blackout com translúcido', 'Diminui o brilho e o calor, mantendo luminosidade confortável.'),
-    T('blackout_translucido', 'Blackout com translúcido', 'Para quem quer privacidade máxima e opção de escurecer quando necessário.'),
+    T('semi_blackout_translucido', 'Semi-blackout', 'Forte bloqueio de luminosidade e máxima privacidade para o ambiente.'),
+    T('blackout_translucido', 'Translúcido', 'Filtragem suave da luz natural com total privacidade interna.'),
   ],
 
   // --- SALA DE ESTAR ---
   'sala_estar|double_vision': [
-    T('blackout_translucido', 'Blackout com Translúcido', 'Escurece o ambiente para filmes ou libera a visão externa com um ajuste.'),
-    T('semi_blackout_translucido', 'Semi-Blackout com Translúcido', 'Reduz o reflexo na TV mantendo uma iluminação suave e muito elegante.'),
+    T('blackout_translucido', 'Translúcido', 'Filtragem suave da luz natural com total privacidade interna.'),
+    T('semi_blackout_translucido', 'Semi-blackout', 'Forte bloqueio de luminosidade e máxima privacidade para o ambiente.'),
   ],
   'sala_estar|romana': [
     T('blackout', 'Blackout', 'Bloqueio total da luz externa, criando o clima perfeito de cinema em casa.'),
@@ -262,7 +263,7 @@ const AMBIENTE_MODELO_TECIDOS_MAP = {
   // --- QUARTO ---
   'quarto|rolo': [
     T('blackout', 'Blackout', 'Bloqueio total da luz externa para um sono profundo e reparador a qualquer hora.'),
-    T('hospitalar', 'Hospitalar Antimicrobiano', 'Perfeito para quartos infantis, facilitando a higiene e protegendo contra alergias.'),
+    T('translucida', 'Translúcida', 'Difunde a luz de dia mantendo privacidade quando o sol não é tão intenso.'),
   ],
   'quarto|cortina': [
     T('dupla', 'Cortina Dupla (Voil + Blackout)', 'A escolha completa: privacidade e luz suave de dia, blackout total para dormir.'),
@@ -271,12 +272,12 @@ const AMBIENTE_MODELO_TECIDOS_MAP = {
   ],
   'quarto|romana': [
     T('blackout', 'Blackout', 'Une a estética refinada das dobras com a funcionalidade do bloqueio de luz.'),
-    T('decorativo', 'Tecido Decorativo', 'Traz texturas e cores que complementam o enxoval e a decoração do dormitório.'),
     T('translucida', 'Translúcida', 'Cria uma iluminação difusa e romântica, mantendo a privacidade dos moradores.'),
+    T('tela_3', 'Tela Solar 3%', 'Equilíbrio entre luz natural e privacidade em quartos com boa incidência solar.'),
   ],
   'quarto|double_vision': [
-    T('blackout_translucido', 'Blackout com Translúcido', 'Oferece o melhor dos dois mundos: design moderno com controle de luz para o sono.'),
-    T('semi_blackout_translucido', 'Semi-Blackout com Translúcido', 'Ideal para quartos que não recebem sol direto, mantendo o ambiente aconchegante.'),
+    T('blackout_translucido', 'Translúcido', 'Filtragem suave da luz natural com total privacidade interna.'),
+    T('semi_blackout_translucido', 'Semi-blackout', 'Forte bloqueio de luminosidade e máxima privacidade para o ambiente.'),
   ],
   'quarto|madeira': [
     T('natural_fita', 'Madeira Natural com Fita', 'As fitas bloqueiam a luz que passaria pelos furos, garantindo mais escuridão.'),
@@ -319,14 +320,14 @@ const AMBIENTE_MODELO_TECIDOS_MAP = {
     T('eco_cadarco', 'Eco Wood com Cadarço', 'Visual rústico e nobre em material sintético que não deforma com o vapor do banho.'),
   ],
   'banheiro_lavabo|romana': [
-    T('decorativo', 'Tecido Decorativo', 'Foco estético com texturas que transformam o lavabo em um ambiente planejado.'),
     T('translucida', 'Translúcida', 'Cria uma atmosfera relaxante com luz suave, ideal para banheiros de suítes master.'),
+    T('blackout', 'Blackout', 'Bloqueio total da luz e da visão em janelas muito expostas.'),
   ],
 
   // --- ESCRITÓRIO E HOME OFFICE ---
   'escritorio_homeoffice|rolo': [
     T('tela_3', 'Tela Solar 3%', 'O equilíbrio perfeito: elimina o reflexo no monitor sem deixar o escritório escuro.'),
-    T('metalizado_3', 'Screen Metalizado 3%', 'Máximo controle de calor e ofuscamento, ideal para escritórios que recebem muito sol.'),
+    T('tela_1', 'Tela Solar 1%', 'Mínima visibilidade externa e forte redução de luminosidade em telas muito expostas ao sol.'),
     T('translucida', 'Translúcida', 'Garante privacidade total e luz difusa, criando um ambiente de trabalho calmo e claro.'),
   ],
   'escritorio_homeoffice|madeira': [
@@ -334,8 +335,8 @@ const AMBIENTE_MODELO_TECIDOS_MAP = {
     T('bambu_fita', 'Bambu com Fita', 'Opção sustentável e moderna, trazendo uma textura leve e criativa para o home office.'),
   ],
   'escritorio_homeoffice|double_vision': [
-    T('semi_blackout_translucido', 'Semi-Blackout com Translúcido', 'Reduz a luminosidade excessiva com um visual contemporâneo e tecnológico.'),
-    T('blackout_translucido', 'Blackout com Translúcido', 'Controle total da luz para apresentações ou momentos que exigem concentração máxima.'),
+    T('semi_blackout_translucido', 'Semi-blackout', 'Forte bloqueio de luminosidade e máxima privacidade para o ambiente.'),
+    T('blackout_translucido', 'Translúcido', 'Filtragem suave da luz natural com total privacidade interna.'),
   ],
   'escritorio_homeoffice|aluminio': [
     T('perfurada', 'Perfurada (Micro furos)', 'Evita o reflexo na tela mas mantém a visão do exterior, reduzindo a sensação de confinamento.'),

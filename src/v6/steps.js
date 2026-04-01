@@ -1,5 +1,6 @@
 /**
  * Steps do Quiz V6 (modelo e tecido na mesma etapa).
+ * Combinações vêm de getCombinacoesModeloTecido → ambienteQuizData + V1 (rolô/romana/double: `passo4RoloRomanaDoubleFabricOptions.js`).
  */
 
 export const STEPS = [

@@ -1,6 +1,8 @@
 /**
  * Dados derivados dos steps V1 para o quiz V3 (tecido primeiro, depois modelo).
  * Lista unificada de tecidos, mapa tecido → modelos e opções de modelo para exibição.
+ *
+ * Rolô, Romana e Double Vision vêm de V1, que importa `passo4RoloRomanaDoubleFabricOptions.js` (fonte única com V2).
  */
 
 import { STEPS as V1_STEPS } from '../v1/steps.js';
