@@ -28,7 +28,7 @@ export const PASSO_4_TECIDO_ROMANA_OPTIONS = [
 
 /** Imagens alinhadas ao visual: semi-blackout → 01, translúcido → 02 (nomes de arquivo legados). */
 export const PASSO_4_TECIDO_DOUBLE_OPTIONS = [
-  { label: 'Semi-blackout', description: 'Forte bloqueio de luminosidade e máxima privacidade para o ambiente.', value: 'semi_blackout_translucido', nextStep: NEXT, image: '/tecidos/double-vision-01-blackout-translucido.png' },
-  { label: 'Translúcido', description: 'Filtragem suave da luz natural com total privacidade interna.', value: 'blackout_translucido', nextStep: NEXT, image: '/tecidos/double-vision-02-semi-blackout-translucido.png' },
+  { label: 'Semi-blackout', description: 'Forte bloqueio de luminosidade e máxima privacidade para o ambiente.', value: 'Semi-blackout', nextStep: NEXT, image: '/tecidos/double-vision-01-blackout-translucido.png' },
+  { label: 'Translúcido', description: 'Filtragem suave da luz natural com total privacidade interna.', value: 'Translúcido', nextStep: NEXT, image: '/tecidos/double-vision-02-semi-blackout-translucido.png' },
   { label: 'Não sei — Quero recomendação', description: 'Para quem prefere receber uma recomendação personalizada.', value: 'nao_sei', nextStep: NEXT_NAO_SEI },
 ];
