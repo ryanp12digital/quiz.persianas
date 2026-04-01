@@ -15,13 +15,24 @@ export default function WelcomeScreenV1({ onStart }) {
         Escolha o que combina com seu ambiente e receba uma estimativa alinhada às suas escolhas.
       </p>
 
-      <div className="w-[90%] sm:w-auto pt-2">
+      <div className="w-full max-w-sm sm:max-w-none sm:w-auto pt-1">
         <Button
           onClick={onStart}
-          size="xl"
-          className="w-full sm:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] transition-all"
+          size="lg"
+          className="w-full sm:w-auto min-h-13 px-8 sm:px-10 rounded-2xl text-base sm:text-lg font-semibold tracking-tight
+            bg-linear-to-b from-[#58c558] to-[#43a047] text-white border border-white/25 shadow-[0_4px_16px_rgba(67,160,71,0.42)]
+            hover:from-[#4CAF50] hover:to-[#3d8b40] hover:shadow-[0_6px_22px_rgba(67,160,71,0.5)] hover:-translate-y-px
+            active:translate-y-0 active:scale-[0.99] active:shadow-[0_2px_10px_rgba(67,160,71,0.35)]
+            transition-[transform,box-shadow,background] duration-200"
         >
-          Calcular meu Orçamento
+          <span className="leading-snug">
+            <span className="sm:hidden">
+              Calcular meu
+              <br />
+              Orçamento
+            </span>
+            <span className="hidden sm:inline">Calcular meu Orçamento</span>
+          </span>
         </Button>
       </div>
 

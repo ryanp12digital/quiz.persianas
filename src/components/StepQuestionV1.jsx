@@ -170,8 +170,8 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
 
             <h2 className="step-title mb-3 sm:mb-4" dangerouslySetInnerHTML={{ __html: question }} />
             
-            {/* Microcopy de benefício para modelo */}
-            {stepId === 'passo_4_modelo' && (
+            {/* Microcopy de modelo (subtext do step não é repetido aqui — evita duplicata com .step-subtext em itálico) */}
+            {(stepId === 'passo_4_modelo' || stepId === 'passo_3v3_modelo') && (
                 <p className="text-sm text-gray-600 mb-4 sm:mb-6 text-center">
                     Escolha o que combina com seu ambiente
                 </p>
@@ -186,7 +186,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                 </Card>
             )}
 
-            {subtext && stepId !== 'passo_1_intencao' && (
+            {subtext && stepId !== 'passo_1_intencao' && stepId !== 'passo_4_modelo' && stepId !== 'passo_3v3_modelo' && (
                 <div className={`step-subtext mb-4 sm:mb-6 text-[13px] ${subtext.startsWith('*') ? 'text-amber-600 font-medium italic bg-amber-50 p-4 rounded-2xl border border-amber-100 text-left' : type === 'textarea' ? 'text-left mb-4' : 'text-center text-gray-600'}`}>
                     {type === 'textarea' && subtext.includes('Ex:') ? (
                         <div className="text-gray-600 text-[13px] flex flex-col justify-start items-center">

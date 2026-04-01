@@ -36,7 +36,6 @@ export const STEPS = [
         id: 'passo_4_modelo',
         phase: 4,
         question: 'Qual modelo você prefere?',
-        subtext: 'Escolha o que combina com seu ambiente',
         type: 'radio',
         options: [
             { label: 'Persiana Rolô', image: '/modelos/persiana-rolo.webp', description: 'Prática e minimalista, o tecido enrola totalmente no topo quando aberta.', value: 'rolo', nextStep: 'passo_4_tecido_rolo' },

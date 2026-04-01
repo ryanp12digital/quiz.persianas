@@ -32,7 +32,6 @@ export const STEPS = [
     id: 'passo_3v3_modelo',
     phase: 4,
     question: 'Qual modelo você prefere?',
-    subtext: 'Escolha o que combina com seu ambiente',
     type: 'radio',
     options: []
   },
