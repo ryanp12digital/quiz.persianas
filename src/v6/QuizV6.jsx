@@ -14,6 +14,7 @@ import {
   ACIONAMENTO_OPTIONS,
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
+import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
 
 const WEBHOOK_QUIZ_V6_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V6_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv6';
 const WEBHOOK_GHL_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
@@ -57,7 +58,7 @@ function getProdutoFromItemV6(item) {
 function buildPayloadV6(formId, leadData, stepData, currentItem, options = {}) {
   const { sessionStartedAt = null, stepsHistory = [] } = options;
   const submittedAt = new Date();
-  const produto = getProdutoFromItemV6(currentItem);
+  const produto = enrichProdutoForWebhook(getProdutoFromItemV6(currentItem));
   const nome = stepData?.nome || '';
   const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';
   const email = stepData?.email || '';
@@ -95,8 +96,11 @@ function buildPayloadV6(formId, leadData, stepData, currentItem, options = {}) {
       ambiente: produto.ambiente,
       tipo: produto.tipo,
       modelo: produto.modelo,
+      modelo_codigo: produto.modelo_codigo,
       tecido: produto.tecido,
+      tecido_codigo: produto.tecido_codigo,
       acabamento: produto.acabamento,
+      acabamento_codigo: produto.acabamento_codigo,
       acionamento: produto.acionamento,
       medidas: produto.medidas,
       observacoes: produto.observacoes,
@@ -116,8 +120,11 @@ function buildPayloadV6(formId, leadData, stepData, currentItem, options = {}) {
       ambiente: produto.ambiente,
       tipo: produto.tipo,
       modelo: produto.modelo,
+      modelo_codigo: produto.modelo_codigo,
       tecido: produto.tecido,
+      tecido_codigo: produto.tecido_codigo,
       acabamento: produto.acabamento,
+      acabamento_codigo: produto.acabamento_codigo,
       acionamento: produto.acionamento,
       largura: produto.medidas.largura,
       altura: produto.medidas.altura,

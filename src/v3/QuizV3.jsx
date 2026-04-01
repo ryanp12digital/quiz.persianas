@@ -7,6 +7,7 @@ import QuizStepper from '../components/QuizStepper';
 import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 import { TECIDO_TO_MODELS, MODEL_OPTIONS_BY_KEY } from './stepsData';
+import { enrichProdutoForWebhook, resolveModeloPayloadLabel, resolveTecidoPayloadLabel } from '../utils/quizPayloadLabels.js';
 
 const formatWhatsAppForGHL = (whatsapp) => {
   if (!whatsapp) return whatsapp;
@@ -61,13 +62,22 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     tecido = principalItem?.passo_4_acabamento_cortina || '';
   }
 
+  const pw = enrichProdutoForWebhook({
+    tipo,
+    modelo,
+    tecido,
+    acabamento,
+    acionamento,
+    medidas: { largura, altura, unidade: 'cm' },
+  });
+
   // Apenas itens extras: o primeiro já está em produto, evita duplicação
   const itens_adicionais = Array.isArray(items) && items.length > 1
     ? items.slice(1).map((item, idx) => ({
         ordem: idx + 1,
         descricao_livre: item?.descricao_livre || '',
         modelo: item?.passo_4_modelo || item?.passo_4_modelo_teto || '',
-        tecido: item?.passo_4_tecido_rolo || item?.passo_4_tecido_cortina || item?.passo_4_tecido_vertical || item?.passo_4_tecido_painel || item?.passo_4_tecido_romana || item?.passo_4_tecido_double_vision || item?.passo_4_tecido_horizontal_madeira || item?.passo_4_tecido_horizontal_aluminio || item?.passo_4_tecido_teto || item?.passo_4_acabamento_cortina || '',
+        tecido: item?.passo_4_tecido_rolo || item?.passo_4_tecido_cortina || item?.passo_4_tecido_vertical || item?.passo_4_tecido_painel || item?.passo_4_tecido_romana || item?.passo_4_tecido_double || item?.passo_4_tecido_double_vision || item?.passo_4_tecido_horizontal_madeira || item?.passo_4_tecido_horizontal_aluminio || item?.passo_4_tecido_teto || item?.passo_4_acabamento_cortina || '',
         acionamento: item?.passo_3_acionamento || '',
         largura: typeof item?.passo_6_medidas === 'object' ? item.passo_6_medidas?.largura : item?.largura,
         altura: typeof item?.passo_6_medidas === 'object' ? item.passo_6_medidas?.altura : item?.altura
@@ -87,8 +97,8 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
         return item.descricao_livre.trim();
       }
       const partes = [];
-      if (item.modelo) partes.push(item.modelo);
-      if (item.tecido) partes.push(item.tecido);
+      if (item.modelo) partes.push(resolveModeloPayloadLabel(item.modelo));
+      if (item.tecido) partes.push(resolveTecidoPayloadLabel(item.tecido));
       if (item.acionamento) partes.push(item.acionamento);
       let medidas = '';
       if (item.largura || item.altura) {
@@ -118,12 +128,15 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
     produto: {
       passo_1_intencao,
       descricao_livre: principalItem?.descricao_livre || '',
-      tipo,
-      modelo,
-      tecido,
-      acabamento,
-      acionamento,
-      medidas: { largura, altura, unidade: 'cm' }
+      tipo: pw.tipo,
+      modelo: pw.modelo,
+      modelo_codigo: pw.modelo_codigo,
+      tecido: pw.tecido,
+      tecido_codigo: pw.tecido_codigo,
+      acabamento: pw.acabamento,
+      acabamento_codigo: pw.acabamento_codigo,
+      acionamento: pw.acionamento,
+      medidas: pw.medidas
     },
     itens_adicionais: itensAdicionaisDescricao,
     itens_adicionais_count: itensAdicionaisValidos.length,
@@ -137,11 +150,14 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       ambientes,
       passo_1_intencao,
       descricao_livre: principalItem?.descricao_livre || '',
-      tipo,
-      modelo,
-      tecido,
-      acabamento,
-      acionamento,
+      tipo: pw.tipo,
+      modelo: pw.modelo,
+      modelo_codigo: pw.modelo_codigo,
+      tecido: pw.tecido,
+      tecido_codigo: pw.tecido_codigo,
+      acabamento: pw.acabamento,
+      acabamento_codigo: pw.acabamento_codigo,
+      acionamento: pw.acionamento,
       largura,
       altura,
       itens_adicionais: itensAdicionaisDescricao

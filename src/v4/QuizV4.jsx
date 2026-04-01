@@ -17,6 +17,7 @@ import {
   ACIONAMENTO_OPTIONS,
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
+import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
 
 // Webhook URLs configuráveis (variável de ambiente ou constante)
 const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv4';
@@ -61,7 +62,7 @@ function getProdutoFromItemV4(item) {
 function buildPayloadV4(formId, leadData, stepData, currentItem, options = {}) {
   const { sessionStartedAt = null, stepsHistory = [] } = options;
   const submittedAt = new Date();
-  const produto = getProdutoFromItemV4(currentItem);
+  const produto = enrichProdutoForWebhook(getProdutoFromItemV4(currentItem));
   const nome = stepData?.nome || '';
   const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';
   const email = stepData?.email || '';
@@ -100,8 +101,11 @@ function buildPayloadV4(formId, leadData, stepData, currentItem, options = {}) {
       ambiente: produto.ambiente,
       tipo: produto.tipo,
       modelo: produto.modelo,
+      modelo_codigo: produto.modelo_codigo,
       tecido: produto.tecido,
+      tecido_codigo: produto.tecido_codigo,
       acabamento: produto.acabamento,
+      acabamento_codigo: produto.acabamento_codigo,
       acionamento: produto.acionamento,
       medidas: produto.medidas,
       observacoes: produto.observacoes,
@@ -121,8 +125,11 @@ function buildPayloadV4(formId, leadData, stepData, currentItem, options = {}) {
       ambiente: produto.ambiente,
       tipo: produto.tipo,
       modelo: produto.modelo,
+      modelo_codigo: produto.modelo_codigo,
       tecido: produto.tecido,
+      tecido_codigo: produto.tecido_codigo,
       acabamento: produto.acabamento,
+      acabamento_codigo: produto.acabamento_codigo,
       acionamento: produto.acionamento,
       largura: produto.medidas.largura,
       altura: produto.medidas.altura,

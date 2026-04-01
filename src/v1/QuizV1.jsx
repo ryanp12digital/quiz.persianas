@@ -6,6 +6,7 @@ import WelcomeScreenV1 from '../components/WelcomeScreenV1';
 import QuizStepper from '../components/QuizStepper';
 import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
+import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
 
 // Função para converter WhatsApp do formato com máscara para formato internacional (GHL)
 const formatWhatsAppForGHL = (whatsapp) => {
@@ -121,10 +122,10 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const principalItem = Array.isArray(items) && items.length > 0 ? items[0] : currentItem;
   const produtoFromItem = getProdutoFromItem(principalItem);
   // Catálogo (passo_8_captura_catalogo) coleta acionamento no próprio formulário
-  const produto = {
+  const produto = enrichProdutoForWebhook({
     ...produtoFromItem,
     acionamento: stepData?.acionamento !== undefined && stepData.acionamento !== '' ? stepData.acionamento : produtoFromItem.acionamento
-  };
+  });
 
   const nome = stepData?.nome || '';
   const whatsapp = stepData?.whatsapp ? formatWhatsAppForGHL(stepData.whatsapp) : '';
@@ -138,7 +139,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   // Apenas itens extras: o primeiro já está em produto/quiz_answers, evita duplicação
   const itens_adicionais = Array.isArray(items) && items.length > 1
     ? items.slice(1).map((item, idx) => {
-        const p = getProdutoFromItem(item);
+        const p = enrichProdutoForWebhook(getProdutoFromItem(item));
         return {
           ordem: idx + 1,
           descricao_livre: item?.descricao_livre || '',
@@ -226,8 +227,11 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       descricao_livre: principalItem?.descricao_livre || '',
       tipo: produto.tipo,
       modelo: produto.modelo,
+      modelo_codigo: produto.modelo_codigo,
       tecido: produto.tecido,
+      tecido_codigo: produto.tecido_codigo,
       acabamento: produto.acabamento,
+      acabamento_codigo: produto.acabamento_codigo,
       acionamento: produto.acionamento,
       medidas: produto.medidas
     },
@@ -248,8 +252,11 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       descricao_livre: principalItem?.descricao_livre || '',
       tipo: produto.tipo,
       modelo: produto.modelo,
+      modelo_codigo: produto.modelo_codigo,
       tecido: produto.tecido,
+      tecido_codigo: produto.tecido_codigo,
       acabamento: produto.acabamento,
+      acabamento_codigo: produto.acabamento_codigo,
       acionamento: produto.acionamento,
       largura: produto.medidas.largura,
       altura: produto.medidas.altura,
