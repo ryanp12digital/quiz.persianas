@@ -18,6 +18,7 @@ import {
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
 import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL } from '../utils/metaNewLeadPayload.js';
 
 // Webhook URLs configuráveis (variável de ambiente ou constante)
 const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv4';
@@ -228,9 +229,11 @@ export default function QuizV4() {
       const stepsHistory = history.map((i) => STEPS[i]?.id).filter(Boolean);
       const payload = buildPayloadV4(formId, leadData, stepData, updatedCurrentItem, { sessionStartedAt, stepsHistory });
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+      const metaNewLeadPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildMetaNewLeadFromFullPayload(payload)) };
       const promises = [];
       if (WEBHOOK_QUIZ_V4_URL) promises.push(fetch(WEBHOOK_QUIZ_V4_URL, webhookPayload));
       promises.push(fetch(WEBHOOK_GHL_URL, webhookPayload));
+      promises.push(fetch(WEBHOOK_META_NEW_LEAD_URL, metaNewLeadPayload));
       Promise.all(promises)
         .then(() => {
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v4' });
