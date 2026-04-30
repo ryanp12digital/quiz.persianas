@@ -14,7 +14,7 @@
 export const CODI_ID = '32321675219277591366962199773271';
 
 const DEFAULT_META_NEW_LEAD =
-  'https://python-auto-relatorio-trafego.axmxa0.easypanel.host/meta-new-lead';
+  'https://python-auto-relatorio-trafego.axmxa0.easypanel.host/site-new-lead';
 
 export const WEBHOOK_META_NEW_LEAD_URL =
   import.meta.env.VITE_WEBHOOK_META_NEW_LEAD_URL || DEFAULT_META_NEW_LEAD;

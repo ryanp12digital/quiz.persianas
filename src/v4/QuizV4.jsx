@@ -18,7 +18,7 @@ import {
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
 import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/metaNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/siteNewLeadPayload.js';
 
 // Webhook URLs configuráveis (variável de ambiente ou constante)
 const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv4';

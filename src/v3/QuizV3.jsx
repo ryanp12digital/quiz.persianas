@@ -8,7 +8,7 @@ import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 import { TECIDO_TO_MODELS, MODEL_OPTIONS_BY_KEY } from './stepsData';
 import { enrichProdutoForWebhook, resolveModeloPayloadLabel, resolveTecidoPayloadLabel } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/metaNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/siteNewLeadPayload.js';
 
 const formatWhatsAppForGHL = (whatsapp) => {
   if (!whatsapp) return whatsapp;

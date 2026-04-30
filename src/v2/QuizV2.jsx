@@ -7,7 +7,7 @@ import QuizStepper from '../components/QuizStepper';
 import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/metaNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/siteNewLeadPayload.js';
 import { AB_CONFIG, getVariant } from './ab_test';
 
 // Função para converter WhatsApp do formato com máscara para formato internacional (GHL)
