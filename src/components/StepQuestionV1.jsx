@@ -36,7 +36,7 @@ const scrollToTop = () => {
     }
 };
 
-export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null, tecidoExpandableLimit = 6 }) {
+export default function StepQuestionV1({ question, subtext, options = [], inputs = [], type = 'radio', onOptionSelect, onNext, onBack, canGoBack, formId, initialValues = {}, selectedValue = null, stepId = null, tecidoExpandableLimit = 6, isSubmitting = false }) {
     const [inputValues, setInputValues] = useState(() => {
         const initial = {};
         inputs.forEach(input => {
@@ -126,6 +126,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
     };
 
     const handleNext = () => {
+        if (isSubmitting) return;
         if (validate()) {
             scrollToTop();
             if (onNext) {
@@ -160,8 +161,9 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                 <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => { scrollToTop(); onBack(); }}
-                    className="absolute top-4 sm:top-4 left-0 flex items-center text-gray-400 hover:text-[#4CAF50]"
+                    onClick={() => { if (!isSubmitting) { scrollToTop(); onBack(); } }}
+                    disabled={isSubmitting}
+                    className={`absolute top-4 sm:top-4 left-0 flex items-center text-gray-400 hover:text-[#4CAF50] ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                     <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1" strokeWidth={2} />
                     Voltar
@@ -208,6 +210,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
 
             {inputs.length > 0 && (
                 <form id={formId} onSubmit={(e) => { e.preventDefault(); handleNext(); }} className={`w-full max-w-full mx-auto mb-8 min-w-0 box-border ${type === 'textarea' ? 'sm:max-w-3xl' : 'sm:max-w-lg'}`}>
+                    <fieldset disabled={isSubmitting} className={isSubmitting ? 'opacity-80' : ''}>
                     <div className={type === 'textarea' ? 'flex flex-col gap-5' : 'flex flex-col gap-5'}>
                         {type === 'mixed' && inputs.some(i => i.id === 'nome') ? (
                             <>
@@ -399,14 +402,15 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                     
                     {type === 'textarea' && (
                         <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
-                            <button type="button" onClick={handleNext} className="w-full sm:w-auto bg-[#4CAF50] text-white font-bold py-4 px-10 rounded-2xl shadow-md hover:bg-green-600 hover:shadow-lg active:scale-[0.98] transition-all text-base focus:outline-none focus:ring-4 focus:ring-green-300">
-                                Continuar
+                            <button type="button" onClick={handleNext} disabled={isSubmitting} className="w-full sm:w-auto bg-[#4CAF50] text-white font-bold py-4 px-10 rounded-2xl shadow-md hover:bg-green-600 hover:shadow-lg active:scale-[0.98] transition-all text-base focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-60 disabled:cursor-not-allowed">
+                                {isSubmitting ? 'Enviando...' : 'Continuar'}
                             </button>
                             {(stepId === 'passo_6_observacoes' || stepId === 'passo_7_observacoes' || stepId === 'passo_7_adicionar_item') && (
                                 <button
                                     type="button"
                                     onClick={() => { scrollToTop(); onNext?.({ [inputs[0]?.id || 'observacoes']: '' }); }}
-                                    className="w-full sm:w-auto font-bold py-4 px-10 rounded-2xl border-2 border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 active:scale-[0.98] transition-all text-base focus:outline-none focus:ring-4 focus:ring-gray-200"
+                                    disabled={isSubmitting}
+                                    className="w-full sm:w-auto font-bold py-4 px-10 rounded-2xl border-2 border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 active:scale-[0.98] transition-all text-base focus:outline-none focus:ring-4 focus:ring-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     Pular
                                 </button>
@@ -437,6 +441,7 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                             </div>
                         </div>
                     )}
+                    </fieldset>
                 </form>
             )}
 
@@ -482,10 +487,11 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
                                         )}
                                         <button
                                             type="button"
-                                            onClick={() => { scrollToTop(); onOptionSelect(option); }}
+                                            onClick={() => { if (!isSubmitting) { scrollToTop(); onOptionSelect(option); } }}
+                                            disabled={isSubmitting}
                                             className={`w-full h-full ${(isV3Step || isV6ModeloTecidoStep || (isPasso1Ambiente && option.image) || (isPasso3TecidoV4V5 && option.image) || (isAcabamentoCortinaV4V5V6 && option.image)) ? 'min-h-[200px] sm:min-h-[260px]' : 'min-h-[120px] sm:min-h-[140px]'} p-4 sm:p-6 cursor-pointer text-center focus:outline-none focus:ring-4 focus:ring-[#4CAF50]/30 rounded-xl border-0 bg-transparent text-xs sm:text-[0.9rem] font-medium flex flex-col min-w-0 items-center justify-center ${
                                                 layoutVertical ? '' : isTecidoOrAcabamento ? '' : ''
-                                            } ${!isFeatured && isIntencaoStep ? 'text-gray-600' : 'text-gray-800'}`}
+                                            } ${!isFeatured && isIntencaoStep ? 'text-gray-600' : 'text-gray-800'} ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
                                         >
                                             {layoutVertical ? (
                                                 <>
@@ -545,8 +551,8 @@ export default function StepQuestionV1({ question, subtext, options = [], inputs
 
             {(inputs.length > 0 || type === 'mixed') && !(type === 'textarea') && stepId !== 'passo_7_mais_itens' && (
                 <div className="mt-6 sm:mt-8">
-                    <Button type="button" onClick={handleNext} size="lg" className="w-full sm:w-auto">
-                        Continuar
+                    <Button type="button" onClick={handleNext} size="lg" disabled={isSubmitting} className="w-full sm:w-auto">
+                        {isSubmitting ? 'Enviando...' : 'Continuar'}
                     </Button>
                 </div>
             )}

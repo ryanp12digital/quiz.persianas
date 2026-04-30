@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LayoutV1 from '../components/LayoutV1';
 import StepQuestionV1 from '../components/StepQuestionV1';
@@ -147,6 +147,8 @@ export default function QuizV6() {
     return { utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '', utm_campaign: params.get('utm_campaign') || '' };
   });
   const [sessionStartedAt, setSessionStartedAt] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitLockRef = useRef(false);
 
   const STEPS = useMemo(() => {
     const model = currentItem.passo_2_modelo;
@@ -192,6 +194,7 @@ export default function QuizV6() {
   }, [activeStep, optionsPasso1, optionsPasso2, optionsPasso3, optionsPasso4]);
 
   const handleNext = (stepData) => {
+    if (submitLockRef.current || isSubmitting) return;
     let updatedCurrentItem = { ...currentItem, ...stepData };
 
     if (activeStep.id === 'passo_2_modelo_tecido' && stepData.passo_2_modelo_tecido) {
@@ -206,6 +209,8 @@ export default function QuizV6() {
     // if (window.dataLayer) window.dataLayer.push({ event: 'quiz_step_complete', quiz_version: 'v6', step_id: activeStep.id, step_question: activeStep.question });
 
     if (activeStep.isFinal) {
+      submitLockRef.current = true;
+      setIsSubmitting(true);
       const stepsHistory = history.map((i) => STEPS[i]?.id).filter(Boolean);
       const payload = buildPayloadV6(formId, leadData, stepData, updatedCurrentItem, { sessionStartedAt, stepsHistory });
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
@@ -231,6 +236,10 @@ export default function QuizV6() {
           logWebhookSettledResults('v6', webhookLabels, results);
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v6' });
           navigate('/quiz/obrigado');
+        })
+        .finally(() => {
+          submitLockRef.current = false;
+          setIsSubmitting(false);
         });
       return;
     }
@@ -279,6 +288,13 @@ export default function QuizV6() {
 
   return (
     <LayoutV1>
+      {isSubmitting && (
+        <div className="fixed inset-0 bg-white/85 backdrop-blur-sm z-50 flex flex-col items-center justify-center gap-4 pointer-events-all">
+          <div className="w-12 h-12 border-4 border-[#4CAF50] border-t-transparent rounded-full animate-spin" />
+          <p className="text-lg font-semibold text-gray-800">Enviando seus dados...</p>
+          <p className="text-sm text-gray-500">Por favor, aguarde</p>
+        </div>
+      )}
       <div className="w-full min-w-0 max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16 box-border">
         <TrustBadges />
         <QuizStepper currentStepId={activeStep.id} steps={STEPS} />
@@ -312,6 +328,7 @@ export default function QuizV6() {
           initialValues={initialValues}
           selectedValue={selectedValue}
           stepId={activeStep.id}
+          isSubmitting={isSubmitting}
         />
       </div>
     </LayoutV1>

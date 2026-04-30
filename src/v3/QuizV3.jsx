@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LayoutV1 from '../components/LayoutV1';
 import StepQuestionV1 from '../components/StepQuestionV1';
@@ -184,10 +184,13 @@ export default function QuizV3() {
     return { utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '', utm_campaign: params.get('utm_campaign') || '' };
   });
   const [sessionStartedAt, setSessionStartedAt] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitLockRef = useRef(false);
 
   const activeStep = STEPS[currentStepIndex];
 
   const handleNext = (stepData) => {
+    if (submitLockRef.current || isSubmitting) return;
     const updatedCurrentItem = { ...currentItem, ...stepData };
     setCurrentItem(updatedCurrentItem);
 
@@ -308,6 +311,8 @@ export default function QuizV3() {
     }
 
     if (activeStep.isFinal) {
+      submitLockRef.current = true;
+      setIsSubmitting(true);
       const stepsHistory = history.map((stepIdx) => STEPS[stepIdx]?.id).filter(Boolean);
       const finalData = buildStandardizedPayload(formId, 'v3', leadData, stepData, updatedCurrentItem, items, { sessionStartedAt, stepsHistory });
       const WEBHOOK_URL = 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv3';
@@ -331,6 +336,10 @@ export default function QuizV3() {
           if (activeStep.id === 'passo_8_captura' && window.fbq) window.fbq('track', 'Lead', { content_name: 'Quiz Persianas V3', content_category: 'Lead Generation' });
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v3' });
           navigate('/quiz/obrigado');
+        })
+        .finally(() => {
+          submitLockRef.current = false;
+          setIsSubmitting(false);
         });
       return;
     }
@@ -437,6 +446,13 @@ export default function QuizV3() {
 
   return (
     <LayoutV1>
+      {isSubmitting && (
+        <div className="fixed inset-0 bg-white/85 backdrop-blur-sm z-50 flex flex-col items-center justify-center gap-4 pointer-events-all">
+          <div className="w-12 h-12 border-4 border-[#4CAF50] border-t-transparent rounded-full animate-spin" />
+          <p className="text-lg font-semibold text-gray-800">Enviando seus dados...</p>
+          <p className="text-sm text-gray-500">Por favor, aguarde</p>
+        </div>
+      )}
       <div className="w-full min-w-0 max-w-4xl mx-auto px-2 sm:px-4 pt-4 pb-8 sm:pt-8 sm:pb-16 box-border">
         {/* TrustBadges - visível em todas as etapas principais */}
         <TrustBadges />
@@ -462,6 +478,7 @@ export default function QuizV3() {
           initialValues={currentItem}
           selectedValue={currentItem[activeStep.id]}
           stepId={activeStep.id}
+          isSubmitting={isSubmitting}
         />
       </div>
     </LayoutV1>
