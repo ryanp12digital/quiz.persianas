@@ -18,7 +18,7 @@ import {
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
 import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/siteNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_SITE_NEW_LEAD_URL, fetchSiteNewLead, logWebhookSettledResults } from '../utils/siteNewLeadPayload.js';
 
 // Webhook URLs configuráveis (variável de ambiente ou constante)
 const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv4';
@@ -229,7 +229,13 @@ export default function QuizV4() {
       const stepsHistory = history.map((i) => STEPS[i]?.id).filter(Boolean);
       const payload = buildPayloadV4(formId, leadData, stepData, updatedCurrentItem, { sessionStartedAt, stepsHistory });
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
-      const metaNewLeadPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildMetaNewLeadFromFullPayload(payload)) };
+      const siteNewLeadBody = buildMetaNewLeadFromFullPayload(payload, {
+        currentItem: updatedCurrentItem,
+        items: [],
+        stepData,
+        leadData,
+        history,
+      });
       const promises = [];
       const webhookLabels = [];
       if (WEBHOOK_QUIZ_V4_URL) {
@@ -238,8 +244,8 @@ export default function QuizV4() {
       }
       promises.push(fetch(WEBHOOK_GHL_URL, webhookPayload));
       webhookLabels.push('leadconnector');
-      promises.push(fetch(WEBHOOK_META_NEW_LEAD_URL, metaNewLeadPayload));
-      webhookLabels.push('meta-new-lead');
+      promises.push(fetchSiteNewLead(WEBHOOK_SITE_NEW_LEAD_URL, siteNewLeadBody));
+      webhookLabels.push('site-new-lead');
       Promise.allSettled(promises)
         .then((results) => {
           logWebhookSettledResults('v4', webhookLabels, results);

@@ -7,7 +7,7 @@ import QuizStepper from '../components/QuizStepper';
 import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/siteNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_SITE_NEW_LEAD_URL, fetchSiteNewLead, logWebhookSettledResults } from '../utils/siteNewLeadPayload.js';
 
 // Função para converter WhatsApp do formato com máscara para formato internacional (GHL)
 const formatWhatsAppForGHL = (whatsapp) => {
@@ -418,14 +418,20 @@ export default function QuizV1() {
       const WEBHOOK_URL = 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv1';
       const WEBHOOK_LEADCONNECTOR_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) };
-      const metaNewLeadPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildMetaNewLeadFromFullPayload(finalData)) };
+      const siteNewLeadBody = buildMetaNewLeadFromFullPayload(finalData, {
+        currentItem: updatedCurrentItem,
+        items,
+        stepData,
+        leadData,
+        history,
+      });
       Promise.allSettled([
         fetch(WEBHOOK_URL, webhookPayload),
         fetch(WEBHOOK_LEADCONNECTOR_URL, webhookPayload),
-        fetch(WEBHOOK_META_NEW_LEAD_URL, metaNewLeadPayload),
+        fetchSiteNewLead(WEBHOOK_SITE_NEW_LEAD_URL, siteNewLeadBody),
       ])
       .then((results) => {
-        logWebhookSettledResults('v1', ['n8n', 'leadconnector', 'meta-new-lead'], results);
+        logWebhookSettledResults('v1', ['n8n', 'leadconnector', 'site-new-lead'], results);
         try {
           if (window.fbq && typeof window.fbq === 'function') {
             const leadValuesByForm = {
