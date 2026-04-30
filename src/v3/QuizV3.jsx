@@ -8,7 +8,7 @@ import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 import { TECIDO_TO_MODELS, MODEL_OPTIONS_BY_KEY } from './stepsData';
 import { enrichProdutoForWebhook, resolveModeloPayloadLabel, resolveTecidoPayloadLabel } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL } from '../utils/metaNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/metaNewLeadPayload.js';
 
 const formatWhatsAppForGHL = (whatsapp) => {
   if (!whatsapp) return whatsapp;
@@ -314,18 +314,18 @@ export default function QuizV3() {
       const WEBHOOK_LEADCONNECTOR_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) };
       const metaNewLeadPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildMetaNewLeadFromFullPayload(finalData)) };
-      Promise.all([
+      Promise.allSettled([
         fetch(WEBHOOK_URL, webhookPayload),
         fetch(WEBHOOK_LEADCONNECTOR_URL, webhookPayload),
         fetch(WEBHOOK_META_NEW_LEAD_URL, metaNewLeadPayload),
       ])
-        .then(() => {
+        .then((results) => {
+          logWebhookSettledResults('v3', ['n8n', 'leadconnector', 'meta-new-lead'], results);
           // Lead apenas no formulário de orçamento (passo_8_captura), não no de catálogo
           if (activeStep.id === 'passo_8_captura' && window.fbq) window.fbq('track', 'Lead', { content_name: 'Quiz Persianas V3', content_category: 'Lead Generation' });
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v3' });
           navigate('/quiz/obrigado');
-        })
-        .catch(() => navigate('/quiz/obrigado'));
+        });
       return;
     }
 

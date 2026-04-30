@@ -18,7 +18,7 @@ import {
   MODELOS_SEM_MOTORIZADA,
 } from '../data/ambienteQuizData';
 import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL } from '../utils/metaNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/metaNewLeadPayload.js';
 
 // Webhook URLs configuráveis (variável de ambiente ou constante)
 const WEBHOOK_QUIZ_V4_URL = import.meta.env.VITE_WEBHOOK_QUIZ_V4_URL || 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv4';
@@ -231,15 +231,21 @@ export default function QuizV4() {
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
       const metaNewLeadPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildMetaNewLeadFromFullPayload(payload)) };
       const promises = [];
-      if (WEBHOOK_QUIZ_V4_URL) promises.push(fetch(WEBHOOK_QUIZ_V4_URL, webhookPayload));
+      const webhookLabels = [];
+      if (WEBHOOK_QUIZ_V4_URL) {
+        promises.push(fetch(WEBHOOK_QUIZ_V4_URL, webhookPayload));
+        webhookLabels.push('n8n');
+      }
       promises.push(fetch(WEBHOOK_GHL_URL, webhookPayload));
+      webhookLabels.push('leadconnector');
       promises.push(fetch(WEBHOOK_META_NEW_LEAD_URL, metaNewLeadPayload));
-      Promise.all(promises)
-        .then(() => {
+      webhookLabels.push('meta-new-lead');
+      Promise.allSettled(promises)
+        .then((results) => {
+          logWebhookSettledResults('v4', webhookLabels, results);
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v4' });
           navigate('/quiz/obrigado');
-        })
-        .catch(() => navigate('/quiz/obrigado'));
+        });
       return;
     }
 

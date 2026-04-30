@@ -1,9 +1,45 @@
 /**
  * Webhook adicional: payload resumido (inclui codi_id). n8n/LeadConnector
  * continuam usando o payload completo sem passar por esta função.
+ *
+ * CORS: o browser envia preflight OPTIONS em POST cross-origin com Content-Type: application/json.
+ * O servidor em WEBHOOK_META_NEW_LEAD_URL deve responder OPTIONS/POST com, no mínimo:
+ *   Access-Control-Allow-Origin: <origem do quiz> (ou *)
+ *   Access-Control-Allow-Methods: POST, OPTIONS
+ *   Access-Control-Allow-Headers: Content-Type
+ * Sem isso, o fetch pode falhar no cliente mesmo com o endpoint ativo (curl funciona).
+ *
+ * URL: use VITE_WEBHOOK_META_NEW_LEAD_URL no build para apontar a outro ambiente.
  */
 export const CODI_ID = '32321675219277591366962199773271';
-export const WEBHOOK_META_NEW_LEAD_URL = 'https://python-auto-relatorio-trafego.axmxa0.easypanel.host/meta-new-lead';
+
+const DEFAULT_META_NEW_LEAD =
+  'https://python-auto-relatorio-trafego.axmxa0.easypanel.host/meta-new-lead';
+
+export const WEBHOOK_META_NEW_LEAD_URL =
+  import.meta.env.VITE_WEBHOOK_META_NEW_LEAD_URL || DEFAULT_META_NEW_LEAD;
+
+/**
+ * Em DEV, registra falhas de fetch ou HTTP não-2xx após Promise.allSettled nos webhooks.
+ * @param {string} quizLabel - ex.: 'v2'
+ * @param {string[]} labels - rótulos na mesma ordem das promises
+ * @param {PromiseSettledResult<Response>[]} results
+ */
+export function logWebhookSettledResults(quizLabel, labels, results) {
+  if (!import.meta.env.DEV) return;
+  const prefix = `[quiz ${quizLabel}]`;
+  results.forEach((r, i) => {
+    const name = labels[i] ?? `request_${i}`;
+    if (r.status === 'rejected') {
+      console.warn(`${prefix} webhook ${name} failed:`, r.reason);
+    } else {
+      const res = r.value;
+      if (res && typeof res.ok === 'boolean' && !res.ok) {
+        console.warn(`${prefix} webhook ${name}: HTTP ${res.status}`);
+      }
+    }
+  });
+}
 
 /**
  * A partir do objeto completo (metadata, contact, utm, produto, itens, journey…),

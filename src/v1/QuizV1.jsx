@@ -7,7 +7,7 @@ import QuizStepper from '../components/QuizStepper';
 import TrustBadges from '../components/TrustBadges';
 import { STEPS } from './steps';
 import { enrichProdutoForWebhook } from '../utils/quizPayloadLabels.js';
-import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL } from '../utils/metaNewLeadPayload.js';
+import { buildMetaNewLeadFromFullPayload, WEBHOOK_META_NEW_LEAD_URL, logWebhookSettledResults } from '../utils/metaNewLeadPayload.js';
 
 // Função para converter WhatsApp do formato com máscara para formato internacional (GHL)
 const formatWhatsAppForGHL = (whatsapp) => {
@@ -419,12 +419,13 @@ export default function QuizV1() {
       const WEBHOOK_LEADCONNECTOR_URL = 'https://services.leadconnectorhq.com/hooks/kjSMdwtGb8lg6g7i0jVi/webhook-trigger/065ae1f3-3bab-43ab-b9bf-57c8f44f6074';
       const webhookPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) };
       const metaNewLeadPayload = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildMetaNewLeadFromFullPayload(finalData)) };
-      Promise.all([
+      Promise.allSettled([
         fetch(WEBHOOK_URL, webhookPayload),
         fetch(WEBHOOK_LEADCONNECTOR_URL, webhookPayload),
         fetch(WEBHOOK_META_NEW_LEAD_URL, metaNewLeadPayload),
       ])
-      .then(() => {
+      .then((results) => {
+        logWebhookSettledResults('v1', ['n8n', 'leadconnector', 'meta-new-lead'], results);
         try {
           if (window.fbq && typeof window.fbq === 'function') {
             const leadValuesByForm = {
@@ -461,8 +462,7 @@ export default function QuizV1() {
         }
 
         navigate('/quiz/obrigado');
-      })
-      .catch(() => navigate('/quiz/obrigado'));
+      });
       return;
     }
 
