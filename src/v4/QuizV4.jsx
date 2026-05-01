@@ -256,10 +256,6 @@ export default function QuizV4() {
           logWebhookSettledResults('v4', webhookLabels, results);
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v4' });
           navigate('/quiz/obrigado');
-        })
-        .finally(() => {
-          submitLockRef.current = false;
-          setIsSubmitting(false);
         });
       return;
     }

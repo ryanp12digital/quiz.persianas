@@ -336,10 +336,6 @@ export default function QuizV3() {
           if (activeStep.id === 'passo_8_captura' && window.fbq) window.fbq('track', 'Lead', { content_name: 'Quiz Persianas V3', content_category: 'Lead Generation' });
           // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v3' });
           navigate('/quiz/obrigado');
-        })
-        .finally(() => {
-          submitLockRef.current = false;
-          setIsSubmitting(false);
         });
       return;
     }

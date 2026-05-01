@@ -377,10 +377,6 @@ export default function QuizV2() {
         }
 
         navigate('/quiz/obrigado');
-      })
-      .finally(() => {
-        submitLockRef.current = false;
-        setIsSubmitting(false);
       });
       return;
     }

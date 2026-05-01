@@ -24,30 +24,6 @@ export const WEBHOOK_SITE_NEW_LEAD_URL =
 /** Nome legado do export; mesmo valor que {@link WEBHOOK_SITE_NEW_LEAD_URL}. */
 export const WEBHOOK_META_NEW_LEAD_URL = WEBHOOK_SITE_NEW_LEAD_URL;
 
-function cloneJsonSafe(value) {
-  if (value === undefined) return undefined;
-  try {
-    return JSON.parse(JSON.stringify(value));
-  } catch {
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      return Object.fromEntries(
-        Object.entries(value).filter(([, v]) => typeof v !== 'function')
-      );
-    }
-    return value;
-  }
-}
-
-function remapWhatsappToPhone(value) {
-  if (Array.isArray(value)) return value.map(remapWhatsappToPhone);
-  if (!value || typeof value !== 'object') return value;
-  const out = {};
-  for (const [k, v] of Object.entries(value)) {
-    const nextKey = k === 'whatsapp' ? 'phone' : k;
-    out[nextKey] = remapWhatsappToPhone(v);
-  }
-  return out;
-}
 
 /**
  * @typedef {object} SiteLeadExtras
@@ -111,96 +87,14 @@ export function logWebhookSettledResults(quizLabel, labels, results) {
   });
 }
 
-function toCsv(value) {
-  if (!Array.isArray(value)) return '';
-  return value.filter((v) => v != null && String(v) !== '').map((v) => String(v)).join(', ');
-}
-
-function removeEmptyKeys(obj) {
-  const out = {};
-  for (const [k, v] of Object.entries(obj)) {
-    if (v === undefined || v === null) continue;
-    if (typeof v === 'string' && v.trim() === '') continue;
-    out[k] = v;
-  }
-  return out;
-}
 
 /**
- * Monta o corpo para `site-new-lead` em formato flat-only.
+ * Monta o corpo para `site-new-lead`: apenas os campos de `_flat`.
  *
- * @param {Record<string, unknown>} full — mesmo objeto enviado ao n8n/GHL (buildStandardizedPayload / buildPayloadV*).
- * @param {SiteLeadExtras | null} [extras] — estado bruto do quiz no envio.
+ * @param {Record<string, unknown>} full — mesmo objeto enviado ao n8n/GHL.
+ * @param {SiteLeadExtras | null} [_extras] — não utilizado, mantido por compatibilidade.
  */
-export function buildMetaNewLeadFromFullPayload(full, extras = null) {
-  if (!full || typeof full !== 'object') {
-    return { codi_id: CODI_ID, form_id: '', quiz_version: '' };
-  }
-
-  const metadata = full.metadata || {};
-  const contact = full.contact || {};
-  const utm = { ...(full.utm || {}) };
-  const p = full.produto || {};
-  const med = p.medidas && typeof p.medidas === 'object' ? p.medidas : { largura: '', altura: '', unidade: 'cm' };
-  const journey = full.journey || {};
-
-  const leadData = extras?.leadData && typeof extras.leadData === 'object' ? extras.leadData : {};
-  if (leadData.ab_variant != null && String(leadData.ab_variant) !== '' && (utm.ab_variant == null || utm.ab_variant === '')) {
-    utm.ab_variant = leadData.ab_variant;
-  }
-  for (const k of ['gclid', 'fbclid', 'wbraid']) {
-    if (leadData[k] != null && String(leadData[k]) !== '') utm[k] = leadData[k];
-  }
-
-  const formData = remapWhatsappToPhone(cloneJsonSafe(extras?.stepData || {}));
-  const currentItem = remapWhatsappToPhone(cloneJsonSafe(extras?.currentItem || {}));
-  const items = remapWhatsappToPhone(cloneJsonSafe(Array.isArray(extras?.items) ? extras.items : []));
-  const rawAnswers = removeEmptyKeys({
-    formulario_final: formData,
-    item_atual: currentItem,
-    itens: items,
-  });
-
-  const rawAnswersStr = Object.keys(rawAnswers).length ? JSON.stringify(rawAnswers) : '';
-
-  const payload = {
-    codi_id: CODI_ID,
-    form_id: metadata.form_id ?? '',
-    quiz_version: metadata.quiz_version ?? '',
-    source: metadata.source ?? '',
-    submitted_at: metadata.submitted_at ?? '',
-    nome: contact.nome ?? '',
-    phone: contact.whatsapp ?? contact.phone ?? '',
-    email: contact.email ?? '',
-    cidade: contact.cidade ?? '',
-    bairro: contact.bairro ?? '',
-    ambientes: contact.ambientes ?? '',
-    utm_source: utm.utm_source ?? '',
-    utm_medium: utm.utm_medium ?? '',
-    utm_campaign: utm.utm_campaign ?? '',
-    referrer: utm.referrer ?? '',
-    ab_variant: utm.ab_variant ?? '',
-    gclid: utm.gclid ?? '',
-    fbclid: utm.fbclid ?? '',
-    wbraid: utm.wbraid ?? '',
-    passo_1_intencao: p.passo_1_intencao ?? '',
-    descricao_livre: p.descricao_livre ?? '',
-    ambiente: p.ambiente != null && String(p.ambiente) !== '' ? p.ambiente : (contact.ambientes ?? ''),
-    tipo: p.tipo ?? '',
-    modelo: p.modelo ?? '',
-    tecido: p.tecido ?? '',
-    acabamento: p.acabamento ?? '',
-    acionamento: p.acionamento ?? '',
-    largura: med.largura ?? '',
-    altura: med.altura ?? '',
-    unidade: med.unidade ?? 'cm',
-    observacoes: p.observacoes ?? '',
-    itens_adicionais: full.itens_adicionais ?? '',
-    itens_adicionais_count: full.itens_adicionais_count ?? 0,
-    steps_count: journey.steps_count ?? '',
-    steps_completed: toCsv(journey.steps_completed),
-    respostas_json: rawAnswersStr,
-  };
-
-  return payload;
+export function buildMetaNewLeadFromFullPayload(full, _extras = null) {
+  if (!full || typeof full !== 'object') return {};
+  return full._flat || {};
 }

@@ -473,10 +473,6 @@ export default function QuizV1() {
         }
 
         navigate('/quiz/obrigado');
-      })
-      .finally(() => {
-        submitLockRef.current = false;
-        setIsSubmitting(false);
       });
       return;
     }
