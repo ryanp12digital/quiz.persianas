@@ -89,12 +89,16 @@ export function logWebhookSettledResults(quizLabel, labels, results) {
 
 
 /**
- * Monta o corpo para `site-new-lead`: apenas os campos de `_flat`.
+ * Monta o corpo para `site-new-lead`: campos de `_flat` + `codi_id` no topo.
+ *
+ * O servidor `/site-new-lead` roteia o lead pela chave `codi_id` (28–36 dígitos
+ * cadastrados em `site_lead_routes`). Sem ela, o webhook responde
+ * `CODI_ID_OBRIGATORIO` e o lead é descartado.
  *
  * @param {Record<string, unknown>} full — mesmo objeto enviado ao n8n/GHL.
  * @param {SiteLeadExtras | null} [_extras] — não utilizado, mantido por compatibilidade.
  */
 export function buildMetaNewLeadFromFullPayload(full, _extras = null) {
-  if (!full || typeof full !== 'object') return {};
-  return full._flat || {};
+  if (!full || typeof full !== 'object') return { codi_id: CODI_ID };
+  return { codi_id: CODI_ID, ...(full._flat || {}) };
 }
