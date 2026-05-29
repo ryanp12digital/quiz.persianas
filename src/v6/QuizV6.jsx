@@ -88,6 +88,10 @@ function buildPayloadV6(formId, leadData, stepData, currentItem, options = {}) {
       utm_source: leadData?.utm_source || '',
       utm_medium: leadData?.utm_medium || '',
       utm_campaign: leadData?.utm_campaign || '',
+      utm_id: leadData?.utm_id || '',
+      utm_content: leadData?.utm_content || '',
+      utm_term: leadData?.utm_term || '',
+      device: leadData?.device || '',
       referrer: typeof document !== 'undefined' ? (document.referrer || '') : '',
     },
     contact: { nome, whatsapp, email, cidade, bairro, ambientes: '' },
@@ -144,7 +148,7 @@ export default function QuizV6() {
   const [formId] = useState('FORMR20');
   const [leadData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
-    return { utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '', utm_campaign: params.get('utm_campaign') || '' };
+    return { utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '', utm_campaign: params.get('utm_campaign') || '', utm_id: params.get('utm_id') || '', utm_content: params.get('utm_content') || '', utm_term: params.get('utm_term') || '', device: params.get('device') || '' };
   });
   const [sessionStartedAt, setSessionStartedAt] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);

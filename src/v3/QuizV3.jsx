@@ -124,7 +124,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   return {
     metadata: { form_id: formId || '', quiz_version: quizVersion || '', source: 'quiz_web', submitted_at: submittedAtISO, submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }) },
     timestamps: { submitted_at: submittedAtISO, submitted_at_local: submittedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }), session_started_at: sessionStartedAtISO, duration_seconds: durationSeconds, duration_readable: durationSeconds != null ? `${Math.floor(durationSeconds / 60)}m ${durationSeconds % 60}s` : null },
-    utm: { utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', referrer: typeof document !== 'undefined' ? (document.referrer || '') : '' },
+    utm: { utm_source: leadData?.utm_source || '', utm_medium: leadData?.utm_medium || '', utm_campaign: leadData?.utm_campaign || '', utm_id: leadData?.utm_id || '', utm_content: leadData?.utm_content || '', utm_term: leadData?.utm_term || '', device: leadData?.device || '', referrer: typeof document !== 'undefined' ? (document.referrer || '') : '' },
     contact: { nome, whatsapp, email, cidade, bairro, ambientes },
     produto: {
       passo_1_intencao,
@@ -181,7 +181,7 @@ export default function QuizV3() {
   const [disableBackAfterAddItem, setDisableBackAfterAddItem] = useState(false);
   const [leadData, setLeadData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
-    return { utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '', utm_campaign: params.get('utm_campaign') || '' };
+    return { utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '', utm_campaign: params.get('utm_campaign') || '', utm_id: params.get('utm_id') || '', utm_content: params.get('utm_content') || '', utm_term: params.get('utm_term') || '', device: params.get('device') || '' };
   });
   const [sessionStartedAt, setSessionStartedAt] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -168,6 +168,10 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       utm_source: leadData?.utm_source || '',
       utm_medium: leadData?.utm_medium || '',
       utm_campaign: leadData?.utm_campaign || '',
+      utm_id: leadData?.utm_id || '',
+      utm_content: leadData?.utm_content || '',
+      utm_term: leadData?.utm_term || '',
+      device: leadData?.device || '',
       ab_variant: leadData?.ab_variant || '',
       referrer: typeof document !== 'undefined' ? (document.referrer || '') : ''
     },
@@ -242,6 +246,10 @@ export default function QuizV2() {
       utm_source: params.get('utm_source') || '',
       utm_medium: params.get('utm_medium') || '',
       utm_campaign: params.get('utm_campaign') || '',
+      utm_id: params.get('utm_id') || '',
+      utm_content: params.get('utm_content') || '',
+      utm_term: params.get('utm_term') || '',
+      device: params.get('device') || '',
       ab_variant: variant
     };
   });
