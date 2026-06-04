@@ -4,9 +4,9 @@
  */
 
 const WEBHOOKS = {
-  v1: 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv1',
-  v2: 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv2',
-  v3: 'https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv3',
+  v1: 'https://n8n.sitespdoze.com.br/webhook/quizv1',
+  v2: 'https://n8n.sitespdoze.com.br/webhook/quizv2',
+  v3: 'https://n8n.sitespdoze.com.br/webhook/quizv3',
 };
 
 function nowISO() {

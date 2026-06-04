@@ -8,7 +8,7 @@ Documento de referência para análise e correção do fluxo do Quiz V3. Fluxo *
 
 - **Etapa inicial:** `passo_1_intencao`
 - **Rota:** `/quiz/v3`
-- **Webhook (envio final):** `https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv3`
+- **Webhook (envio final):** `https://n8n.sitespdoze.com.br/webhook/quizv3`
 
 ---
 

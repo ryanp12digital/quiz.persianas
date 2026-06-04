@@ -8,7 +8,7 @@ Documento de referência para análise e correção do fluxo do Quiz V2.
 
 - **Etapa inicial:** `passo_4_modelo` (quiz **não** exibe `passo_1_intencao`; começa direto na escolha do modelo)
 - **Rota:** `/quiz/v2`
-- **Webhook (envio final):** `https://n8n-webhook.axmxa0.easypanel.host/webhook/quizv2`
+- **Webhook (envio final):** `https://n8n.sitespdoze.com.br/webhook/quizv2`
 - **A/B:** usa `src/v2/ab_test.js` (variante pode afetar comportamento; steps são os mesmos do array)
 
 ---
