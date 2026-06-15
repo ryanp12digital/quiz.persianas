@@ -91,6 +91,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
   const bairro = stepData?.bairro || '';
   const ambientesArr = Array.isArray(stepData?.ambientes) ? stepData.ambientes : [];
   const ambientes = ambientesArr.join(', ');
+  const passo_0_quantidade = principalItem?.passo_0_quantidade ?? currentItem?.passo_0_quantidade ?? '';
 
   // Apenas itens extras: o primeiro já está em produto/quiz_answers, evita duplicação
   const itens_adicionais = Array.isArray(items) && items.length > 1
@@ -184,6 +185,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       ambientes,
     },
     produto: {
+      passo_0_quantidade,
       passo_1_intencao: '', // V2 não tem passo_1_intencao no fluxo
       descricao_livre: principalItem?.descricao_livre || '',
       tipo: produto.tipo,
@@ -209,6 +211,7 @@ const buildStandardizedPayload = (formId, quizVersion, leadData, stepData, curre
       cidade,
       bairro,
       ambientes,
+      passo_0_quantidade,
       passo_1_intencao: '',
       descricao_livre: principalItem?.descricao_livre || '',
       tipo: produto.tipo,
@@ -231,8 +234,8 @@ export default function QuizV2() {
   const variant = getVariant();
   
   const [showWelcome, setShowWelcome] = useState(true);
-  // Começar direto no passo_4_modelo (remover passo_1_intencao do fluxo)
-  const initialStepIndex = STEPS.findIndex(s => s.id === 'passo_4_modelo');
+  // Começar no passo de quantidade (após welcome)
+  const initialStepIndex = STEPS.findIndex(s => s.id === 'passo_0_quantidade');
   const [currentStepIndex, setCurrentStepIndex] = useState(initialStepIndex >= 0 ? initialStepIndex : 0);
   const [history, setHistory] = useState([initialStepIndex >= 0 ? initialStepIndex : 0]);
   const [items, setItems] = useState([]);
@@ -286,6 +289,14 @@ export default function QuizV2() {
     // Lógica para determinar o formId baseado nas escolhas do usuário
     if (stepData && typeof stepData === 'object' && !Array.isArray(stepData)) {
       const selectedOptionValue = Object.values(stepData)[0];
+
+      // FORMR50: 2 ou mais persianas — vai direto para captura final
+      if (activeStep.id === 'passo_0_quantidade' && selectedOptionValue === 'multiplas_persianas') {
+        setFormId('FORMR50');
+      }
+      if (activeStep.id === 'passo_0_quantidade' && selectedOptionValue === 'uma_persiana') {
+        setFormId('FORMR20');
+      }
       
       // FORMR5: "Não sei - Quero recomendação" — catálogo
       const isModeloStep = activeStep.id === 'passo_4_modelo' || activeStep.id === 'passo_4_modelo_teto';
@@ -348,6 +359,7 @@ export default function QuizV2() {
               FORMR5: 5,
               FORMR20: 20,
               FORMR30: 30,
+              FORMR50: 50,
             };
             const leadValue = leadValuesByForm[formId] ?? 0;
 
@@ -366,10 +378,20 @@ export default function QuizV2() {
         // Tracking do Google Tag Manager para envio de formulário
         try {
           if (window.dataLayer && Array.isArray(window.dataLayer)) {
+            const leadValuesByForm = {
+              FORMR5: 5,
+              FORMR20: 20,
+              FORMR30: 30,
+              FORMR50: 50,
+            };
+            const leadValue = leadValuesByForm[formId] ?? 0;
+
             window.dataLayer.push({
               event: 'form_submission',
               form_id: formId,
-              version: 'v2'
+              version: 'v2',
+              value: leadValue,
+              currency: 'BRL',
             });
           }
         } catch (error) {

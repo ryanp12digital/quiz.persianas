@@ -23,7 +23,7 @@ const getCurrentPhase = (stepId, steps) => {
   if (!stepId) return null;
 
   // Tela inicial (não mostra timeline)
-  if (stepId === 'passo_1_intencao' || stepId === 'passo_1_ambiente') {
+  if (stepId === 'passo_0_quantidade' || stepId === 'passo_1_intencao' || stepId === 'passo_1_ambiente') {
     return null;
   }
 

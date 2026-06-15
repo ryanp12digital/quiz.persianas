@@ -5,6 +5,19 @@ import {
 } from '../data/passo4RoloRomanaDoubleFabricOptions.js';
 
 export const STEPS = [
+    // [FASE 0] QUANTIDADE (entrada do quiz V2, após welcome)
+    {
+        id: 'passo_0_quantidade',
+        phase: 0,
+        question: 'Quantas persianas ou cortinas você deseja orçar?',
+        subtext: 'Assim direcionamos você para o fluxo ideal.',
+        type: 'radio',
+        options: [
+            { label: '1 persiana ou cortina', value: 'uma_persiana', nextStep: 'passo_4_modelo' },
+            { label: '2 ou mais persianas/cortinas', value: 'multiplas_persianas', nextStep: 'passo_8_captura' }
+        ]
+    },
+
     // [FASE 1] INTENÇÃO DO USUÁRIO
     {
         id: 'passo_1_intencao',

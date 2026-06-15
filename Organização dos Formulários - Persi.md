@@ -60,6 +60,16 @@
 
 ## Quiz V2 - Dados Coletados
 
+### Opção: 2 ou mais persianas (atalho no início)
+- Valor: 50
+- Campos coletados:
+  - Nome
+  - Whatsapp
+  - E-mail
+  - Cidade
+  - Bairro
+  - Ambientes
+
 ### Opção: Escolhe mais de 1 Persiana
 - Valor: 30
 - Campos coletados:

@@ -6,7 +6,9 @@ Documento de referência para análise e correção do fluxo do Quiz V2.
 
 ## Ponto de partida
 
-- **Etapa inicial:** `passo_4_modelo` (quiz **não** exibe `passo_1_intencao`; começa direto na escolha do modelo)
+- **Etapa inicial:** `passo_0_quantidade` (após welcome — quantidade de persianas)
+- **Fluxo 1 persiana:** `passo_0_quantidade` → `passo_4_modelo` (fluxo completo existente)
+- **Fluxo 2+ persianas:** `passo_0_quantidade` → `passo_8_captura` (captura direta, **FORMR50**)
 - **Rota:** `/quiz/v2`
 - **Webhook (envio final):** `https://n8n.sitespdoze.com.br/webhook/quizv2`
 - **A/B:** usa `src/v2/ab_test.js` (variante pode afetar comportamento; steps são os mesmos do array)
@@ -39,13 +41,14 @@ O body enviado ao webhook é JSON, organizado em blocos únicos (sem repetição
 
 ## Formulários (form_id)
 
-**Total: 3 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel). (V2 não possui a opção "Já sabe o que quer e quer falar direto com atendente".)
+**Total: 4 formulários.** O `form_id` é enviado no payload do webhook e usado em tracking (DataLayer, Pixel). (V2 não possui a opção "Já sabe o que quer e quer falar direto com atendente".)
 
 | ID | Valor | Quando é usado |
 |----|-------|----------------|
 | **FORMR5** | 5 | Não sei - Quero recomendação (catálogo; "Não sei" no modelo/tecido ou não tem medidas) |
 | **FORMR20** | 20 | Escolheu uma Persiana (pré-orçamento com medidas, sem itens extras) |
 | **FORMR30** | 30 | Escolhe mais de 1 Persiana (pré-orçamento com medidas + itens adicionais) |
+| **FORMR50** | 50 | Escolheu "2 ou mais persianas" no início — vai direto para captura final |
 
 ---
 
@@ -55,6 +58,7 @@ Conforme documento "Organização dos Formulários - Persi.md". Campos técnicos
 
 | Opção | Valor | form_id | Campos de contato | Opções coletadas do quiz |
 |-------|-------|---------|-------------------|---------------------------|
+| 2 ou mais persianas (atalho no início) | 50 | FORMR50 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | passo_0_quantidade |
 | Escolhe mais de 1 Persiana | 30 | FORMR30 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | Modelo, Tecido, Manual ou Motorizada, Largura, Altura, Outras Persianas / Cortinas |
 | Escolheu uma Persiana | 20 | FORMR20 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | Modelo, Tecido, Manual ou Motorizada, Largura, Altura |
 | Não sei - Quero recomendação | 5 | FORMR5 | Nome, Whatsapp, E-mail, Cidade, Bairro, Ambientes | — |
@@ -75,7 +79,9 @@ Conforme documento "Organização dos Formulários - Persi.md". Campos técnicos
 
 ```mermaid
 flowchart TD
-    B[passo_4_modelo - ENTRADA] -->|por modelo| D[passo_4_tecido_*]
+    A[passo_0_quantidade - ENTRADA] -->|1 persiana| B[passo_4_modelo]
+    A -->|2 ou mais| CAP50[passo_8_captura - FORMR50]
+    B -->|por modelo| D[passo_4_tecido_*]
     B -->|nao_sei| E[passo_8_captura_catalogo]
     D -->|tecido escolhido| F[passo_3_acionamento]
     D -->|nao_sei| G[passo_5_estagio]
@@ -83,7 +89,7 @@ flowchart TD
     G -->|orcamento| I[passo_6_medidas]
     G -->|catalogo| E
     I --> K[passo_7_adicionar_item]
-    K --> C[passo_8_captura]
+    K --> CAP[passo_8_captura]
 ```
 
 ---
@@ -183,6 +189,7 @@ flowchart TD
 
 | Cenário | form_id | Tela final | Campos esperados no payload |
 |---------|---------|------------|-----------------------------|
+| Escolhe "2 ou mais persianas" no início | FORMR50 | passo_8_captura | contact + passo_0_quantidade; produto vazio |
 | Escolhe "Não sei" no modelo (ou modelo+tecido "Não sei", ou no estágio "Não tenho medidas") | FORMR5 | passo_8_captura_catalogo | contact: nome, whatsapp, email, cidade, bairro, ambientes; produto vazio ou parcial |
 | Escolhe modelo+tecido+acionamento, "Já tenho medidas", preenche medidas, envia (sem adicionar outro) | FORMR20 | passo_8_captura | contact + produto (modelo, tecido, acionamento, medidas); itens_adicionais vazio |
 | Idem acima mas escolhe "Adicionar mais um item", descreve e envia | FORMR30 | passo_8_captura | contact + produto + itens_adicionais (string com descrições) |
