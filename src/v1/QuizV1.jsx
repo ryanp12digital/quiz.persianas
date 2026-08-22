@@ -465,7 +465,10 @@ export default function QuizV1() {
             window.dataLayer.push({
               event: 'form_submission',
               form_id: formId,
-              version: 'v1'
+              version: 'v1',
+              form_nome: finalData.contact.nome,
+              form_telefone: finalData.contact.whatsapp,
+              form_email: finalData.contact.email,
             });
           }
         } catch (error) {

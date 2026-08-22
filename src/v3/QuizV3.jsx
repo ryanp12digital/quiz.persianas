@@ -326,7 +326,16 @@ export default function QuizV3() {
           logWebhookSettledResults('v3', ['n8n', 'leadconnector'], results);
           // Lead apenas no formulário de orçamento (passo_8_captura), não no de catálogo
           if (activeStep.id === 'passo_8_captura' && window.fbq) window.fbq('track', 'Lead', { content_name: 'Quiz Persianas V3', content_category: 'Lead Generation' });
-          // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v3' });
+          if (window.dataLayer) {
+            window.dataLayer.push({
+              event: 'form_submission',
+              form_id: formId,
+              version: 'v3',
+              form_nome: finalData.contact.nome,
+              form_telefone: finalData.contact.whatsapp,
+              form_email: finalData.contact.email,
+            });
+          }
           navigate('/quiz/obrigado');
         });
       return;

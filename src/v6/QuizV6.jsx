@@ -229,7 +229,18 @@ export default function QuizV6() {
       Promise.allSettled(promises)
         .then((results) => {
           logWebhookSettledResults('v6', webhookLabels, results);
-          // if (window.dataLayer) window.dataLayer.push({ event: 'form_submission', form_id: formId, version: 'v6' });
+          if (window.dataLayer) {
+            window.dataLayer.push({
+              event: 'form_submission',
+              form_id: formId,
+              version: 'v6',
+              value: 20,
+              currency: 'BRL',
+              form_nome: payload.contact.nome,
+              form_telefone: payload.contact.whatsapp,
+              form_email: payload.contact.email,
+            });
+          }
           navigate('/quiz/obrigado');
         });
       return;

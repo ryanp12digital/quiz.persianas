@@ -392,6 +392,9 @@ export default function QuizV2() {
               version: 'v2',
               value: leadValue,
               currency: 'BRL',
+              form_nome: finalData.contact.nome,
+              form_telefone: finalData.contact.whatsapp,
+              form_email: finalData.contact.email,
             });
           }
         } catch (error) {
